@@ -773,6 +773,50 @@ input:checked + .toggle-slider::before {
 .reco-icon { font-size: 22px; }
 .reco-title { font-size: 13px; font-weight: 700; color: var(--accent); }
 .reco-text  { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+/* ── WEATHER CARD (Phase 6) ──────────────────────────────── */
+.weather-card {
+  background: linear-gradient(135deg, rgba(0,170,255,0.08), rgba(0,229,160,0.05));
+  border: 1px solid rgba(0,170,255,0.25);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.weather-top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px;
+}
+.weather-left  { display: flex; align-items: center; gap: 12px; }
+.weather-icon  { font-size: 32px; }
+.weather-desc  { font-size: 14px; font-weight: 700; color: var(--text); }
+.weather-loc   { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: var(--font-mono); }
+.weather-right { text-align: right; }
+.weather-temp  { font-size: 24px; font-weight: 800; color: var(--accent2); }
+.weather-hum   { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.weather-bottom { display: flex; flex-direction: column; gap: 10px; }
+.rain-chance   { display: flex; align-items: center; gap: 8px; }
+.rain-bar-label { font-size: 11px; color: var(--muted); font-family: var(--font-mono); white-space: nowrap; }
+.rain-bar-wrap { flex: 1; height: 5px; background: var(--border); border-radius: 100px; overflow: hidden; }
+.rain-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), #7b61ff); border-radius: 100px; transition: width 1s ease; }
+.rain-pct      { font-size: 11px; color: var(--accent2); font-family: var(--font-mono); min-width: 30px; text-align: right; }
+.rain-toggle-row { display: flex; align-items: center; justify-content: space-between; }
+.rain-toggle-label { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+.rain-toggle-btn {
+  padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border);
+  background: var(--surface2); color: var(--muted); font-family: var(--font-mono);
+  font-size: 11px; cursor: pointer; transition: all 0.25s;
+}
+.rain-toggle-btn.on {
+  background: rgba(0,170,255,0.15); border-color: var(--accent2);
+  color: var(--accent2); box-shadow: 0 0 10px rgba(0,170,255,0.2);
+}
+.rain-banner {
+  background: linear-gradient(135deg, rgba(0,170,255,0.12), rgba(123,97,255,0.12));
+  border: 1px solid rgba(0,170,255,0.3);
+  border-radius: var(--radius-sm); padding: 12px 16px;
+  font-size: 13px; color: var(--accent2); margin-bottom: 14px;
+  animation: fadeIn 0.4s ease;
+}
 </style>
 </head>
 <body>
@@ -887,6 +931,43 @@ input:checked + .toggle-slider::before {
           <span id="pump-label">OFF</span>
         </button>
       </div>
+    </div>
+
+    <!-- Weather Card (Phase 6) -->
+    <div class="weather-card" id="weather-card">
+      <div class="weather-top">
+        <div class="weather-left">
+          <div class="weather-icon" id="wx-icon">⏳</div>
+          <div>
+            <div class="weather-desc" id="wx-desc">Loading weather…</div>
+            <div class="weather-loc" id="wx-loc">Detecting location…</div>
+          </div>
+        </div>
+        <div class="weather-right">
+          <div class="weather-temp" id="wx-temp">—°C</div>
+          <div class="weather-hum" id="wx-hum">💧 —%</div>
+        </div>
+      </div>
+      <div class="weather-bottom">
+        <div class="rain-chance">
+          <span class="rain-bar-label">🌧️ Rain Probability</span>
+          <div class="rain-bar-wrap">
+            <div class="rain-bar-fill" id="wx-rain-fill" style="width:0%"></div>
+          </div>
+          <span class="rain-pct" id="wx-rain-pct">0%</span>
+        </div>
+        <div class="rain-toggle-row">
+          <span class="rain-toggle-label">Rain Expected</span>
+          <button class="rain-toggle-btn" id="rain-toggle-btn" onclick="toggleRainExpected()">
+            <span id="rain-toggle-text">OFF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rain Banner (shows when rain_expected = true & soil dry) -->
+    <div class="rain-banner" id="rain-banner" style="display:none">
+      🌧️ Rain expected — <strong>Auto-watering paused</strong> to conserve water.
     </div>
 
     <!-- Stats -->
@@ -1065,9 +1146,12 @@ input:checked + .toggle-slider::before {
     <div class="settings-section">
       <div class="settings-heading">About</div>
       <div class="setting-row" style="flex-direction:column;align-items:flex-start;gap:4px">
-        <div class="setting-label">SoilIQ v1.0.0</div>
+        <div class="setting-label">SoilIQ v2.0.0</div>
         <div class="setting-sub">Smart Irrigation PWA · ESP32 + Supabase</div>
-        <div class="setting-sub" style="margin-top:4px">Built for B.Tech Final Year Project</div>
+        <div class="setting-sub" style="margin-top:2px">✅ 50 Plant Profiles · Live Sensor Data</div>
+        <div class="setting-sub">✅ Weather Dashboard · Rain Detection</div>
+        <div class="setting-sub">✅ Smart Auto-Alerts · Manual Override</div>
+        <div class="setting-sub" style="margin-top:4px;color:var(--accent)">Built for B.Tech Final Year Project</div>
       </div>
     </div>
 
@@ -1078,7 +1162,7 @@ input:checked + .toggle-slider::before {
 <div class="toast" id="toast"></div>
 
 <!-- ══════════════════════════════════════════
-     JAVASCRIPT — Phase 3: Live Supabase
+     JAVASCRIPT — v2.0.0 (All 6 Phases)
 ══════════════════════════════════════════ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1095,6 +1179,7 @@ const state = {
   pumpOn: false,
   mode: 'auto',
   isOnline: false,
+  rainExpected: false,
   selectedPlant: null,
   pendingPlant: null,
   plants: [],
@@ -1113,6 +1198,7 @@ window.addEventListener('load', async () => {
   await Promise.all([loadPlants(), loadDeviceConfig(), loadLatestReading()]);
   startRealtime();
   startPolling();
+  loadWeather(); // Phase 6
 
   clearInterval(ticker);
   setTimeout(() => {
@@ -1140,6 +1226,8 @@ async function loadDeviceConfig() {
 
   state.mode   = data.auto_mode ? 'auto' : 'manual';
   state.pumpOn = data.pump_state;
+  state.rainExpected = data.rain_expected || false;
+  updateRainUI();
 
   if (data.plants) {
     state.selectedPlant = data.plants;
@@ -1233,9 +1321,21 @@ function updateMoistureUI(raw) {
   const p = state.selectedPlant;
   if (!p) { badge.textContent = '—'; badge.className = 'moisture-status optimal'; return; }
 
-  if (raw > p.moisture_max)      { badge.textContent = 'DRY';         badge.className = 'moisture-status dry'; }
-  else if (raw < p.moisture_min) { badge.textContent = 'OVERWATERED'; badge.className = 'moisture-status wet'; }
-  else                            { badge.textContent = 'OPTIMAL';     badge.className = 'moisture-status optimal'; }
+  if (raw > p.moisture_max)      {
+    badge.textContent = 'DRY';         badge.className = 'moisture-status dry';
+    // Phase 6: smart alert
+    if (document.getElementById('toggle-dry')?.checked)
+      addAlert('dry', `🌵 ${p.name} is DRY (ADC ${raw}). Pump should activate.`);
+    // Phase 6: rain banner logic
+    if (state.rainExpected && state.mode === 'auto')
+      document.getElementById('rain-banner').style.display = 'block';
+  } else if (raw < p.moisture_min) {
+    badge.textContent = 'OVERWATERED'; badge.className = 'moisture-status wet';
+    document.getElementById('rain-banner').style.display = 'none';
+  } else {
+    badge.textContent = 'OPTIMAL';     badge.className = 'moisture-status optimal';
+    document.getElementById('rain-banner').style.display = 'none';
+  }
 }
 
 function updatePlantUI() {
@@ -1444,6 +1544,94 @@ function showToast(msg, type = '') {
   t.className = 'toast show ' + type;
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+/* ── PHASE 6: WEATHER ────────────────────── */
+// WMO weather code → emoji + description
+const WX_CODE = {
+  0:'Clear Sky',1:'Mainly Clear',2:'Partly Cloudy',3:'Overcast',
+  45:'Foggy',48:'Icy Fog',51:'Light Drizzle',53:'Drizzle',55:'Heavy Drizzle',
+  61:'Light Rain',63:'Rain',65:'Heavy Rain',71:'Light Snow',73:'Snow',
+  80:'Rain Showers',81:'Rain Showers',82:'Violent Showers',
+  95:'Thunderstorm',96:'Thunderstorm+Hail',99:'Thunderstorm+Hail',
+};
+const WX_ICON = {
+  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',
+  51:'🌧️',53:'🌧️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',
+  71:'🌨️',73:'🌨️',80:'🌦️',81:'🌦️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️',
+};
+
+async function loadWeather() {
+  if (!navigator.geolocation) { updateWeatherUI(null); return; }
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const { latitude: lat, longitude: lon } = pos.coords;
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}`
+        + `&current=temperature_2m,relative_humidity_2m,weather_code`
+        + `&hourly=precipitation_probability&timezone=auto&forecast_days=1`;
+      const res  = await fetch(url);
+      const data = await res.json();
+      const cur  = data.current;
+      const rainPcts = data.hourly?.precipitation_probability?.slice(0,6) || [];
+      const maxRain  = Math.max(...rainPcts, 0);
+
+      updateWeatherUI({
+        temp:    Math.round(cur.temperature_2m),
+        hum:     cur.relative_humidity_2m,
+        code:    cur.weather_code,
+        rain:    maxRain,
+        lat, lon,
+      });
+
+      // Auto-set rain_expected if probability > 60%
+      if (maxRain > 60 && !state.rainExpected) {
+        state.rainExpected = true;
+        updateRainUI();
+        await patchDevice({ rain_expected: true });
+        addAlert('info', `🌧️ Rain probability is ${maxRain}% — auto-watering paused.`);
+        showToast('🌧️ Rain detected — watering paused', 'warn');
+      }
+    } catch(e) { updateWeatherUI(null); }
+  }, () => updateWeatherUI(null));
+
+  // Refresh weather every 30 minutes
+  setInterval(loadWeather, 30 * 60 * 1000);
+}
+
+function updateWeatherUI(wx) {
+  if (!wx) {
+    document.getElementById('wx-icon').textContent = '🌍';
+    document.getElementById('wx-desc').textContent = 'Weather unavailable';
+    document.getElementById('wx-loc').textContent  = 'Allow location access';
+    return;
+  }
+  document.getElementById('wx-icon').textContent  = WX_ICON[wx.code] || '🌤️';
+  document.getElementById('wx-desc').textContent  = WX_CODE[wx.code] || 'Unknown';
+  document.getElementById('wx-loc').textContent   = `📍 ${wx.lat.toFixed(2)}°N, ${wx.lon.toFixed(2)}°E`;
+  document.getElementById('wx-temp').textContent  = wx.temp + '°C';
+  document.getElementById('wx-hum').textContent   = '💧 ' + wx.hum + '%';
+  document.getElementById('wx-rain-fill').style.width = wx.rain + '%';
+  document.getElementById('wx-rain-pct').textContent  = wx.rain + '%';
+}
+
+function updateRainUI() {
+  const btn  = document.getElementById('rain-toggle-btn');
+  const txt  = document.getElementById('rain-toggle-text');
+  const banner = document.getElementById('rain-banner');
+  btn.classList.toggle('on', state.rainExpected);
+  txt.textContent = state.rainExpected ? 'ON' : 'OFF';
+  // Show banner only when rain expected AND soil is currently dry
+  const isDry = state.selectedPlant && state.moisture > state.selectedPlant.moisture_max;
+  banner.style.display = (state.rainExpected && isDry) ? 'block' : 'none';
+}
+
+async function toggleRainExpected() {
+  state.rainExpected = !state.rainExpected;
+  updateRainUI();
+  const ok = await patchDevice({ rain_expected: state.rainExpected });
+  if (ok) {
+    showToast(state.rainExpected ? '🌧️ Rain expected — watering paused' : '☀️ Rain cleared — auto mode active');
+    addAlert('info', state.rainExpected ? 'Rain expected flag set manually.' : 'Rain expected flag cleared.');
+  }
 }
 </script>
 </body>

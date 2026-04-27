@@ -44,6 +44,7 @@ int  moisture_min = 1500;   // Default — overwritten by Supabase config
 int  moisture_max = 3000;   // Default — overwritten by Supabase config
 bool auto_mode    = true;   // Default — overwritten by Supabase config
 bool pump_state   = false;  // Current pump status
+bool rain_expected = false; // Phase 6 — skip pump if rain is coming
 
 unsigned long lastReadTime = 0;
 unsigned long lastConfigTime = 0;
@@ -151,14 +152,16 @@ void fetchDeviceConfig() {
 
       auto_mode  = cfg["auto_mode"] | true;
       pump_state = cfg["pump_state"] | false;
+      rain_expected = cfg["rain_expected"] | false;
 
       if (!cfg["plants"].isNull()) {
         moisture_min = cfg["plants"]["moisture_min"] | 1500;
         moisture_max = cfg["plants"]["moisture_max"] | 3000;
       }
 
-      Serial.printf("[Config] auto_mode=%s, min=%d, max=%d\n",
-        auto_mode ? "AUTO" : "MANUAL", moisture_min, moisture_max);
+      Serial.printf("[Config] auto_mode=%s, min=%d, max=%d, rain=%s\n",
+        auto_mode ? "AUTO" : "MANUAL", moisture_min, moisture_max,
+        rain_expected ? "YES" : "NO");
 
       // In manual mode, respect the pump_state from UI
       if (!auto_mode) {
@@ -217,6 +220,13 @@ void controlPump(int value) {
   // SAFETY GUARD — sensor disconnected or in air
   if (value >= AIR_VALUE) {
     setPump(false, "AIR DETECTED — Safety OFF");
+    return;
+  }
+
+  // PHASE 6: RAIN GUARD — don't water if rain is expected
+  if (rain_expected) {
+    if (pump_state) setPump(false, "RAIN EXPECTED — Conserving water");
+    else Serial.println("[Pump] Rain expected — skipping auto logic");
     return;
   }
 
