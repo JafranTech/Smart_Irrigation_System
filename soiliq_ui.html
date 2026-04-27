@@ -776,33 +776,38 @@ input:checked + .toggle-slider::before {
 
 /* ── WEATHER CARD (Phase 6) ──────────────────────────────── */
 .weather-card {
-  background: linear-gradient(135deg, rgba(0,170,255,0.08), rgba(0,229,160,0.05));
-  border: 1px solid rgba(0,170,255,0.25);
+  background: linear-gradient(135deg, rgba(0,170,255,0.1), rgba(123,97,255,0.08));
+  border: 1px solid rgba(0,170,255,0.3);
   border-radius: var(--radius);
-  padding: 16px;
+  padding: 18px 16px 14px;
   margin-bottom: 14px;
+  position: relative; overflow: hidden;
 }
-.weather-top {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 14px;
+.weather-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at top right, rgba(0,170,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
 }
-.weather-left  { display: flex; align-items: center; gap: 12px; }
-.weather-icon  { font-size: 32px; }
-.weather-desc  { font-size: 14px; font-weight: 700; color: var(--text); }
-.weather-loc   { font-size: 11px; color: var(--muted); margin-top: 2px; font-family: var(--font-mono); }
-.weather-right { text-align: right; }
-.weather-temp  { font-size: 24px; font-weight: 800; color: var(--accent2); }
-.weather-hum   { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.weather-bottom { display: flex; flex-direction: column; gap: 10px; }
-.rain-chance   { display: flex; align-items: center; gap: 8px; }
-.rain-bar-label { font-size: 11px; color: var(--muted); font-family: var(--font-mono); white-space: nowrap; }
-.rain-bar-wrap { flex: 1; height: 5px; background: var(--border); border-radius: 100px; overflow: hidden; }
-.rain-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), #7b61ff); border-radius: 100px; transition: width 1s ease; }
-.rain-pct      { font-size: 11px; color: var(--accent2); font-family: var(--font-mono); min-width: 30px; text-align: right; }
-.rain-toggle-row { display: flex; align-items: center; justify-content: space-between; }
-.rain-toggle-label { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+.weather-main { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.wx-condition { display: flex; align-items: center; gap: 12px; }
+.wx-emoji     { font-size: 38px; line-height: 1; filter: drop-shadow(0 0 8px rgba(0,170,255,0.4)); }
+.wx-title     { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.wx-subtitle  { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
+.wx-metrics   { text-align: right; }
+.wx-temp      { font-size: 28px; font-weight: 800; color: var(--accent2); line-height: 1; }
+.wx-hum       { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.wx-rain-row  { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.wx-rain-label{ font-size: 11px; color: var(--muted); font-family: var(--font-mono); white-space: nowrap; }
+.wx-rain-track{ flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 100px; overflow: hidden; }
+.wx-rain-fill { height: 100%; background: linear-gradient(90deg, var(--accent2), #7b61ff); border-radius: 100px; transition: width 1.2s ease; }
+.wx-rain-pct  { font-size: 11px; color: var(--accent2); font-family: var(--font-mono); min-width: 34px; text-align: right; }
+.wx-footer    { display: flex; justify-content: space-between; align-items: center; }
+.wx-loc-tag   { font-size: 10px; color: var(--muted); font-family: var(--font-mono); }
+.rain-toggle-row { display: flex; align-items: center; gap: 8px; }
+.rain-toggle-label { font-size: 11px; color: var(--muted); font-family: var(--font-mono); }
 .rain-toggle-btn {
-  padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border);
+  padding: 4px 14px; border-radius: 20px; border: 1px solid var(--border);
   background: var(--surface2); color: var(--muted); font-family: var(--font-mono);
   font-size: 11px; cursor: pointer; transition: all 0.25s;
 }
@@ -817,6 +822,17 @@ input:checked + .toggle-slider::before {
   font-size: 13px; color: var(--accent2); margin-bottom: 14px;
   animation: fadeIn 0.4s ease;
 }
+/* Plant Location button */
+.loc-btn {
+  width: 100%; padding: 11px; border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, rgba(0,170,255,0.1), rgba(0,229,160,0.06));
+  border: 1px solid rgba(0,170,255,0.3); color: var(--accent2);
+  font-family: var(--font-mono); font-size: 12px; cursor: pointer;
+  transition: all 0.2s; margin-top: 8px;
+}
+.loc-btn:hover { background: rgba(0,170,255,0.2); }
+.loc-btn.secondary { border-color: var(--border); color: var(--muted); background: var(--surface2); margin-top: 6px; }
+.loc-saved { font-size: 11px; color: var(--accent); font-family: var(--font-mono); margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -935,27 +951,28 @@ input:checked + .toggle-slider::before {
 
     <!-- Weather Card (Phase 6) -->
     <div class="weather-card" id="weather-card">
-      <div class="weather-top">
-        <div class="weather-left">
-          <div class="weather-icon" id="wx-icon">⏳</div>
+      <div class="weather-main">
+        <div class="wx-condition">
+          <div class="wx-emoji" id="wx-icon">⏳</div>
           <div>
-            <div class="weather-desc" id="wx-desc">Loading weather…</div>
-            <div class="weather-loc" id="wx-loc">Detecting location…</div>
+            <div class="wx-title" id="wx-desc">Loading weather…</div>
+            <div class="wx-subtitle" id="wx-loc">📍 Detecting plant location…</div>
           </div>
         </div>
-        <div class="weather-right">
-          <div class="weather-temp" id="wx-temp">—°C</div>
-          <div class="weather-hum" id="wx-hum">💧 —%</div>
+        <div class="wx-metrics">
+          <div class="wx-temp" id="wx-temp">—°C</div>
+          <div class="wx-hum" id="wx-hum">💧 —%</div>
         </div>
       </div>
-      <div class="weather-bottom">
-        <div class="rain-chance">
-          <span class="rain-bar-label">🌧️ Rain Probability</span>
-          <div class="rain-bar-wrap">
-            <div class="rain-bar-fill" id="wx-rain-fill" style="width:0%"></div>
-          </div>
-          <span class="rain-pct" id="wx-rain-pct">0%</span>
+      <div class="wx-rain-row">
+        <span class="wx-rain-label">🌧️ Rain Probability</span>
+        <div class="wx-rain-track">
+          <div class="wx-rain-fill" id="wx-rain-fill" style="width:0%"></div>
         </div>
+        <span class="wx-rain-pct" id="wx-rain-pct">0%</span>
+      </div>
+      <div class="wx-footer">
+        <span class="wx-loc-tag" id="wx-loc-tag">🌐 Plant Location</span>
         <div class="rain-toggle-row">
           <span class="rain-toggle-label">Rain Expected</span>
           <button class="rain-toggle-btn" id="rain-toggle-btn" onclick="toggleRainExpected()">
@@ -965,7 +982,7 @@ input:checked + .toggle-slider::before {
       </div>
     </div>
 
-    <!-- Rain Banner (shows when rain_expected = true & soil dry) -->
+    <!-- Rain Banner -->
     <div class="rain-banner" id="rain-banner" style="display:none">
       🌧️ Rain expected — <strong>Auto-watering paused</strong> to conserve water.
     </div>
@@ -1074,6 +1091,22 @@ input:checked + .toggle-slider::before {
           <div class="device-badge-id" id="device-id-display">ID: loading…</div>
         </div>
       </div>
+    </div>
+
+    <!-- Plant Location (Phase 6 fix) -->
+    <div class="settings-section">
+      <div class="settings-heading">Plant Location 🌱</div>
+      <div class="setting-sub" style="font-size:12px;margin-bottom:8px;line-height:1.6">
+        Weather uses your <strong>plant's location</strong>, not where you browse from.
+        If your plant is in Chennai but you're in Trichy — set it once here.
+      </div>
+      <div class="loc-saved" id="loc-saved-display">📍 No location saved yet</div>
+      <button class="loc-btn" onclick="setPlantLocation()">
+        📡 Detect &amp; Save Plant Location
+      </button>
+      <button class="loc-btn secondary" onclick="clearPlantLocation()">
+        🗑️ Clear Saved Location
+      </button>
     </div>
 
     <!-- Supabase Config -->
@@ -1545,8 +1578,7 @@ function showToast(msg, type = '') {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
 }
-/* ── PHASE 6: WEATHER ────────────────────── */
-// WMO weather code → emoji + description
+/* ── PHASE 6: WEATHER ──────────────────────── */
 const WX_CODE = {
   0:'Clear Sky',1:'Mainly Clear',2:'Partly Cloudy',3:'Overcast',
   45:'Foggy',48:'Icy Fog',51:'Light Drizzle',53:'Drizzle',55:'Heavy Drizzle',
@@ -1560,66 +1592,115 @@ const WX_ICON = {
   71:'🌨️',73:'🌨️',80:'🌦️',81:'🌦️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️',
 };
 
+// ── Load weather using SAVED plant location (not current browser location) ──
 async function loadWeather() {
-  if (!navigator.geolocation) { updateWeatherUI(null); return; }
-  navigator.geolocation.getCurrentPosition(async pos => {
-    const { latitude: lat, longitude: lon } = pos.coords;
-    try {
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}`
-        + `&current=temperature_2m,relative_humidity_2m,weather_code`
-        + `&hourly=precipitation_probability&timezone=auto&forecast_days=1`;
-      const res  = await fetch(url);
-      const data = await res.json();
-      const cur  = data.current;
-      const rainPcts = data.hourly?.precipitation_probability?.slice(0,6) || [];
-      const maxRain  = Math.max(...rainPcts, 0);
+  const savedLat = localStorage.getItem('soiliq_plant_lat');
+  const savedLon = localStorage.getItem('soiliq_plant_lon');
 
-      updateWeatherUI({
-        temp:    Math.round(cur.temperature_2m),
-        hum:     cur.relative_humidity_2m,
-        code:    cur.weather_code,
-        rain:    maxRain,
-        lat, lon,
-      });
+  if (savedLat && savedLon) {
+    // Use saved plant location — always correct regardless of where you browse from
+    document.getElementById('wx-loc-tag').textContent = '📍 Plant Location';
+    await fetchWeatherData(parseFloat(savedLat), parseFloat(savedLon));
+  } else {
+    // First time: ask for location and save it as plant location
+    if (!navigator.geolocation) { updateWeatherUI(null); return; }
+    navigator.geolocation.getCurrentPosition(async pos => {
+      const { latitude: lat, longitude: lon } = pos.coords;
+      // Auto-save as plant location
+      localStorage.setItem('soiliq_plant_lat', lat);
+      localStorage.setItem('soiliq_plant_lon', lon);
+      updateLocDisplay(lat, lon);
+      document.getElementById('wx-loc-tag').textContent = '📍 Plant Location (auto-saved)';
+      await fetchWeatherData(lat, lon);
+    }, () => updateWeatherUI(null));
+  }
 
-      // Auto-set rain_expected if probability > 60%
-      if (maxRain > 60 && !state.rainExpected) {
-        state.rainExpected = true;
-        updateRainUI();
-        await patchDevice({ rain_expected: true });
-        addAlert('info', `🌧️ Rain probability is ${maxRain}% — auto-watering paused.`);
-        showToast('🌧️ Rain detected — watering paused', 'warn');
-      }
-    } catch(e) { updateWeatherUI(null); }
-  }, () => updateWeatherUI(null));
+  // Refresh every 30 minutes
+  setTimeout(loadWeather, 30 * 60 * 1000);
+}
 
-  // Refresh weather every 30 minutes
-  setInterval(loadWeather, 30 * 60 * 1000);
+async function fetchWeatherData(lat, lon) {
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}`
+      + `&current=temperature_2m,relative_humidity_2m,weather_code`
+      + `&hourly=precipitation_probability&timezone=auto&forecast_days=1`;
+    const res  = await fetch(url);
+    const data = await res.json();
+    const cur  = data.current;
+    const rainPcts = data.hourly?.precipitation_probability?.slice(0, 6) || [];
+    const maxRain  = Math.max(...rainPcts, 0);
+
+    updateWeatherUI({ temp: Math.round(cur.temperature_2m), hum: cur.relative_humidity_2m,
+      code: cur.weather_code, rain: maxRain, lat, lon });
+
+    // Auto-set rain_expected if probability > 60%
+    if (maxRain > 60 && !state.rainExpected) {
+      state.rainExpected = true;
+      updateRainUI();
+      await patchDevice({ rain_expected: true });
+      addAlert('info', `🌧️ Rain probability is ${maxRain}% — auto-watering paused.`);
+      showToast('🌧️ Rain detected — watering paused', 'warn');
+    }
+  } catch(e) { updateWeatherUI(null); }
 }
 
 function updateWeatherUI(wx) {
   if (!wx) {
     document.getElementById('wx-icon').textContent = '🌍';
     document.getElementById('wx-desc').textContent = 'Weather unavailable';
-    document.getElementById('wx-loc').textContent  = 'Allow location access';
+    document.getElementById('wx-loc').textContent  = 'Tap Settings → Set Plant Location';
     return;
   }
-  document.getElementById('wx-icon').textContent  = WX_ICON[wx.code] || '🌤️';
-  document.getElementById('wx-desc').textContent  = WX_CODE[wx.code] || 'Unknown';
-  document.getElementById('wx-loc').textContent   = `📍 ${wx.lat.toFixed(2)}°N, ${wx.lon.toFixed(2)}°E`;
-  document.getElementById('wx-temp').textContent  = wx.temp + '°C';
-  document.getElementById('wx-hum').textContent   = '💧 ' + wx.hum + '%';
+  document.getElementById('wx-icon').textContent     = WX_ICON[wx.code] || '🌤️';
+  document.getElementById('wx-desc').textContent     = WX_CODE[wx.code] || 'Unknown';
+  document.getElementById('wx-loc').textContent      = `${wx.lat.toFixed(2)}°N, ${wx.lon.toFixed(2)}°E`;
+  document.getElementById('wx-temp').textContent     = wx.temp + '°C';
+  document.getElementById('wx-hum').textContent      = '💧 ' + wx.hum + '%';
   document.getElementById('wx-rain-fill').style.width = wx.rain + '%';
   document.getElementById('wx-rain-pct').textContent  = wx.rain + '%';
 }
 
+// ── Set plant location from current GPS position ──
+function setPlantLocation() {
+  if (!navigator.geolocation) { showToast('Geolocation not supported', 'error'); return; }
+  showToast('📡 Detecting location…', '');
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude: lat, longitude: lon } = pos.coords;
+    localStorage.setItem('soiliq_plant_lat', lat);
+    localStorage.setItem('soiliq_plant_lon', lon);
+    updateLocDisplay(lat, lon);
+    showToast('✅ Plant location saved!', 'success');
+    document.getElementById('wx-loc-tag').textContent = '📍 Plant Location';
+    loadWeather();
+  }, () => showToast('❌ Could not get location', 'error'));
+}
+
+function clearPlantLocation() {
+  localStorage.removeItem('soiliq_plant_lat');
+  localStorage.removeItem('soiliq_plant_lon');
+  document.getElementById('loc-saved-display').textContent = '📍 No location saved yet';
+  document.getElementById('wx-loc-tag').textContent = '🌐 No Location Set';
+  showToast('🗑️ Plant location cleared', 'warn');
+}
+
+function updateLocDisplay(lat, lon) {
+  const el = document.getElementById('loc-saved-display');
+  if (el) el.textContent = `✅ Saved: ${lat.toFixed(4)}°N, ${lon.toFixed(4)}°E`;
+}
+
+// Load saved location display on page load
+window.addEventListener('DOMContentLoaded', () => {
+  const lat = localStorage.getItem('soiliq_plant_lat');
+  const lon = localStorage.getItem('soiliq_plant_lon');
+  if (lat && lon) updateLocDisplay(parseFloat(lat), parseFloat(lon));
+});
+
 function updateRainUI() {
-  const btn  = document.getElementById('rain-toggle-btn');
-  const txt  = document.getElementById('rain-toggle-text');
+  const btn    = document.getElementById('rain-toggle-btn');
+  const txt    = document.getElementById('rain-toggle-text');
   const banner = document.getElementById('rain-banner');
   btn.classList.toggle('on', state.rainExpected);
   txt.textContent = state.rainExpected ? 'ON' : 'OFF';
-  // Show banner only when rain expected AND soil is currently dry
   const isDry = state.selectedPlant && state.moisture > state.selectedPlant.moisture_max;
   banner.style.display = (state.rainExpected && isDry) ? 'block' : 'none';
 }
