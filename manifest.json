@@ -1,0 +1,28 @@
+{
+  "name": "SoilIQ — Smart Irrigation",
+  "short_name": "SoilIQ",
+  "description": "Real-time soil moisture monitoring and smart irrigation control",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0d1a10",
+  "theme_color": "#0d1a10",
+  "scope": "/",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["utilities", "productivity"],
+  "screenshots": []
+}

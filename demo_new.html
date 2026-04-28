@@ -2,23 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-
-<!-- PWA: opens as native app (no browser chrome) when installed -->
-<link rel="manifest" href="/manifest.json"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="theme-color" content="#0d1a10"/>
-<meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-<meta name="apple-mobile-web-app-title" content="SoilIQ"/>
-
-<!-- Icons -->
-<link rel="icon"             type="image/svg+xml" href="/icons/icon.svg"/>
-<link rel="apple-touch-icon" href="/icons/icon.svg"/>
-
-<!-- SEO -->
-<meta name="description" content="SoilIQ — Real-time soil moisture monitoring and smart irrigation control from your phone."/>
-
 <title>SoilIQ — Smart Irrigation</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
@@ -898,141 +884,6 @@ canvas#sparkline { width: 100%; height: 100%; }
 @media (min-width: 768px) {
   .toast { bottom: 24px; }
 }
-
-/* ═══ WEATHER ICON ═══ */
-.wx-icon-wrap {
-  font-size: 52px;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 64px; height: 64px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.04);
-  flex-shrink: 0;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.4));
-}
-.wx-icon-wrap.sunny  { background: rgba(251,191,36,0.12); }
-.wx-icon-wrap.cloudy { background: rgba(148,163,184,0.10); }
-.wx-icon-wrap.rainy  { background: rgba(99,179,237,0.12); }
-.wx-icon-wrap.stormy { background: rgba(167,139,250,0.12); }
-.wx-icon-wrap.foggy  { background: rgba(148,163,184,0.08); }
-.wx-loc-bold { font-weight: 700; font-size: 13px; color: var(--text); }
-
-/* ═══ NEEDLE SPEEDOMETER ANIMATION ═══ */
-#gauge-needle-g {
-  transform-box: view-box;
-  transform-origin: 130px 140px;
-  transition: transform 1.4s cubic-bezier(0.34,1.56,0.64,1);
-  will-change: transform;
-}
-@keyframes numPop {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.18); color: var(--primary); }
-  100% { transform: scale(1); }
-}
-.gauge-pop { animation: numPop 0.45s ease; }
-
-/* ═══ PLANT DETAIL DRAWER ═══ */
-.plant-drawer-overlay {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0.65); backdrop-filter: blur(4px);
-  opacity: 0; pointer-events: none; transition: opacity 0.3s;
-}
-.plant-drawer-overlay.open { opacity: 1; pointer-events: all; }
-.plant-drawer {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  max-height: 82vh; z-index: 201;
-  background: #111f14;
-  border: 1px solid rgba(255,255,255,0.12); border-bottom: none;
-  border-radius: 20px 20px 0 0;
-  transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.34,1.2,0.64,1);
-  overflow-y: auto; padding-bottom: 40px;
-}
-.plant-drawer.open { transform: translateY(0); }
-@media (min-width: 768px) {
-  .plant-drawer {
-    top: 60px; right: 0; bottom: 0; left: auto;
-    width: 390px; max-height: none; border-radius: 0;
-    border-left: 1px solid rgba(255,255,255,0.12);
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-    transform: translateX(110%);
-  }
-  .plant-drawer.open { transform: translateX(0); }
-}
-.drawer-handle {
-  width: 40px; height: 4px; border-radius: 100px;
-  background: rgba(255,255,255,0.15); margin: 12px auto 0;
-}
-@media (min-width: 768px) { .drawer-handle { display: none; } }
-.drawer-header {
-  display: flex; align-items: center; gap: 14px;
-  padding: 22px 20px 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  position: sticky; top: 0;
-  background: #111f14; z-index: 2;
-}
-.drawer-emoji {
-  width: 60px; height: 60px; border-radius: 14px;
-  background: rgba(97,246,156,0.1);
-  border: 1px solid rgba(97,246,156,0.2);
-  display: grid; place-items: center;
-  font-size: 30px; flex-shrink: 0;
-}
-.drawer-plant-name { font-size: 19px; font-weight: 800; }
-.drawer-plant-sci  { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 3px; }
-.drawer-close {
-  margin-left: auto; width: 32px; height: 32px;
-  border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.05);
-  display: grid; place-items: center;
-  cursor: pointer; color: var(--muted);
-  font-size: 16px; flex-shrink: 0; transition: all 0.2s;
-}
-.drawer-close:hover { color: var(--text); background: rgba(255,255,255,0.1); }
-.drawer-body { padding: 18px 20px; }
-.drawer-section-label {
-  font-family: var(--mono); font-size: 10px;
-  color: var(--muted); text-transform: uppercase;
-  letter-spacing: 0.12em; margin-bottom: 10px; margin-top: 16px;
-  display: flex; align-items: center; gap: 8px;
-}
-.drawer-section-label::after {
-  content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.07);
-}
-.drawer-row {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.05); gap: 12px;
-}
-.drawer-row:last-of-type { border-bottom: none; }
-.drawer-row-key { font-size: 12px; color: var(--muted); flex-shrink: 0; min-width: 130px; }
-.drawer-row-val { font-size: 13px; font-weight: 600; text-align: right; line-height: 1.5; color: var(--text); }
-.drawer-row-val.green { color: var(--primary); }
-.drawer-row-val.warn  { color: var(--warn); }
-.drawer-row-val.blue  { color: var(--blue); }
-.drawer-mbar {
-  margin: 14px 0 0;
-  background: rgba(97,246,156,0.05);
-  border: 1px solid rgba(97,246,156,0.1);
-  border-radius: 10px; padding: 14px;
-}
-.drawer-mbar-labels {
-  display: flex; justify-content: space-between;
-  font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 8px;
-}
-.drawer-mbar-track { height: 6px; background: rgba(255,255,255,0.07); border-radius: 100px; overflow: hidden; position: relative; }
-.drawer-mbar-fill  { height: 100%; background: var(--primary); border-radius: 100px; box-shadow: 0 0 8px rgba(97,246,156,0.4); position: absolute; }
-.drawer-mbar-adc   { font-family: var(--mono); font-size: 10px; color: var(--muted2); margin-top: 6px; }
-.drawer-select-btn {
-  width: 100%; padding: 14px; border: none; border-radius: 10px;
-  font-size: 14px; font-weight: 800; cursor: pointer; margin-top: 20px;
-  transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
-  background: var(--primary); color: #001a0a;
-}
-.drawer-select-btn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
-.drawer-select-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-.drawer-select-btn.already { background: rgba(97,246,156,0.12); color: var(--primary); border: 1px solid rgba(97,246,156,0.3); }
 </style>
 </head>
 <body>
@@ -1207,12 +1058,13 @@ canvas#sparkline { width: 100%; height: 100%; }
             <line x1="240" y1="140" x2="240" y2="120" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-linecap="round"/>
 
             <!-- Needle -->
-            <g id="gauge-needle-g">
+            <g id="gauge-needle-g" transform="rotate(-90 130 140)">
               <line id="gauge-needle"
                 x1="130" y1="140"
                 x2="130" y2="48"
                 stroke="rgba(255,255,255,0.9)" stroke-width="2.5"
-                stroke-linecap="round"/>
+                stroke-linecap="round"
+                style="transition: all 1.2s cubic-bezier(0.4,0,0.2,1)"/>
               <circle cx="130" cy="140" r="5" fill="rgba(255,255,255,0.9)"/>
               <circle cx="130" cy="140" r="2.5" fill="#0d1a10"/>
             </g>
@@ -1231,8 +1083,8 @@ canvas#sparkline { width: 100%; height: 100%; }
             <!-- Scale labels -->
             <text x="14" y="158" text-anchor="middle"
               font-family="Space Mono, monospace" font-size="10" fill="#5a7060">0%</text>
-            <text x="130" y="7" text-anchor="middle"
-              font-family="Space Mono, monospace" font-size="11" fill="#8aA08c">50%</text>
+            <text x="130" y="22" text-anchor="middle"
+              font-family="Space Mono, monospace" font-size="10" fill="#5a7060">50%</text>
             <text x="246" y="158" text-anchor="middle"
               font-family="Space Mono, monospace" font-size="10" fill="#5a7060">100%</text>
           </svg>
@@ -1286,10 +1138,10 @@ canvas#sparkline { width: 100%; height: 100%; }
         <div class="card-label"><span class="mi sm">cloud</span> Weather</div>
         <div class="wx-main">
           <div class="wx-condition">
-            <div class="wx-icon-wrap" id="wx-icon">⏳</div>
+            <div class="wx-emoji" id="wx-icon">⏳</div>
             <div>
               <div class="wx-title" id="wx-desc">Loading…</div>
-              <div class="wx-subtitle"><span class="wx-loc-bold" id="wx-loc">Detecting location…</span></div>
+              <div class="wx-subtitle" id="wx-loc">📍 Detecting location…</div>
             </div>
           </div>
           <div>
@@ -1327,9 +1179,9 @@ canvas#sparkline { width: 100%; height: 100%; }
       <div class="card" style="padding:14px 12px">
         <div class="card-label" style="margin-bottom:10px"><span class="mi sm">analytics</span> Sensor Stats</div>
         <div class="stats-row">
-          <div class="stat-card"><div class="stat-val" id="stat-raw">—</div><div class="stat-key">CURRENT %</div></div>
+          <div class="stat-card"><div class="stat-val" id="stat-raw">—</div><div class="stat-key">RAW ADC</div></div>
           <div class="stat-card"><div class="stat-val" id="stat-sessions">—</div><div class="stat-key">SESSIONS</div></div>
-          <div class="stat-card"><div class="stat-val" id="stat-avg">—</div><div class="stat-key">AVG MOIST.</div></div>
+          <div class="stat-card"><div class="stat-val" id="stat-avg">—</div><div class="stat-key">AVG ADC</div></div>
         </div>
       </div>
 
@@ -1598,41 +1450,6 @@ canvas#sparkline { width: 100%; height: 100%; }
 
 </div><!-- /main-content -->
 
-<!-- Plant Detail Drawer -->
-<div class="plant-drawer-overlay" id="plant-drawer-overlay" onclick="closePlantDetail()"></div>
-<div class="plant-drawer" id="plant-drawer">
-  <div class="drawer-handle"></div>
-  <div class="drawer-header">
-    <div class="drawer-emoji" id="drawer-emoji">🌱</div>
-    <div>
-      <div class="drawer-plant-name" id="drawer-name">—</div>
-      <div class="drawer-plant-sci" id="drawer-sci">—</div>
-    </div>
-    <button class="drawer-close" onclick="closePlantDetail()">&#10005;</button>
-  </div>
-  <div class="drawer-body">
-    <div class="drawer-section-label"><span class="mi sm">eco</span> Plant Info</div>
-    <div class="drawer-row"><span class="drawer-row-key">Water Need</span><span class="drawer-row-val green" id="drawer-water">—</span></div>
-    <div class="drawer-row"><span class="drawer-row-key">Sunlight</span><span class="drawer-row-val blue" id="drawer-sun">—</span></div>
-    <div class="drawer-row"><span class="drawer-row-key">Watering Freq</span><span class="drawer-row-val" id="drawer-freq">—</span></div>
-    <div class="drawer-row"><span class="drawer-row-key">Fertilizer</span><span class="drawer-row-val" id="drawer-fert">—</span></div>
-    <div class="drawer-mbar">
-      <div class="drawer-mbar-labels"><span>MOISTURE RANGE</span><span id="drawer-range-pct" style="color:var(--primary)">—%</span></div>
-      <div class="drawer-mbar-track"><div class="drawer-mbar-fill" id="drawer-bar" style="width:0%;left:0"></div></div>
-      <div class="drawer-mbar-adc" id="drawer-adc">ADC —</div>
-    </div>
-    <div class="drawer-section-label" style="margin-top:18px"><span class="mi sm">warning</span> Care Notes</div>
-    <div class="drawer-row"><span class="drawer-row-key">Description</span><span class="drawer-row-val" id="drawer-desc" style="max-width:210px">—</span></div>
-    <div class="drawer-row"><span class="drawer-row-key">Overwatering Issue</span><span class="drawer-row-val warn" id="drawer-overwater">—</span></div>
-    <div class="drawer-row"><span class="drawer-row-key">Solution</span><span class="drawer-row-val" id="drawer-solution">—</span></div>
-    <div class="drawer-row"><span class="drawer-row-key">pH Need</span><span class="drawer-row-val blue" id="drawer-ph">—</span></div>
-    <button class="drawer-select-btn" id="drawer-select-btn" onclick="selectFromDrawer()">
-      <span class="mi sm">check_circle</span>
-      <span id="drawer-select-label">Select This Plant</span>
-    </button>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <!-- ════════════════════════════════════
@@ -1761,17 +1578,14 @@ function updateMoistureUI(raw) {
   const offset  = ARC_LEN - (pct / 100) * ARC_LEN;
   document.getElementById('gauge-arc').style.strokeDashoffset = offset;
 
-  // Needle: CSS transition (speedometer spring easing)
+  // Needle: rotates from -90° (0%) to +90° (100%) around center bottom
+  // At 0% needle points left, at 50% straight up, at 100% right
   const angle = -90 + (pct / 100) * 180;
-  document.getElementById('gauge-needle-g').style.transform = `rotate(${angle}deg)`;
+  document.getElementById('gauge-needle-g').setAttribute('transform', `rotate(${angle} 130 140)`);
 
-  // Number pop animation
-  const pctEl = document.getElementById('arc-pct');
-  pctEl.textContent = pct;
-  pctEl.classList.remove('gauge-pop');
-  void pctEl.offsetWidth;
-  pctEl.classList.add('gauge-pop');
-  document.getElementById('stat-raw').textContent = pct + '%';
+  // Text
+  document.getElementById('arc-pct').textContent = pct;
+  document.getElementById('stat-raw').textContent = raw;
 
   // Gauge stat values
   const p = state.selectedPlant;
@@ -1793,7 +1607,7 @@ function updateMoistureUI(raw) {
   if (raw > p.moisture_max) {
     badge.textContent = 'DRY'; badge.className = 'moisture-badge badge-dry';
     if (document.getElementById('toggle-dry')?.checked)
-      addAlert('dry', `🌵 ${p.name} is DRY (${pct}%). Pump should activate.`);
+      addAlert('dry', `🌵 ${p.name} is DRY (ADC ${raw}). Pump should activate.`);
     if (state.rainExpected && state.mode === 'auto')
       document.getElementById('rain-banner').style.display = 'block';
   } else if (raw < p.moisture_min) {
@@ -1811,9 +1625,7 @@ function updatePlantUI() {
   document.getElementById('selected-plant-name').textContent = p.name;
   document.getElementById('dash-plant-emoji').textContent    = p.emoji || '🌱';
   document.getElementById('dash-plant-sci').textContent      = p.scientific_name || 'Smart Irrigation Active';
-  const minPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_max / 4095) * 100)));
-  const maxPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_min / 4095) * 100)));
-  document.getElementById('target-range').textContent = minPct + '–' + maxPct + '%';
+  document.getElementById('target-range').textContent        = 'ADC ' + p.moisture_min + '–' + p.moisture_max;
 }
 
 function updateModeUI() {
@@ -1851,25 +1663,21 @@ function updateOnline(online) {
 }
 
 function updateStats(history) {
-  const pctH = history.map(v => Math.max(0, Math.min(100, Math.round((1 - v / 4095) * 100))));
-  const avg  = Math.round(pctH.reduce((a, b) => a + b, 0) / pctH.length);
+  const avg = Math.round(history.reduce((a, b) => a + b, 0) / history.length);
   document.getElementById('stat-sessions').textContent = history.length;
-  document.getElementById('stat-avg').textContent      = avg + '%';
+  document.getElementById('stat-avg').textContent      = avg;
 }
 
 function updateReco(raw) {
-  const p   = state.selectedPlant;
-  const el  = document.getElementById('reco-text');
+  const p  = state.selectedPlant;
+  const el = document.getElementById('reco-text');
   if (!p) { el.textContent = 'Select a plant to get watering recommendations.'; return; }
-  const pct    = Math.max(0, Math.min(100, Math.round((1 - raw / 4095) * 100)));
-  const minPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_max / 4095) * 100)));
-  const maxPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_min / 4095) * 100)));
   if (raw > p.moisture_max) {
-    el.textContent = `${p.name} soil is DRY (${pct}%). Target range ${minPct}–${maxPct}%. Pump should turn ON.`;
+    el.textContent = `${p.name} soil is DRY (ADC ${raw}). Target max is ${p.moisture_max}. Pump should turn ON.`;
   } else if (raw < p.moisture_min) {
-    el.textContent = `${p.name} soil is OVERWATERED (${pct}%). Target range ${minPct}–${maxPct}%. Pump should be OFF.`;
+    el.textContent = `${p.name} soil is OVERWATERED (ADC ${raw}). Target min is ${p.moisture_min}. Pump should be OFF.`;
   } else {
-    el.textContent = `${p.name} is OPTIMAL (${pct}%, target ${minPct}–${maxPct}%). System monitoring.`;
+    el.textContent = `${p.name} is in OPTIMAL range (ADC ${raw}, target ${p.moisture_min}–${p.moisture_max}). System monitoring.`;
   }
 }
 
@@ -1916,12 +1724,10 @@ function renderPlantGrid(plants) {
     return;
   }
   grid.innerHTML = plants.map(p => {
-    const sel    = state.selectedPlant?.id === p.id;
-    const minPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_max / 4095) * 100)));
-    const maxPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_min / 4095) * 100)));
-    const barW   = maxPct - minPct;
+    const sel = state.selectedPlant?.id === p.id;
+    const barW = Math.round(((4095 - p.moisture_min) / 4095) * 100);
     return `
-    <div class="plant-card-sel ${sel ? 'selected' : ''}" id="pcard-${p.id}" onclick="openPlantDetail('${p.id}')">
+    <div class="plant-card-sel ${sel ? 'selected' : ''}" id="pcard-${p.id}" onclick="selectPlant('${p.id}')">
       <div class="pcard-img">
         <span>${p.emoji || '🌱'}</span>
         <div class="pcard-status ${sel ? 'selected-badge' : ''}">
@@ -1936,11 +1742,9 @@ function renderPlantGrid(plants) {
         <div class="pcard-bar-row">
           <div class="pcard-bar-labels">
             <span>MOISTURE RANGE</span>
-            <span style="color:var(--primary)">${minPct}–${maxPct}%</span>
+            <span style="color:var(--primary)">${p.moisture_min}–${p.moisture_max}</span>
           </div>
-          <div class="pcard-bar" style="position:relative">
-            <div class="pcard-bar-fill" style="width:${barW}%;margin-left:${minPct}%"></div>
-          </div>
+          <div class="pcard-bar"><div class="pcard-bar-fill" style="width:${barW}%"></div></div>
           <div class="pcard-adc">ADC ${p.moisture_min} – ${p.moisture_max}</div>
         </div>
       </div>
@@ -1960,8 +1764,7 @@ function selectPlant(id) {
   state.pendingPlant = state.plants.find(p => p.id === id);
   document.querySelectorAll('.plant-card-sel').forEach(c => c.classList.remove('selected'));
   document.getElementById('pcard-' + id)?.classList.add('selected');
-  const btn = document.getElementById('confirm-plant-btn');
-  if (btn) btn.disabled = false;
+  document.getElementById('confirm-plant-btn').disabled = false;
 }
 
 async function confirmPlant() {
@@ -2068,37 +1871,17 @@ function showToast(msg, type = '') {
    WEATHER — Phase 6
 ═══════════════════════════════════════ */
 const WX_CODE = {
-  0:'Clear Sky', 1:'Mainly Clear', 2:'Partly Cloudy', 3:'Overcast',
-  45:'Foggy', 48:'Freezing Fog', 51:'Light Drizzle', 53:'Drizzle', 55:'Heavy Drizzle',
-  61:'Light Rain', 63:'Rain', 65:'Heavy Rain', 71:'Light Snow', 73:'Snow',
-  80:'Rain Showers', 81:'Rain Showers', 82:'Violent Showers',
-  95:'Thunderstorm', 96:'Thunderstorm + Hail', 99:'Thunderstorm + Hail',
+  0:'Clear Sky',1:'Mainly Clear',2:'Partly Cloudy',3:'Overcast',
+  45:'Foggy',48:'Icy Fog',51:'Light Drizzle',53:'Drizzle',55:'Heavy Drizzle',
+  61:'Light Rain',63:'Rain',65:'Heavy Rain',71:'Light Snow',73:'Snow',
+  80:'Rain Showers',81:'Rain Showers',82:'Violent Showers',
+  95:'Thunderstorm',96:'Thunderstorm+Hail',99:'Thunderstorm+Hail',
 };
 const WX_ICON = {
-  0:'☀️', 1:'🌤️', 2:'⛅', 3:'☁️', 45:'🌫️', 48:'🌫️',
-  51:'🌦️', 53:'🌧️', 55:'🌧️', 61:'🌧️', 63:'🌧️', 65:'🌧️',
-  71:'🌨️', 73:'❄️', 80:'🌦️', 81:'🌦️', 82:'⛈️',
-  95:'⛈️', 96:'⛈️', 99:'⛈️',
+  0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',48:'🌫️',
+  51:'🌧️',53:'🌧️',55:'🌧️',61:'🌧️',63:'🌧️',65:'🌧️',
+  71:'🌨️',73:'🌨️',80:'🌦️',81:'🌦️',82:'⛈️',95:'⛈️',96:'⛈️',99:'⛈️',
 };
-const WX_CLASS = {
-  0:'sunny', 1:'sunny', 2:'cloudy', 3:'cloudy',
-  45:'foggy', 48:'foggy',
-  51:'rainy', 53:'rainy', 55:'rainy', 61:'rainy', 63:'rainy', 65:'rainy',
-  71:'cloudy', 73:'cloudy',
-  80:'rainy', 81:'rainy', 82:'stormy',
-  95:'stormy', 96:'stormy', 99:'stormy',
-};
-
-/* Smart resolver: downgrade rain/storm when precipitation chance is very low */
-function smartWeatherCode(code, rainPct, temp) {
-  const isWetCode = code >= 51;
-  if (isWetCode && rainPct < 20) {
-    if (temp >= 33) return 0;   // Hot + no rain → Clear Sky
-    if (temp >= 27) return 2;   // Warm + no rain → Partly Cloudy
-    return 3;                    // Cool + no rain → Overcast
-  }
-  return code;
-}
 
 async function loadWeather() {
   const savedLat     = localStorage.getItem('soiliq_plant_lat');
@@ -2140,12 +1923,10 @@ async function fetchWeatherData(lat, lon, knownName) {
       localStorage.setItem('soiliq_plant_name', locName);
       updateLocDisplay(lat, lon, locName);
     }
-    const cur        = data.current;
-    const rainPcts   = data.hourly?.precipitation_probability?.slice(0, 6) || [];
-    const maxRain    = Math.max(...rainPcts, 0);
-    const rawCode    = cur.weather_code;
-    const dispCode   = smartWeatherCode(rawCode, maxRain, Math.round(cur.temperature_2m));
-    updateWeatherUI({ temp: Math.round(cur.temperature_2m), hum: cur.relative_humidity_2m, code: dispCode, rain: maxRain, locName });
+    const cur      = data.current;
+    const rainPcts = data.hourly?.precipitation_probability?.slice(0, 6) || [];
+    const maxRain  = Math.max(...rainPcts, 0);
+    updateWeatherUI({ temp: Math.round(cur.temperature_2m), hum: cur.relative_humidity_2m, code: cur.weather_code, rain: maxRain, locName });
     if (maxRain > 60 && !state.rainExpected) {
       state.rainExpected = true; updateRainUI();
       await patchDevice({ rain_expected: true });
@@ -2156,21 +1937,15 @@ async function fetchWeatherData(lat, lon, knownName) {
 }
 
 function updateWeatherUI(wx) {
-  const iconEl = document.getElementById('wx-icon');
   if (!wx) {
-    iconEl.textContent = '🌍';
-    iconEl.className   = 'wx-icon-wrap';
+    document.getElementById('wx-icon').textContent = '🌍';
     document.getElementById('wx-desc').textContent = 'Weather unavailable';
     document.getElementById('wx-loc').textContent  = 'Set Plant Location in Settings';
     return;
   }
-  const icon  = WX_ICON[wx.code]  || '🌤️';
-  const cls   = WX_CLASS[wx.code] || 'sunny';
-  const label = WX_CODE[wx.code]  || 'Clear Sky';
-  iconEl.textContent = icon;
-  iconEl.className   = `wx-icon-wrap ${cls}`;
-  document.getElementById('wx-desc').textContent      = label;
-  document.getElementById('wx-loc').textContent       = wx.locName ? `📍 ${wx.locName}` : '📍 Plant Location';
+  document.getElementById('wx-icon').textContent      = WX_ICON[wx.code] || '🌤️';
+  document.getElementById('wx-desc').textContent      = WX_CODE[wx.code] || 'Unknown';
+  document.getElementById('wx-loc').textContent       = `📍 ${wx.locName}`;
   document.getElementById('wx-temp').textContent      = wx.temp + '°C';
   document.getElementById('wx-hum').textContent       = '💧 ' + wx.hum + '%';
   document.getElementById('wx-rain-fill').style.width = wx.rain + '%';
@@ -2233,82 +2008,6 @@ async function toggleRainExpected() {
     showToast(state.rainExpected ? '🌧️ Rain expected — watering paused' : '☀️ Rain cleared — auto mode active');
     addAlert('info', state.rainExpected ? 'Rain expected flag set manually.' : 'Rain expected flag cleared.');
   }
-}
-
-/* ── PLANT DETAIL DRAWER ────────────── */
-function openPlantDetail(id) {
-  const p = state.plants.find(pl => pl.id === id);
-  if (!p) return;
-  state.pendingPlant = p;
-
-  document.getElementById('drawer-emoji').textContent      = p.emoji || '🌱';
-  document.getElementById('drawer-name').textContent       = p.name;
-  document.getElementById('drawer-sci').textContent        = p.scientific_name || '';
-  document.getElementById('drawer-water').textContent      = p.water_level || p.water_need || '—';
-  const sun = p.sunlight ? p.sunlight.charAt(0).toUpperCase() + p.sunlight.slice(1) : '—';
-  document.getElementById('drawer-sun').textContent        = sun;
-  document.getElementById('drawer-freq').textContent       = p.watering_freq || '—';
-  document.getElementById('drawer-fert').textContent       = p.fertilizer || '—';
-  document.getElementById('drawer-desc').textContent       = p.description || '—';
-  document.getElementById('drawer-overwater').textContent  = p.overwatering_issue || '—';
-  document.getElementById('drawer-solution').textContent   = p.solution || '—';
-  document.getElementById('drawer-ph').textContent         = p.ph_need || '—';
-
-  const minPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_max / 4095) * 100)));
-  const maxPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_min / 4095) * 100)));
-  document.getElementById('drawer-range-pct').textContent  = minPct + '–' + maxPct + '%';
-  document.getElementById('drawer-bar').style.left         = minPct + '%';
-  document.getElementById('drawer-bar').style.width        = (maxPct - minPct) + '%';
-  document.getElementById('drawer-adc').textContent        = 'ADC ' + p.moisture_min + ' – ' + p.moisture_max;
-
-  const isSelected = state.selectedPlant?.id === p.id;
-  const btn = document.getElementById('drawer-select-btn');
-  const lbl = document.getElementById('drawer-select-label');
-  btn.className = 'drawer-select-btn' + (isSelected ? ' already' : '');
-  lbl.textContent = isSelected ? '✓ Currently Active' : 'Select This Plant';
-
-  // Sync card highlight
-  document.querySelectorAll('.plant-card-sel').forEach(c => c.classList.remove('selected'));
-  document.getElementById('pcard-' + id)?.classList.add('selected');
-
-  document.getElementById('plant-drawer-overlay').classList.add('open');
-  document.getElementById('plant-drawer').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closePlantDetail() {
-  document.getElementById('plant-drawer-overlay').classList.remove('open');
-  document.getElementById('plant-drawer').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-async function selectFromDrawer() {
-  if (!state.pendingPlant) return;
-  if (state.selectedPlant?.id === state.pendingPlant.id) { closePlantDetail(); return; }
-  const btn = document.getElementById('drawer-select-btn');
-  const lbl = document.getElementById('drawer-select-label');
-  btn.disabled = true; lbl.textContent = 'Saving…';
-  const ok = await patchDevice({ plant_id: state.pendingPlant.id });
-  if (ok) {
-    state.selectedPlant = state.pendingPlant;
-    updatePlantUI(); updateMoistureUI(state.moisture); updateReco(state.moisture);
-    renderPlantGrid(state.plants);
-    showToast('✅ ' + state.selectedPlant.name + ' selected!', 'success');
-    closePlantDetail();
-    goTo('dashboard');
-  }
-  btn.disabled = false; lbl.textContent = 'Select This Plant';
-}
-</script>
-
-<script>
-/* ── Service Worker Registration ── */
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js', { scope: '/' })
-      .then(reg => console.log('[SW] Registered, scope:', reg.scope))
-      .catch(err => console.warn('[SW] Registration failed:', err));
-  });
 }
 </script>
 </body>

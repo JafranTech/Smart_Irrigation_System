@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a3a20"/>
+      <stop offset="100%" stop-color="#0d1a10"/>
+    </radialGradient>
+    <radialGradient id="leafGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00e676"/>
+      <stop offset="100%" stop-color="#00c853"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" fill="url(#bg)"/>
+
+  <!-- Glow halo behind leaf -->
+  <ellipse cx="256" cy="210" rx="90" ry="90" fill="#00e676" opacity="0.08"/>
+
+  <!-- Leaf shape -->
+  <path d="M256 100 C200 130 160 175 170 240 C180 295 220 330 256 340 C292 330 332 295 342 240 C352 175 312 130 256 100Z"
+        fill="url(#leafGlow)" filter="url(#glow)" opacity="0.95"/>
+
+  <!-- Center leaf vein -->
+  <line x1="256" y1="115" x2="256" y2="335" stroke="#0d1a10" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
+  <!-- Side veins -->
+  <path d="M256 175 Q225 185 210 200" stroke="#0d1a10" stroke-width="2" fill="none" opacity="0.3"/>
+  <path d="M256 210 Q225 220 208 238" stroke="#0d1a10" stroke-width="2" fill="none" opacity="0.3"/>
+  <path d="M256 175 Q287 185 302 200" stroke="#0d1a10" stroke-width="2" fill="none" opacity="0.3"/>
+  <path d="M256 210 Q287 220 304 238" stroke="#0d1a10" stroke-width="2" fill="none" opacity="0.3"/>
+
+  <!-- Water droplet at bottom of leaf -->
+  <path d="M256 335 C248 350 240 362 240 372 C240 390 247 400 256 400 C265 400 272 390 272 372 C272 362 264 350 256 335Z"
+        fill="#40c4ff" filter="url(#glow)" opacity="0.92"/>
+
+  <!-- Soil arc lines -->
+  <path d="M180 435 Q256 415 332 435" stroke="#00e676" stroke-width="3" fill="none" opacity="0.4" stroke-linecap="round"/>
+  <path d="M200 450 Q256 432 312 450" stroke="#00e676" stroke-width="2" fill="none" opacity="0.25" stroke-linecap="round"/>
+
+  <!-- "SoilIQ" text -->
+  <text x="256" y="490" text-anchor="middle"
+        font-family="Inter, Arial, sans-serif" font-weight="700" font-size="38"
+        fill="#e8f5e9" letter-spacing="2" opacity="0.95">SoilIQ</text>
+</svg>
