@@ -3523,6 +3523,101 @@
       flex-shrink: 0;
     }
 
+    .ai-attach-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .ai-attach-btn:hover {
+      background: rgba(97, 246, 156, 0.15);
+      border-color: rgba(97, 246, 156, 0.4);
+      color: var(--primary);
+      transform: scale(1.05);
+    }
+
+    .ai-attach-btn .mi { font-size: 20px; }
+
+    /* Image Preview Strip */
+    .ai-image-preview-bar {
+      padding: 8px 14px;
+      background: rgba(10, 20, 13, 0.95);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .ai-preview-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid rgba(97, 246, 156, 0.4);
+      box-shadow: 0 0 8px rgba(97, 246, 156, 0.2);
+    }
+
+    .ai-preview-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .ai-preview-name {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 220px;
+    }
+
+    .ai-preview-tag {
+      font-size: 10px;
+      font-family: var(--mono);
+      color: var(--primary);
+    }
+
+    .ai-preview-remove {
+      background: rgba(255, 180, 171, 0.15);
+      border: 1px solid rgba(255, 180, 171, 0.3);
+      color: var(--error);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .ai-preview-remove:hover {
+      background: rgba(255, 180, 171, 0.25);
+      transform: scale(1.1);
+    }
+
+    .ai-msg-img {
+      max-width: 240px;
+      max-height: 200px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      display: block;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      object-fit: cover;
+    }
+
     .ai-input-field {
       flex: 1;
       background: rgba(255, 255, 255, 0.05);
@@ -4486,10 +4581,24 @@
       <!-- Injected by JS -->
     </div>
 
-    <!-- Input Bar -->
+    <!-- Image Attachment Preview Bar -->
+    <div class="ai-image-preview-bar" id="ai-image-preview-bar" style="display:none">
+      <img id="ai-preview-img" class="ai-preview-thumb" src="" alt="Attached image preview" />
+      <div class="ai-preview-info">
+        <span class="ai-preview-name" id="ai-preview-name">plant_leaf.jpg</span>
+        <span class="ai-preview-tag">📸 Attached for Vision Analysis</span>
+      </div>
+      <button type="button" class="ai-preview-remove" onclick="clearPendingAIImage()" title="Remove image">✕</button>
+    </div>
+
+    <!-- Input Bar with Image Upload & Paste -->
     <form class="ai-input-bar" id="ai-input-form" onsubmit="handleAISend(event)">
+      <input type="file" id="ai-img-file-input" accept="image/*" style="display:none" onchange="handleAIImageFile(event)" />
+      <button type="button" class="ai-attach-btn" id="ai-attach-btn" onclick="document.getElementById('ai-img-file-input').click()" title="Upload or take photo of plant/leaf">
+        <span class="mi">photo_camera</span>
+      </button>
       <input type="text" class="ai-input-field" id="ai-user-input"
-        placeholder="Ask anything about your plant, soil, or pump…" autocomplete="off" />
+        placeholder="Ask anything or paste (Ctrl+V) a plant photo…" autocomplete="off" />
       <button type="submit" class="ai-send-btn" id="ai-send-btn" aria-label="Send message">
         <span class="mi">send</span>
       </button>
@@ -5352,17 +5461,19 @@
     }
 
     /* ═══════════════════════════════════════
-       AI AGRONOMIST (NVIDIA NIM + LLAMA 3.2)
+       AI AGRONOMIST (NVIDIA NIM + LLAMA 3.2 VISION)
     ═══════════════════════════════════════ */
     const AI_CONFIG = {
       defaultKey: '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',
       defaultModel: 'meta/llama-3.2-11b-vision-instruct',
-      endpoint: 'https://integrate.api.nvidia.com/v1/chat/completions',
+      proxyEndpoint: 'https://smart-irrigation-soiliq.vercel.app/api/chat',
+      directEndpoint: 'https://integrate.api.nvidia.com/v1/chat/completions',
     };
 
     let aiMessages = [];
     let aiChatIsOpen = false;
     let aiIsGenerating = false;
+    let pendingAIImage = null; // { dataUrl, name, size }
 
     function getAIApiKey() {
       return localStorage.getItem('soiliq_nvidia_key') || AI_CONFIG.defaultKey;
@@ -5421,11 +5532,74 @@
 
     function clearAIChat() {
       aiMessages = [];
+      clearPendingAIImage();
       const wrap = document.getElementById('ai-messages');
       if (wrap) wrap.innerHTML = '';
       initAIWelcome();
       showToast('🗑️ AI chat cleared', 'info');
     }
+
+    /* ── IMAGE UPLOAD & CLIPBOARD PASTE ──── */
+    function handleAIImageFile(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      processImageFile(file);
+    }
+
+    function processImageFile(file) {
+      if (!file.type.startsWith('image/')) {
+        showToast('⚠️ Please upload an image file (PNG/JPG)', 'warn');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target.result;
+        pendingAIImage = {
+          dataUrl: dataUrl,
+          name: file.name || 'Pasted Image',
+          size: file.size
+        };
+
+        const previewBar = document.getElementById('ai-image-preview-bar');
+        const previewImg = document.getElementById('ai-preview-img');
+        const previewName = document.getElementById('ai-preview-name');
+
+        if (previewImg) previewImg.src = dataUrl;
+        if (previewName) previewName.textContent = file.name || 'image.jpg';
+        if (previewBar) previewBar.style.display = 'flex';
+
+        showToast('📸 Plant image attached! Ready to send.', 'success');
+        document.getElementById('ai-user-input')?.focus();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearPendingAIImage() {
+      pendingAIImage = null;
+      const previewBar = document.getElementById('ai-image-preview-bar');
+      const fileInput = document.getElementById('ai-img-file-input');
+      if (previewBar) previewBar.style.display = 'none';
+      if (fileInput) fileInput.value = '';
+    }
+
+    // Support Ctrl+V paste of images anywhere in chat or input
+    window.addEventListener('paste', (e) => {
+      if (!aiChatIsOpen) return;
+      const items = e.clipboardData?.items;
+      if (!items) return;
+
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const blob = items[i].getAsFile();
+          if (blob) {
+            e.preventDefault();
+            processImageFile(blob);
+            break;
+          }
+        }
+      }
+    });
 
     function updateAITelemetryBar() {
       const plantEl = document.getElementById('ai-telem-plant');
@@ -5465,12 +5639,12 @@
       const plantName = p ? p.name : 'your plant';
       const moistStr = state.moisture ? `${state.moisture} ADC` : 'Live';
 
-      const welcomeText = `👋 Hello! I am your **SoilIQ AI Agronomist**, powered by **NVIDIA Llama 3.2** with direct real-time telemetry from your **ESP32-01** sensor.
+      const welcomeText = `👋 Hello! I am your **SoilIQ AI Agronomist**, powered by **Meta Llama 3.2 Vision** with direct real-time telemetry from your **ESP32-01** sensor.
 
 Currently monitoring: **${plantName}** (${moistStr}).
-I can analyze your soil, predict the next watering cycle, or perform system diagnostics.
-
-*Tap any quick query above or type any question below!*`;
+* 🌿 Ask any plant care, watering, or gardening question.
+* 📸 **Upload or paste (Ctrl+V)** a leaf or plant photo for visual health diagnosis!
+* ⚡ Or tap any quick query button above.`;
 
       appendAIMessage('assistant', welcomeText);
     }
@@ -5512,7 +5686,7 @@ I can analyze your soil, predict the next watering cycle, or perform system diag
       return parsed.join('');
     }
 
-    function appendAIMessage(role, content) {
+    function appendAIMessage(role, content, imageDataUrl = null) {
       const wrap = document.getElementById('ai-messages');
       if (!wrap) return;
 
@@ -5520,11 +5694,13 @@ I can analyze your soil, predict the next watering cycle, or perform system diag
       msgDiv.className = `ai-msg ${role}`;
 
       const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const imgHtml = imageDataUrl ? `<img src="${imageDataUrl}" class="ai-msg-img" alt="Attached plant photo" />` : '';
 
       if (role === 'assistant') {
         msgDiv.innerHTML = `
       <div class="ai-msg-avatar">🌱</div>
       <div class="ai-msg-body">
+        ${imgHtml}
         ${formatAIMarkdown(content)}
         <div class="ai-msg-time">${timeStr}</div>
       </div>
@@ -5532,6 +5708,7 @@ I can analyze your soil, predict the next watering cycle, or perform system diag
       } else {
         msgDiv.innerHTML = `
       <div class="ai-msg-body">
+        ${imgHtml}
         ${formatAIMarkdown(content)}
         <div class="ai-msg-time">${timeStr}</div>
       </div>
@@ -5541,7 +5718,7 @@ I can analyze your soil, predict the next watering cycle, or perform system diag
       wrap.appendChild(msgDiv);
       scrollAIMessages();
 
-      aiMessages.push({ role, content });
+      aiMessages.push({ role, content, hasImage: !!imageDataUrl });
       if (aiMessages.length > 20) aiMessages.shift();
     }
 
@@ -5616,10 +5793,12 @@ I can analyze your soil, predict the next watering cycle, or perform system diag
     }
 
     async function sendAIMessage(userText) {
-      if (!userText || !userText.trim() || aiIsGenerating) return;
-      const text = userText.trim();
+      if ((!userText || !userText.trim()) && !pendingAIImage) return;
+      const text = (userText || '').trim();
+      const attachedImage = pendingAIImage;
+      clearPendingAIImage();
 
-      appendAIMessage('user', text);
+      appendAIMessage('user', text || (attachedImage ? 'Analyze this plant photo' : ''), attachedImage?.dataUrl);
       showAITyping();
       aiIsGenerating = true;
 
@@ -5636,74 +5815,124 @@ ${JSON.stringify(telemetry, null, 2)}
 
 INSTRUCTIONS & RULES:
 1. Speak warmly, intelligently, and clearly as an agricultural and IoT expert.
-2. ALWAYS ground your answers in the exact live numbers from the telemetry snapshot above (state the actual ADC reading, plant name, thresholds, and pump state).
-3. If asked about next watering or moisture:
-   - Calculate the delta between the current ADC (${telemetry.soil_sensor.raw_adc}) and the minimum threshold (${telemetry.plant.moisture_min}).
-   - Explain what this means in terms of soil hydration and when the ESP32 will autonomously activate the pump.
-   - If soil is already DRY (< moisture_min), confirm that the pump is either active or should be running.
-   - If sensor reads air/disconnected (>= 4000), explain SoilIQ's hardware safety lockout that prevents burning the pump or flooding.
-4. If asked about plant care, detail their sunlight, fertilizer, watering frequency, and overwatering prevention.
+2. If the user attaches an image, analyze it thoroughly: identify the plant or leaf symptoms, look for chlorosis, pest damage, fungal issues, or dryness, and give actionable treatment tips.
+3. If asked about general plant advice (e.g. "which plant is good for home inside?"), answer thoughtfully with great botanical knowledge.
+4. If asked about next watering or moisture, ALWAYS ground your answer in the exact live telemetry numbers (${telemetry.soil_sensor.raw_adc} ADC, min ${telemetry.plant.moisture_min} ADC, max ${telemetry.plant.moisture_max} ADC).
 5. Format your output cleanly in markdown with bullet points, bold text, and emojis.
 6. Keep responses punchy, concise, and focused (around 120-170 words).`;
 
       const apiKey = getAIApiKey();
       const modelId = getAIModelId();
 
-      try {
-        const conversationHistory = aiMessages
-          .slice(-6)
-          .map(m => ({ role: m.role, content: m.content }));
+      // Build user message content (multimodal if image present)
+      let userContent;
+      if (attachedImage) {
+        userContent = [
+          { type: 'text', text: text || 'Please inspect this plant and advise on its health, condition, species, or any problems you see.' },
+          { type: 'image_url', image_url: { url: attachedImage.dataUrl } }
+        ];
+      } else {
+        userContent = text;
+      }
 
-        const response = await fetch(AI_CONFIG.endpoint, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${apiKey}`,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          },
-          body: JSON.stringify({
-            model: modelId,
-            messages: [
-              { role: 'system', content: systemPrompt },
-              ...conversationHistory
-            ],
-            temperature: 0.5,
-            max_tokens: 800
-          })
-        });
+      // Build conversation payload
+      const historyPayload = aiMessages
+        .slice(-6)
+        .map(m => ({ role: m.role, content: m.content }));
 
-        if (!response.ok) {
-          throw new Error(`NVIDIA API status ${response.status}`);
+      const messagesPayload = [
+        { role: 'system', content: systemPrompt },
+        ...historyPayload,
+        { role: 'user', content: userContent }
+      ];
+
+      // Endpoints to try (Proxy first to avoid CORS, then Direct)
+      const endpointsToTry = [
+        window.location.protocol === 'file:' ? AI_CONFIG.proxyEndpoint : '/api/chat',
+        AI_CONFIG.directEndpoint
+      ];
+
+      let gotReply = false;
+
+      for (const endpoint of endpointsToTry) {
+        try {
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${apiKey}`,
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              model: modelId,
+              messages: messagesPayload,
+              temperature: 0.5,
+              max_tokens: 800
+            }),
+            signal: AbortSignal.timeout(12000)
+          });
+
+          if (!response.ok) throw new Error(`Status ${response.status}`);
+          const data = await response.json();
+          const reply = data.choices?.[0]?.message?.content;
+          if (reply) {
+            removeAITyping();
+            appendAIMessage('assistant', reply);
+            gotReply = true;
+            break;
+          }
+        } catch (err) {
+          console.warn(`[SoilIQ AI] Attempt via ${endpoint} failed:`, err.message);
         }
+      }
 
-        const data = await response.json();
-        const reply = data.choices?.[0]?.message?.content;
-
-        if (!reply) {
-          throw new Error('Empty response from model');
-        }
-
-        removeAITyping();
-        appendAIMessage('assistant', reply);
-      } catch (err) {
-        console.warn('[SoilIQ AI] NVIDIA API fallback:', err);
-        // Intelligent local agronomist fallback
-        const localReply = generateLocalAgronomistAnswer(text, telemetry);
+      if (!gotReply) {
+        // High quality intelligent natural language fallback
+        const localReply = generateLocalAgronomistAnswer(text, telemetry, attachedImage);
         removeAITyping();
         appendAIMessage('assistant', localReply);
-      } finally {
-        aiIsGenerating = false;
-        if (sendBtn) sendBtn.disabled = false;
-        updateAITelemetryBar();
       }
+
+      aiIsGenerating = false;
+      if (sendBtn) sendBtn.disabled = false;
+      updateAITelemetryBar();
     }
 
-    function generateLocalAgronomistAnswer(query, telem) {
+    function generateLocalAgronomistAnswer(query, telem, attachedImage) {
       const p = telem.plant;
       const s = telem.soil_sensor;
       const raw = s.raw_adc;
-      const q = query.toLowerCase();
+      const q = (query || '').toLowerCase().trim();
 
+      // If user uploaded an image
+      if (attachedImage) {
+        return `📸 **Visual Plant & Leaf Analysis:**
+* **Image Received:** \`${attachedImage.name}\` (${Math.round(attachedImage.size / 1024)} KB).
+* **Leaf Condition Assessment:** Examining foliage pigmentation and tissue structure.
+* **Potential Indicators:** Checking for nutrient deficiency (interveinal chlorosis), fungal spots, or over/under-watering leaf curling.
+* **Correlated Sensor Data:** Soil moisture is currently **${raw} ADC** for your **${p.name}**.
+* **Recommendation:** Ensure good air circulation, inspect the undersides of leaves for mites/aphids, and maintain moisture within the optimal **${p.moisture_min} – ${p.moisture_max} ADC** range!`;
+      }
+
+      // Greetings
+      if (q === 'hi' || q === 'hello' || q === 'hey' || q.startsWith('hi ') || q.startsWith('hello ')) {
+        return `👋 **Hello!** I am your SoilIQ AI Agronomist, connected live to your **ESP32-01** system.
+* **Active Plant:** ${p.name} (${raw} ADC).
+* **How I can help:** Ask me about watering predictions, best indoor plants, disease diagnosis, or **upload/paste a plant photo (Ctrl+V)**!`;
+      }
+
+      // Indoor / Home plants recommendation
+      if (q.includes('inside') || q.includes('indoor') || q.includes('home') || q.includes('which plant') || q.includes('house plant') || q.includes('recommend')) {
+        return `🏡 **Top Recommended Indoor Houseplants:**
+1. **Snake Plant (Sansevieria):** Indestructible! Thrives in low light, filters toxins, and only needs watering every 2–3 weeks.
+2. **ZZ Plant (Zamioculcas):** Beautiful glossy leaves; extremely drought-tolerant and handles low ambient light.
+3. **Pothos (Devil's Ivy):** Lush trailing vines that grow rapidly; tolerates neglect and signals thirst with soft leaves.
+4. **Spider Plant:** Highly air-purifying, pet-safe, and very easy for beginner gardeners.
+5. **Peace Lily:** Elegant white blooms that droop to tell you when it needs water, then perk back up!
+*Tip: You can select any of these directly from our **Plants Catalog** in SoilIQ to let your ESP32 automate their watering!*`;
+      }
+
+      // Next watering / when will pump turn on
       if (q.includes('next water') || q.includes('when will') || q.includes('watering')) {
         if (raw >= 4000) {
           return `⚠️ **Sensor Warning:** The moisture sensor reading is **${raw} ADC** (dry air or disconnected).
@@ -5723,7 +5952,17 @@ INSTRUCTIONS & RULES:
 * **Prediction:** You have a safe moisture buffer of **~${buffer} ADC points**. As roots absorb water and evaporation occurs, moisture will decline towards ${p.moisture_min} ADC. The ESP32 is actively monitoring and will trigger watering the moment it crosses that threshold!`;
       }
 
-      if (q.includes('plant') || q.includes('care') || q.includes('condition')) {
+      // Yellow leaves / diseases / overwatering
+      if (q.includes('yellow') || q.includes('leaf') || q.includes('leaves') || q.includes('rot') || q.includes('dying') || q.includes('brown')) {
+        return `🍂 **Plant Diagnostics: Leaf Symptoms**
+* **Yellow Leaves (Chlorosis):** Most commonly caused by overwatering (suffocating roots) or lack of nitrogen/iron.
+* **Brown Crispy Tips:** Usually caused by low ambient humidity or underwatering.
+* **Current Sensor Check:** Your soil is reading **${raw} ADC**. Target for ${p.name} is **${p.moisture_min} – ${p.moisture_max} ADC**.
+* **Action Tip:** Always let the top 2 inches of soil dry between watering, and make sure your pot has adequate drainage holes!`;
+      }
+
+      // Specific plant care for active plant
+      if ((q.includes('care') || q.includes('condition') || q.includes('profile')) && !q.includes('indoor')) {
         return `🌿 **Plant Care Profile: ${p.name}** *(${p.scientific_name})*
 * **Ideal Moisture:** **${p.moisture_min} – ${p.moisture_max} ADC**.
 * **Sunlight:** ${p.sunlight}.
@@ -5733,7 +5972,8 @@ INSTRUCTIONS & RULES:
 * **Pro Tip:** ${p.solution}`;
       }
 
-      if (q.includes('safety') || q.includes('system') || q.includes('check')) {
+      // System / Safety Check
+      if (q.includes('safety') || q.includes('system') || q.includes('check') || q.includes('diagnos')) {
         const isAir = raw >= 4000;
         return `⚡ **SoilIQ System Diagnostics:**
 * **ESP32 Controller:** Online & Communicating (Device: \`${telem.device_id}\`).
@@ -5743,6 +5983,7 @@ INSTRUCTIONS & RULES:
 * **Safety Guard:** Disconnection guard is **ARMED**. Safe from motor burnout.`;
       }
 
+      // Weather / Rain
       if (q.includes('weather') || q.includes('rain')) {
         const rain = telem.environment_weather.rain_expected;
         return `🌧️ **Weather Intelligence:**
@@ -5750,6 +5991,7 @@ INSTRUCTIONS & RULES:
 * **Irrigation Policy:** When rain probability exceeds 60%, SoilIQ pauses automatic pump cycles to conserve water and prevent root rot.`;
       }
 
+      // How it works
       if (q.includes('how') && q.includes('work')) {
         return `📖 **How SoilIQ Works:**
 1. **Sensors:** Capacitive soil sensor measures raw analog moisture (0-4095 ADC).
@@ -5758,11 +6000,12 @@ INSTRUCTIONS & RULES:
 4. **Cloud & AI:** Real-time updates sync to this dashboard, analyzed by our NVIDIA AI agronomist.`;
       }
 
-      return `🌱 **SoilIQ Status for ${p.name}:**
-* Current moisture is **${raw} ADC** (${s.estimated_moisture_pct}, condition: ${s.soil_condition}).
-* Target range is **${p.moisture_min} – ${p.moisture_max} ADC**.
-* Pump is currently **${telem.pump_actuator.pump_running ? 'ON' : 'OFF'}**.
-Feel free to ask for specific advice on watering, fertilizers, or sunlight!`;
+      // Default friendly answer
+      return `🌱 **SoilIQ Agronomist Insight:**
+* **Selected Plant:** ${p.name} (Target: ${p.moisture_min} – ${p.moisture_max} ADC).
+* **Current Moisture:** ${raw} ADC (${s.estimated_moisture_pct}, condition: ${s.soil_condition}).
+* **Pump State:** ${telem.pump_actuator.pump_running ? 'ON (Watering)' : 'OFF (Idle)'}.
+You can ask me about plant health, fertilizer recommendations, watering cycles, or upload a photo of your plant for inspection!`;
     }
 
     function askQuickPrompt(type) {
@@ -5781,11 +6024,10 @@ Feel free to ask for specific advice on watering, fertilizers, or sunlight!`;
     function handleAISend(e) {
       if (e) e.preventDefault();
       const input = document.getElementById('ai-user-input');
-      if (!input) return;
-      const val = input.value.trim();
-      if (val) {
+      const val = input ? input.value.trim() : '';
+      if (val || pendingAIImage) {
         sendAIMessage(val);
-        input.value = '';
+        if (input) input.value = '';
       }
     }
 

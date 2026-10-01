@@ -4,9 +4,11 @@
     { "src": "soiliq_ui.html",  "use": "@vercel/static" },
     { "src": "manifest.json",   "use": "@vercel/static" },
     { "src": "sw.js",           "use": "@vercel/static" },
-    { "src": "icons/**",        "use": "@vercel/static" }
+    { "src": "icons/**",        "use": "@vercel/static" },
+    { "src": "api/chat.js",     "use": "@vercel/node" }
   ],
   "routes": [
+    { "src": "/api/chat",            "dest": "/api/chat.js" },
     { "src": "/manifest.json",       "dest": "/manifest.json" },
     { "src": "/sw.js",               "dest": "/sw.js" },
     { "src": "/icons/(.*)",          "dest": "/icons/$1" },
