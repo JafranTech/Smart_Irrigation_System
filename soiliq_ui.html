@@ -5570,23 +5570,49 @@
 
       const reader = new FileReader();
       reader.onload = (e) => {
-        const dataUrl = e.target.result;
-        pendingAIImage = {
-          dataUrl: dataUrl,
-          name: file.name || 'Pasted Image',
-          size: file.size
+        const rawDataUrl = e.target.result;
+
+        // ── Auto-compress large images before sending to NVIDIA Vision API ──
+        // NVIDIA has a ~5MB base64 payload limit. Phone photos can be 10-20MB.
+        // We resize to max 1024px on longest edge and compress to JPEG 0.72.
+        const img = new Image();
+        img.onload = () => {
+          const MAX_SIDE = 1024;
+          let { width, height } = img;
+          if (width > MAX_SIDE || height > MAX_SIDE) {
+            if (width >= height) {
+              height = Math.round((height / width) * MAX_SIDE);
+              width = MAX_SIDE;
+            } else {
+              width = Math.round((width / height) * MAX_SIDE);
+              height = MAX_SIDE;
+            }
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.72);
+          const compressedKb = Math.round(compressedDataUrl.length * 0.75 / 1024);
+
+          pendingAIImage = {
+            dataUrl: compressedDataUrl,
+            name: file.name || 'Pasted Image',
+            size: compressedKb * 1024
+          };
+
+          const previewBar = document.getElementById('ai-image-preview-bar');
+          const previewImg = document.getElementById('ai-preview-img');
+          const previewName = document.getElementById('ai-preview-name');
+
+          if (previewImg) previewImg.src = compressedDataUrl;
+          if (previewName) previewName.textContent = (file.name || 'image.jpg') + ` (${compressedKb} KB)`;
+          if (previewBar) previewBar.style.display = 'flex';
+
+          showToast('📸 Plant image attached! Ready to send.', 'success');
+          document.getElementById('ai-user-input')?.focus();
         };
-
-        const previewBar = document.getElementById('ai-image-preview-bar');
-        const previewImg = document.getElementById('ai-preview-img');
-        const previewName = document.getElementById('ai-preview-name');
-
-        if (previewImg) previewImg.src = dataUrl;
-        if (previewName) previewName.textContent = file.name || 'image.jpg';
-        if (previewBar) previewBar.style.display = 'flex';
-
-        showToast('📸 Plant image attached! Ready to send.', 'success');
-        document.getElementById('ai-user-input')?.focus();
+        img.src = rawDataUrl;
       };
       reader.readAsDataURL(file);
     }
