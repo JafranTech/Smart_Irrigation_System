@@ -3164,6 +3164,14 @@
       place-items: center;
       position: relative;
       box-shadow: 0 0 15px var(--primary-glow);
+      overflow: hidden;
+    }
+
+    .ai-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 11px;
     }
 
     .ai-avatar .mi {
@@ -3405,6 +3413,14 @@
       flex-shrink: 0;
       font-size: 14px;
       margin-top: 2px;
+      overflow: hidden;
+    }
+
+    .ai-msg-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 7px;
     }
 
     .ai-msg-body {
@@ -4507,7 +4523,7 @@
     </div>
     <button class="ai-fab-btn" id="ai-fab-btn" onclick="toggleAIChat()" aria-label="Open AI Agronomist Chat">
       <span class="ai-fab-pulse"></span>
-      <span class="mi">psychology</span>
+      <img src="/icons/Ai_agent_logo.png" alt="AI Agronomist" style="width:32px;height:32px;object-fit:cover;border-radius:8px;" />
       <span class="ai-fab-online-dot" title="AI Agent Online"></span>
     </button>
   </div>
@@ -4518,7 +4534,7 @@
     <div class="ai-header">
       <div class="ai-header-left">
         <div class="ai-avatar">
-          <span class="mi">psychology</span>
+          <img src="/icons/Ai_agent_logo.png" alt="SoilIQ AI Agronomist" />
         </div>
         <div>
           <div class="ai-header-title" id="ai-chat-title">
@@ -5698,7 +5714,7 @@ Currently monitoring: **${plantName}** (${moistStr}).
 
       if (role === 'assistant') {
         msgDiv.innerHTML = `
-      <div class="ai-msg-avatar">🌱</div>
+      <div class="ai-msg-avatar"><img src="/icons/Ai_agent_logo.png" alt="AI" /></div>
       <div class="ai-msg-body">
         ${imgHtml}
         ${formatAIMarkdown(content)}
