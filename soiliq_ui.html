@@ -5914,8 +5914,9 @@ INSTRUCTIONS & RULES:
 * **Recommendation:** Ensure good air circulation, inspect the undersides of leaves for mites/aphids, and maintain moisture within the optimal **${p.moisture_min} – ${p.moisture_max} ADC** range!`;
       }
 
-      // Greetings
-      if (q === 'hi' || q === 'hello' || q === 'hey' || q.startsWith('hi ') || q.startsWith('hello ')) {
+      // Greetings (standalone only, so questions starting with hello/hi route to recommendations)
+      const isStandaloneGreeting = /^(hi|hello|hey|greetings|good\s+(morning|afternoon|evening))\b[!.? ]*$/i.test(q);
+      if (isStandaloneGreeting) {
         return `👋 **Hello!** I am your SoilIQ AI Agronomist, connected live to your **ESP32-01** system.
 * **Active Plant:** ${p.name} (${raw} ADC).
 * **How I can help:** Ask me about watering predictions, best indoor plants, disease diagnosis, or **upload/paste a plant photo (Ctrl+V)**!`;
