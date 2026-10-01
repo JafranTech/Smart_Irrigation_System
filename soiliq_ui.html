@@ -5491,6 +5491,71 @@
     let aiIsGenerating = false;
     let pendingAIImage = null; // { dataUrl, name, size }
 
+    const AI_HISTORY_KEY = 'soiliq_ai_chat_history';
+    const AI_HISTORY_MAX = 30; // max messages to persist
+
+    function saveAIChatHistory() {
+      try {
+        // Don't store image data (too large for localStorage)
+        const toSave = aiMessages.slice(-AI_HISTORY_MAX).map(m => ({
+          role: m.role,
+          content: m.content,
+          time: m.time || new Date().toISOString()
+        }));
+        localStorage.setItem(AI_HISTORY_KEY, JSON.stringify(toSave));
+      } catch (e) {
+        // Storage full — ignore silently
+      }
+    }
+
+    function restoreAIChatHistory() {
+      try {
+        const raw = localStorage.getItem(AI_HISTORY_KEY);
+        if (!raw) return false;
+        const saved = JSON.parse(raw);
+        if (!Array.isArray(saved) || saved.length === 0) return false;
+
+        const wrap = document.getElementById('ai-messages');
+        if (!wrap) return false;
+
+        // Re-render all saved messages
+        saved.forEach(m => {
+          const msgDiv = document.createElement('div');
+          msgDiv.className = `ai-msg ${m.role}`;
+          const timeStr = m.time
+            ? new Date(m.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : '';
+          if (m.role === 'assistant') {
+            msgDiv.innerHTML = `
+          <div class="ai-msg-avatar"><img src="/icons/Ai_agent_logo.png" alt="AI" /></div>
+          <div class="ai-msg-body">
+            ${formatAIMarkdown(m.content)}
+            <div class="ai-msg-time">${timeStr}</div>
+          </div>`;
+          } else {
+            msgDiv.innerHTML = `
+          <div class="ai-msg-body">
+            ${formatAIMarkdown(m.content)}
+            <div class="ai-msg-time">${timeStr}</div>
+          </div>`;
+          }
+          wrap.appendChild(msgDiv);
+          aiMessages.push({ role: m.role, content: m.content, time: m.time });
+        });
+
+        // Add a subtle "resumed" divider
+        const divider = document.createElement('div');
+        divider.style.cssText = 'text-align:center;font-size:11px;color:var(--muted2);padding:6px 0;';
+        divider.textContent = '─── Resumed from previous session ───';
+        wrap.appendChild(divider);
+
+        scrollAIMessages();
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
     function getAIApiKey() {
       return localStorage.getItem('soiliq_nvidia_key') || AI_CONFIG.defaultKey;
     }
@@ -5510,7 +5575,9 @@
         if (bdp) bdp.classList.add('open');
         updateAITelemetryBar();
         if (aiMessages.length === 0) {
-          initAIWelcome();
+          // Try to restore previous session first
+          const restored = restoreAIChatHistory();
+          if (!restored) initAIWelcome();
         }
         setTimeout(() => {
           const input = document.getElementById('ai-user-input');
@@ -5548,6 +5615,7 @@
 
     function clearAIChat() {
       aiMessages = [];
+      localStorage.removeItem(AI_HISTORY_KEY);
       clearPendingAIImage();
       const wrap = document.getElementById('ai-messages');
       if (wrap) wrap.innerHTML = '';
@@ -5760,8 +5828,9 @@ Currently monitoring: **${plantName}** (${moistStr}).
       wrap.appendChild(msgDiv);
       scrollAIMessages();
 
-      aiMessages.push({ role, content, hasImage: !!imageDataUrl });
-      if (aiMessages.length > 20) aiMessages.shift();
+      aiMessages.push({ role, content, time: new Date().toISOString(), hasImage: !!imageDataUrl });
+      if (aiMessages.length > AI_HISTORY_MAX) aiMessages.shift();
+      saveAIChatHistory();
     }
 
     function showAITyping() {
