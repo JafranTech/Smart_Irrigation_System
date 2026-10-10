@@ -4620,27 +4620,25 @@
       </button>
     </form>
 
-    <!-- Settings / API Key Modal Overlay -->
+    <!-- AI Info Modal -->
     <div class="ai-settings-modal" id="ai-settings-modal">
       <div>
         <div class="ai-settings-title">
-          <span>⚡ AI Model & API Configuration</span>
-          <button class="ai-icon-btn close" onclick="toggleAISettings(false)">✕</button>
+          <span>&#x26A1; AI Agronomist Info</span>
+          <button class="ai-icon-btn close" onclick="toggleAISettings(false)">&#x2715;</button>
         </div>
         <p class="ai-settings-desc">
-          Powered by <strong>Google Gemini 2.0 Flash</strong> — best-in-class vision AI for plant identification &amp; disease diagnosis. Get a free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--primary)">aistudio.google.com</a>.
+          Powered by <strong>Google Gemini 2.0 Flash Vision</strong> &#x2014; best-in-class multimodal AI for accurate plant species identification and disease diagnosis.
         </p>
-        <div class="ai-settings-field">
-          <label class="ai-settings-label" for="ai-cfg-key">Google Gemini API Key (Free via AI Studio)</label>
-          <input type="password" class="ai-settings-input" id="ai-cfg-key" placeholder="AIza..." />
-        </div>
-        <div class="ai-settings-field">
-          <label class="ai-settings-label" for="ai-cfg-model">Model ID</label>
-          <input type="text" class="ai-settings-input" id="ai-cfg-model" value="gemini-2.0-flash" />
+        <div style="background:rgba(97,246,156,0.07);border:1px solid rgba(97,246,156,0.2);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.8;margin-top:8px;">
+          &#x1F512; <strong style="color:var(--text)">API key is secured server-side.</strong><br/>
+          The Gemini API key is stored as a private environment variable on the server. It is never sent to or stored in the browser.<br/><br/>
+          &#x1F4F8; <strong style="color:var(--text)">Image Analysis:</strong> Upload or paste (Ctrl+V) a plant photo for instant species &amp; health diagnosis.<br/><br/>
+          &#x26A1; <strong style="color:var(--text)">Model:</strong> gemini-2.0-flash
         </div>
       </div>
-      <button class="ai-settings-btn-save" onclick="saveAISettings()">
-        <span class="mi sm">save</span> Save Configuration
+      <button class="ai-settings-btn-save" onclick="toggleAISettings(false)">
+        <span class="mi sm">check</span> Got it
       </button>
     </div>
   </div>
@@ -5555,12 +5553,8 @@
       }
     }
 
-    function getAIApiKey() {
-      return localStorage.getItem('soiliq_gemini_key') || AI_CONFIG.defaultKey;
-    }
-
     function getAIModelId() {
-      return localStorage.getItem('soiliq_gemini_model') || AI_CONFIG.defaultModel;
+      return 'gemini-2.0-flash';
     }
 
     function toggleAIChat(forceState) {
@@ -5574,7 +5568,6 @@
         if (bdp) bdp.classList.add('open');
         updateAITelemetryBar();
         if (aiMessages.length === 0) {
-          // Try to restore previous session first
           const restored = restoreAIChatHistory();
           if (!restored) initAIWelcome();
         }
@@ -5595,21 +5588,10 @@
       if (!modal) return;
       const shouldOpen = typeof forceState === 'boolean' ? forceState : !modal.classList.contains('open');
       if (shouldOpen) {
-        document.getElementById('ai-cfg-key').value = getAIApiKey();
-        document.getElementById('ai-cfg-model').value = getAIModelId();
         modal.classList.add('open');
       } else {
         modal.classList.remove('open');
       }
-    }
-
-    function saveAISettings() {
-      const key = document.getElementById('ai-cfg-key').value.trim();
-      const model = document.getElementById('ai-cfg-model').value.trim();
-      if (key) localStorage.setItem('soiliq_gemini_key', key);
-      if (model) localStorage.setItem('soiliq_gemini_model', model);
-      toggleAISettings(false);
-      showToast('✅ AI Configuration Saved!', 'success');
     }
 
     function clearAIChat() {
@@ -5936,7 +5918,6 @@ INSTRUCTIONS & RULES:
 5. Format your output cleanly in markdown with bullet points, bold text, and emojis.
 6. Keep responses punchy, concise, and focused (around 120-170 words).`;
 
-      const apiKey = getAIApiKey();
       const modelId = getAIModelId();
 
       // Build user message content (multimodal if image present)
@@ -5974,9 +5955,7 @@ INSTRUCTIONS & RULES:
           const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
-              'Authorization': `Bearer ${apiKey}`,
-              'Content-Type': 'application/json',
-              'Accept': 'application/json'
+              'Content-Type': 'application/json'
             },
             body: JSON.stringify({
               model: modelId,

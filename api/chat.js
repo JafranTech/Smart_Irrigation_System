@@ -30,11 +30,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    const authHeader = req.headers.authorization || '';
-    const apiKey = authHeader.replace(/^Bearer\s+/i, '').trim();
+    // API key is a server-side secret stored in Vercel environment variables.
+    // It is NEVER sent from or exposed to the browser.
+    const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      return res.status(401).json({ error: 'Missing Google Gemini API key in Authorization header.' });
+      return res.status(500).json({ error: 'Gemini API key is not configured on the server. Set GEMINI_API_KEY in Vercel environment variables.' });
     }
 
     // Convert OpenAI-style messages to Gemini generateContent format
