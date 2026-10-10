@@ -3,7 +3,7 @@
    Strategy: Cache-first for app shell, network-first for API calls
 ================================================================ */
 
-const CACHE_NAME  = 'soiliq-v1';
+const CACHE_NAME  = 'soiliq-v2';
 const SHELL_URLS  = [
   '/',
   '/soiliq_ui.html',
@@ -35,6 +35,11 @@ self.addEventListener('activate', e => {
 /* ── Fetch: network-first for Supabase/API, cache-first for shell ── */
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
+
+  // Never intercept non-GET requests or API calls (/api/chat, Supabase, etc.)
+  if (e.request.method !== 'GET' || url.pathname.startsWith('/api')) {
+    return;
+  }
 
   // Always go network-first for Supabase, Open-Meteo, external APIs
   const isAPI = url.hostname.includes('supabase.co')
