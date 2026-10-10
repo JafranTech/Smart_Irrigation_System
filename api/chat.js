@@ -1,4 +1,5 @@
-// Increase body size limit for multimodal image payloads (base64 images can be large)
+// Proxy for Google Gemini API — supports multimodal vision (image + text)
+// Body size limit increased for base64 image payloads
 export const config = {
   api: {
     bodyParser: {
@@ -6,6 +7,7 @@ export const config = {
     },
     responseLimit: false,
   },
+  maxDuration: 30,
 };
 
 export default async function handler(req, res) {
@@ -29,20 +31,81 @@ export default async function handler(req, res) {
 
   try {
     const authHeader = req.headers.authorization || '';
-    const apiKey = authHeader.replace(/^Bearer\s+/i, '').trim() || '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';
+    const apiKey = authHeader.replace(/^Bearer\s+/i, '').trim();
 
-    const nvidiaRes = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      body: JSON.stringify(req.body),
+    if (!apiKey) {
+      return res.status(401).json({ error: 'Missing Google Gemini API key in Authorization header.' });
+    }
+
+    // Convert OpenAI-style messages to Gemini generateContent format
+    const { model = 'gemini-2.0-flash', messages = [], temperature = 0.5, max_tokens = 800 } = req.body;
+
+    // Extract system prompt (Gemini uses systemInstruction separately)
+    const systemMsg = messages.find(m => m.role === 'system');
+    const systemInstruction = systemMsg
+      ? { parts: [{ text: systemMsg.content }] }
+      : undefined;
+
+    // Build Gemini contents from non-system messages
+    const contents = messages
+      .filter(m => m.role !== 'system')
+      .map(m => {
+        // Map OpenAI roles: 'assistant' -> 'model'
+        const role = m.role === 'assistant' ? 'model' : 'user';
+
+        // Handle multimodal content (array with text + image_url)
+        if (Array.isArray(m.content)) {
+          const parts = m.content.map(part => {
+            if (part.type === 'text') {
+              return { text: part.text };
+            } else if (part.type === 'image_url') {
+              const url = part.image_url?.url || '';
+              // base64 data URI: data:image/jpeg;base64,<data>
+              const match = url.match(/^data:([^;]+);base64,(.+)$/);
+              if (match) {
+                return { inlineData: { mimeType: match[1], data: match[2] } };
+              }
+              // Plain public URL
+              return { fileData: { mimeType: 'image/jpeg', fileUri: url } };
+            }
+            return { text: '' };
+          });
+          return { role, parts };
+        }
+
+        // Plain text content
+        return { role, parts: [{ text: m.content || '' }] };
+      });
+
+    // Build Gemini request body
+    const geminiBody = {
+      contents,
+      generationConfig: { temperature, maxOutputTokens: max_tokens },
+    };
+    if (systemInstruction) geminiBody.systemInstruction = systemInstruction;
+
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(geminiBody),
+      }
+    );
+
+    const data = await geminiRes.json();
+
+    if (!geminiRes.ok) {
+      return res.status(geminiRes.status).json({ error: data?.error?.message || 'Gemini API error', details: data });
+    }
+
+    // Translate Gemini response back to OpenAI-style for the frontend
+    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    return res.status(200).json({
+      choices: [{ message: { role: 'assistant', content: text }, finish_reason: data?.candidates?.[0]?.finishReason || 'stop' }],
+      model,
+      usage: data?.usageMetadata || {},
     });
-
-    const data = await nvidiaRes.json();
-    return res.status(nvidiaRes.status).json(data);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

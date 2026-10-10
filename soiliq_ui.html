@@ -2967,7 +2967,7 @@
     }
 
     /* ═══════════════════════════════════════
-   AI AGRONOMIST CHATBOT (NVIDIA NIM)
+   AI AGRONOMIST CHATBOT (GOOGLE GEMINI)
 ═══════════════════════════════════════ */
     .ai-fab {
       position: fixed;
@@ -4539,7 +4539,7 @@
         <div>
           <div class="ai-header-title" id="ai-chat-title">
             SoilIQ AI Agronomist
-            <span class="ai-header-badge">Llama 3.2</span>
+            <span class="ai-header-badge">Gemini 2.0</span>
           </div>
           <div class="ai-header-sub">
             <span class="ai-status-pulse"></span>
@@ -4628,16 +4628,15 @@
           <button class="ai-icon-btn close" onclick="toggleAISettings(false)">✕</button>
         </div>
         <p class="ai-settings-desc">
-          Powered by NVIDIA NIM Cloud Inference with Meta Llama 3.2. Your key is stored securely in your browser's
-          private local storage.
+          Powered by <strong>Google Gemini 2.0 Flash</strong> — best-in-class vision AI for plant identification &amp; disease diagnosis. Get a free API key at <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--primary)">aistudio.google.com</a>.
         </p>
         <div class="ai-settings-field">
-          <label class="ai-settings-label" for="ai-cfg-key">NVIDIA API Key (Free Endpoint)</label>
-          <input type="password" class="ai-settings-input" id="ai-cfg-key" placeholder="nvapi-..." />
+          <label class="ai-settings-label" for="ai-cfg-key">Google Gemini API Key (Free via AI Studio)</label>
+          <input type="password" class="ai-settings-input" id="ai-cfg-key" placeholder="AIza..." />
         </div>
         <div class="ai-settings-field">
           <label class="ai-settings-label" for="ai-cfg-model">Model ID</label>
-          <input type="text" class="ai-settings-input" id="ai-cfg-model" value="meta/llama-3.2-11b-vision-instruct" />
+          <input type="text" class="ai-settings-input" id="ai-cfg-model" value="gemini-2.0-flash" />
         </div>
       </div>
       <button class="ai-settings-btn-save" onclick="saveAISettings()">
@@ -5477,13 +5476,13 @@
     }
 
     /* ═══════════════════════════════════════
-       AI AGRONOMIST (NVIDIA NIM + LLAMA 3.2 VISION)
+       AI AGRONOMIST (GOOGLE GEMINI 2.0 FLASH VISION)
     ═══════════════════════════════════════ */
     const AI_CONFIG = {
-      defaultKey: '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',
-      defaultModel: 'meta/llama-3.2-11b-vision-instruct',
+      defaultKey: '',
+      defaultModel: 'gemini-2.0-flash',
       proxyEndpoint: 'https://smart-irrigation-soiliq.vercel.app/api/chat',
-      directEndpoint: 'https://integrate.api.nvidia.com/v1/chat/completions',
+      directEndpoint: '',
     };
 
     let aiMessages = [];
@@ -5557,11 +5556,11 @@
     }
 
     function getAIApiKey() {
-      return localStorage.getItem('soiliq_nvidia_key') || AI_CONFIG.defaultKey;
+      return localStorage.getItem('soiliq_gemini_key') || AI_CONFIG.defaultKey;
     }
 
     function getAIModelId() {
-      return localStorage.getItem('soiliq_nvidia_model') || AI_CONFIG.defaultModel;
+      return localStorage.getItem('soiliq_gemini_model') || AI_CONFIG.defaultModel;
     }
 
     function toggleAIChat(forceState) {
@@ -5607,8 +5606,8 @@
     function saveAISettings() {
       const key = document.getElementById('ai-cfg-key').value.trim();
       const model = document.getElementById('ai-cfg-model').value.trim();
-      if (key) localStorage.setItem('soiliq_nvidia_key', key);
-      if (model) localStorage.setItem('soiliq_nvidia_model', model);
+      if (key) localStorage.setItem('soiliq_gemini_key', key);
+      if (model) localStorage.setItem('soiliq_gemini_model', model);
       toggleAISettings(false);
       showToast('✅ AI Configuration Saved!', 'success');
     }
@@ -5640,8 +5639,8 @@
       reader.onload = (e) => {
         const rawDataUrl = e.target.result;
 
-        // ── Auto-compress large images before sending to NVIDIA Vision API ──
-        // NVIDIA has a ~5MB base64 payload limit. Phone photos can be 10-20MB.
+        // ── Auto-compress large images before sending to Gemini Vision API ──
+        // Gemini works best with images under 4MB. Phone photos can be 10-20MB.
         // We resize to max 1024px on longest edge and compress to JPEG 0.72.
         const img = new Image();
         img.onload = () => {
@@ -5749,11 +5748,11 @@
       const plantName = p ? p.name : 'your plant';
       const moistStr = state.moisture ? `${state.moisture} ADC` : 'Live';
 
-      const welcomeText = `👋 Hello! I am your **SoilIQ AI Agronomist**, powered by **Meta Llama 3.2 Vision** with direct real-time telemetry from your **ESP32-01** sensor.
+      const welcomeText = `👋 Hello! I am your **SoilIQ AI Agronomist**, powered by **Google Gemini 2.0 Flash Vision** with direct real-time telemetry from your **ESP32-01** sensor.
 
 Currently monitoring: **${plantName}** (${moistStr}).
 * 🌿 Ask any plant care, watering, or gardening question.
-* 📸 **Upload or paste (Ctrl+V)** a leaf or plant photo for visual health diagnosis!
+* 📸 **Upload or paste (Ctrl+V)** a leaf or plant photo for accurate species & health diagnosis!
 * ⚡ Or tap any quick query button above.`;
 
       appendAIMessage('assistant', welcomeText);
@@ -5962,10 +5961,10 @@ INSTRUCTIONS & RULES:
         { role: 'user', content: userContent }
       ];
 
-      // Endpoints to try (Proxy first to avoid CORS, then Direct)
+      // All calls go through the /api/chat proxy (Gemini cannot be called
+      // directly from the browser — CORS + API key must stay server-side)
       const endpointsToTry = [
         window.location.protocol === 'file:' ? AI_CONFIG.proxyEndpoint : '/api/chat',
-        AI_CONFIG.directEndpoint
       ];
 
       let gotReply = false;
@@ -6114,7 +6113,7 @@ INSTRUCTIONS & RULES:
 1. **Sensors:** Capacitive soil sensor measures raw analog moisture (0-4095 ADC).
 2. **Brain (ESP32):** Every cycle, ESP32 compares the reading against the active **${p.name}** profile stored in Supabase.
 3. **Actuation:** If moisture < min threshold, the relay triggers the water pump.
-4. **Cloud & AI:** Real-time updates sync to this dashboard, analyzed by our NVIDIA AI agronomist.`;
+4. **Cloud & AI:** Real-time updates sync to this dashboard, analyzed by our **Google Gemini 2.0 Flash** AI agronomist — with advanced plant vision capabilities.`;
       }
 
       // Default friendly answer
