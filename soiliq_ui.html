@@ -5949,6 +5949,7 @@ INSTRUCTIONS & RULES:
       ];
 
       let gotReply = false;
+      let lastError = null;
 
       for (const endpoint of endpointsToTry) {
         try {
@@ -5966,7 +5967,10 @@ INSTRUCTIONS & RULES:
             signal: AbortSignal.timeout(attachedImage ? 30000 : 15000)
           });
 
-          if (!response.ok) throw new Error(`Status ${response.status}`);
+          if (!response.ok) {
+            const errData = await response.json().catch(() => ({}));
+            throw new Error(errData?.error || `Status ${response.status}`);
+          }
           const data = await response.json();
           const reply = data.choices?.[0]?.message?.content;
           if (reply) {
@@ -5976,15 +5980,14 @@ INSTRUCTIONS & RULES:
             break;
           }
         } catch (err) {
+          lastError = err.message;
           console.warn(`[SoilIQ AI] Attempt via ${endpoint} failed:`, err.message);
         }
       }
 
       if (!gotReply) {
-        // High quality intelligent natural language fallback
-        const localReply = generateLocalAgronomistAnswer(text, telemetry, attachedImage);
         removeAITyping();
-        appendAIMessage('assistant', localReply);
+        appendAIMessage('assistant', `⚠️ **AI Service Notice:** Could not connect to Gemini (${lastError || 'Network Error'}).\n\n` + generateLocalAgronomistAnswer(text, telemetry, attachedImage));
       }
 
       aiIsGenerating = false;
@@ -6153,12 +6156,19 @@ You can ask me about plant health, fertilizer recommendations, watering cycles, 
   </script>
 
   <script>
-    /* ── Service Worker Registration ── */
+    /* ── Pure Online Mode: Unregister all Service Workers & purge local caches ── */
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js', { scope: '/' })
-          .then(reg => console.log('[SW] Registered, scope:', reg.scope))
-          .catch(err => console.warn('[SW] Registration failed:', err));
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (const reg of registrations) {
+          reg.unregister().then(() => console.log('[SW] Unregistered:', reg.scope));
+        }
+      });
+    }
+    if ('caches' in window) {
+      caches.keys().then(names => {
+        for (const name of names) {
+          caches.delete(name);
+        }
       });
     }
   </script>
