@@ -1344,6 +1344,96 @@
       font-size: 18px;
     }
 
+    /* ── Plant Category Tabs ── */
+    .category-filter-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px 2px 14px 2px;
+      margin-bottom: 8px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border2) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .category-filter-wrap::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    .category-filter-wrap::-webkit-scrollbar-thumb {
+      background: var(--border2);
+      border-radius: 4px;
+    }
+
+    .category-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 100px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+
+    .category-pill:hover {
+      background: rgba(97, 246, 156, 0.08);
+      border-color: rgba(97, 246, 156, 0.3);
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    .category-pill.active {
+      background: rgba(97, 246, 156, 0.14);
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 0 16px rgba(97, 246, 156, 0.16);
+    }
+
+    .category-pill .cat-count {
+      font-size: 10px;
+      font-family: var(--mono);
+      background: rgba(0, 0, 0, 0.35);
+      padding: 2px 6px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      color: inherit;
+    }
+
+    .category-pill.active .cat-count {
+      background: rgba(97, 246, 156, 0.22);
+      border-color: rgba(97, 246, 156, 0.4);
+    }
+
+    .pcard-cat-badge {
+      font-size: 9.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 6px;
+      width: fit-content;
+    }
+
+    .cat-vegetables { background: rgba(56, 189, 248, 0.12); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25); }
+    .cat-fruits     { background: rgba(251, 146, 60, 0.12); color: #fb923c; border: 1px solid rgba(251, 146, 60, 0.25); }
+    .cat-herbs      { background: rgba(74, 222, 128, 0.12); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.25); }
+    .cat-houseplants{ background: rgba(167, 139, 250, 0.12); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.25); }
+    .cat-flowers    { background: rgba(244, 114, 182, 0.12); color: #f472b6; border: 1px solid rgba(244, 114, 182, 0.25); }
+    .cat-succulents { background: rgba(250, 204, 21, 0.12); color: #facc15; border: 1px solid rgba(250, 204, 21, 0.25); }
+    .cat-all        { background: rgba(148, 163, 184, 0.12); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.25); }
+
     .plant-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -4207,6 +4297,9 @@
           </div>
         </div>
 
+        <!-- Category Filter Tabs -->
+        <div class="category-filter-wrap" id="category-filter-wrap"></div>
+
         <div class="plant-grid" id="plant-grid">
           <div style="text-align:center;padding:60px 20px;color:var(--muted);font-family:var(--mono);font-size:13px">
             Loading plants…</div>
@@ -4473,6 +4566,7 @@
       <div>
         <div class="drawer-plant-name" id="drawer-name">—</div>
         <div class="drawer-plant-sci" id="drawer-sci">—</div>
+        <div style="margin-top:5px"><span class="pcard-cat-badge cat-all" id="drawer-category">—</span></div>
       </div>
       <button class="drawer-close" onclick="closePlantDetail()">&#10005;</button>
     </div>
@@ -4674,6 +4768,8 @@
       bottleCapacityMl: 500,
       totalPumpSeconds: 0,
       waterBlocked: false,
+      selectedCategory: 'all',
+      searchQuery: '',
     };
 
     /* ── INIT ────────────────────────────── */
@@ -4697,8 +4793,9 @@
     async function loadPlants() {
       const { data, error } = await sb.from('plants').select('*').order('name');
       if (error) { showToast('⚠️ Could not load plants', 'error'); return; }
-      state.plants = data;
-      renderPlantGrid(data);
+      state.plants = data || [];
+      renderCategoryFilter();
+      applyPlantFilters();
     }
 
     /* ── FETCH: Device config ────────────── */
@@ -5062,14 +5159,158 @@
 
     /* ── PLANT GRID ──────────────────────── */
 
+    /* ── PLANT CATEGORY SYSTEM ────────────── */
+    const PLANT_CATEGORIES = [
+      { id: 'all', label: 'All Plants', emoji: '🌱' },
+      { id: 'vegetables', label: 'Vegetables & Crops', emoji: '🍅' },
+      { id: 'fruits', label: 'Fruits & Trees', emoji: '🍎' },
+      { id: 'herbs', label: 'Herbs & Spices', emoji: '🌿' },
+      { id: 'houseplants', label: 'Houseplants', emoji: '🪴' },
+      { id: 'flowers', label: 'Flowers', emoji: '🌸' },
+      { id: 'succulents', label: 'Succulents & Specialty', emoji: '🌵' }
+    ];
+
+    const PLANT_CATEGORY_MAP = {
+      // Vegetables & Root Crops
+      'Tomato': 'vegetables', 'Potato': 'vegetables', 'Carrot': 'vegetables', 'Onion': 'vegetables',
+      'Garlic': 'vegetables', 'Spinach': 'vegetables', 'Lettuce': 'vegetables', 'Cabbage': 'vegetables',
+      'Broccoli': 'vegetables', 'Cauliflower': 'vegetables', 'Bell Pepper': 'vegetables', 'Chili': 'vegetables',
+      'Cucumber': 'vegetables', 'Zucchini': 'vegetables', 'Pumpkin': 'vegetables', 'Bean (Green)': 'vegetables',
+      'Pea': 'vegetables', 'Peanut': 'vegetables', 'Sweet Potato': 'vegetables', 'Radish': 'vegetables',
+      'Beetroot': 'vegetables', 'Corn': 'vegetables', 'Wheat': 'vegetables', 'Asparagus': 'vegetables',
+      'Eggplant': 'vegetables', 'Kale': 'vegetables', 'Leek': 'vegetables',
+
+      // Fruits & Orchard Trees
+      'Apple Tree': 'fruits', 'Orange Tree': 'fruits', 'Lemon Tree': 'fruits', 'Mango': 'fruits',
+      'Banana': 'fruits', 'Papaya': 'fruits', 'Peach Tree': 'fruits', 'Pear Tree': 'fruits',
+      'Cherry Tree': 'fruits', 'Avocado': 'fruits', 'Guava': 'fruits', 'Pomegranate': 'fruits',
+      'Pineapple': 'fruits', 'Melon': 'fruits', 'Watermelon': 'fruits', 'Strawberry': 'fruits',
+      'Blueberry': 'fruits', 'Grape Vine': 'fruits', 'Coconut': 'fruits', 'Tamarind': 'fruits',
+
+      // Herbs & Spices
+      'Basil': 'herbs', 'Mint': 'herbs', 'Peppermint': 'herbs', 'Rosemary': 'herbs',
+      'Thyme': 'herbs', 'Sage': 'herbs', 'Dill': 'herbs', 'Fennel': 'herbs',
+      'Coriander': 'herbs', 'Lemongrass': 'herbs', 'Ginger': 'herbs', 'Turmeric': 'herbs',
+      'Saffron': 'herbs', 'Mexican Mint': 'herbs', 'Neem Tree': 'herbs',
+
+      // Houseplants
+      'Snake Plant': 'houseplants', 'ZZ Plant': 'houseplants', 'Pothos': 'houseplants',
+      'Money Plant': 'houseplants', 'Monstera': 'houseplants', 'Peace Lily': 'houseplants',
+      'Rubber Plant': 'houseplants', 'Spider Plant': 'houseplants', 'Boston Fern': 'houseplants',
+      'Fern': 'houseplants', 'Fiddle Leaf Fig': 'houseplants',
+
+      // Flowers & Ornamentals
+      'Rose': 'flowers', 'Jasmine': 'flowers', 'Hibiscus': 'flowers', 'Marigold': 'flowers',
+      'Chrysanthemum': 'flowers', 'Daisy': 'flowers', 'Petunia': 'flowers', 'Hydrangea': 'flowers',
+      'Geranium': 'flowers', 'Tulip': 'flowers', 'Lily': 'flowers', 'Orchid': 'flowers',
+      'Bird of Paradise': 'flowers', 'Bougainvillea': 'flowers', 'Sunflower': 'flowers', 'Hosta': 'flowers',
+
+      // Succulents & Specialty
+      'Cactus': 'succulents', 'Succulent': 'succulents', 'Aloe Vera': 'succulents',
+      'Jade Plant': 'succulents', 'Dragon Fruit': 'succulents', 'Bamboo': 'succulents',
+      'Bonsai': 'succulents', 'Lotus': 'succulents', 'Venus Flytrap': 'succulents', 'Eucalyptus': 'succulents'
+    };
+
+    function getPlantCategory(p) {
+      if (p.category) {
+        const c = p.category.toLowerCase();
+        if (PLANT_CATEGORIES.some(cat => cat.id === c)) return c;
+      }
+      const mapped = PLANT_CATEGORY_MAP[p.name];
+      if (mapped) return mapped;
+      const n = (p.name || '').toLowerCase();
+      if (n.includes('tree') || n.includes('berry') || n.includes('melon') || n.includes('fruit')) return 'fruits';
+      if (n.includes('mint') || n.includes('herb') || n.includes('grass')) return 'herbs';
+      if (n.includes('flower') || n.includes('rose') || n.includes('lily')) return 'flowers';
+      if (n.includes('cactus') || n.includes('succulent') || n.includes('aloe')) return 'succulents';
+      if (n.includes('plant') || n.includes('fern') || n.includes('fig')) return 'houseplants';
+      return 'vegetables';
+    }
+
+    function getCategoryInfo(catId) {
+      return PLANT_CATEGORIES.find(c => c.id === catId) || { id: catId, label: 'Plant', emoji: '🌱' };
+    }
+
+    function renderCategoryFilter() {
+      const wrap = document.getElementById('category-filter-wrap');
+      if (!wrap) return;
+
+      const counts = { all: (state.plants || []).length };
+      PLANT_CATEGORIES.forEach(c => { if (c.id !== 'all') counts[c.id] = 0; });
+      (state.plants || []).forEach(p => {
+        const cat = getPlantCategory(p);
+        if (counts[cat] !== undefined) counts[cat]++;
+      });
+
+      wrap.innerHTML = PLANT_CATEGORIES.map(cat => {
+        const count = counts[cat.id] || 0;
+        const isActive = (state.selectedCategory || 'all') === cat.id;
+        return `
+          <button type="button" class="category-pill ${isActive ? 'active' : ''}" onclick="setPlantCategory('${cat.id}')">
+            <span>${cat.emoji}</span>
+            <span>${cat.label}</span>
+            <span class="cat-count">${count}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function setPlantCategory(catId) {
+      state.selectedCategory = catId;
+      renderCategoryFilter();
+      applyPlantFilters();
+    }
+
+    function filterPlants(query) {
+      state.searchQuery = query;
+      applyPlantFilters();
+    }
+
+    function clearPlantFilters() {
+      state.selectedCategory = 'all';
+      state.searchQuery = '';
+      const input = document.getElementById('plant-search');
+      if (input) input.value = '';
+      renderCategoryFilter();
+      applyPlantFilters();
+    }
+
+    function applyPlantFilters() {
+      const q = (state.searchQuery || '').toLowerCase().trim();
+      const currentCat = state.selectedCategory || 'all';
+
+      const filtered = (state.plants || []).filter(p => {
+        const pCat = getPlantCategory(p);
+        const matchesCategory = (currentCat === 'all' || pCat === currentCat);
+        const matchesSearch = !q ||
+          p.name.toLowerCase().includes(q) ||
+          (p.scientific_name || '').toLowerCase().includes(q) ||
+          pCat.includes(q);
+        return matchesCategory && matchesSearch;
+      });
+
+      renderPlantGrid(filtered);
+    }
+
     function renderPlantGrid(plants) {
       const grid = document.getElementById('plant-grid');
-      if (!plants.length) {
-        grid.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--muted);font-family:var(--mono);font-size:13px">No plants found.</div>';
+      if (!plants || !plants.length) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);font-family:var(--font);">
+            <div style="font-size:36px;margin-bottom:8px;">🔍</div>
+            <div style="font-weight:700;font-size:16px;color:var(--text);margin-bottom:4px;">No specimens found</div>
+            <p style="font-size:13px;color:var(--muted);">No plants match the selected category or search filter.</p>
+            <button type="button" onclick="clearPlantFilters()" style="margin-top:14px;padding:8px 18px;background:var(--surface2);border:1px solid var(--border2);border-radius:100px;color:var(--primary);font-size:12px;cursor:pointer;font-weight:600;">
+              Reset Filter
+            </button>
+          </div>
+        `;
         return;
       }
       grid.innerHTML = plants.map(p => {
         const sel = state.selectedPlant?.id === p.id;
+        const cat = getPlantCategory(p);
+        const catInfo = getCategoryInfo(cat);
         const minPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_max / 4095) * 100)));
         const maxPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_min / 4095) * 100)));
         const barW = maxPct - minPct;
@@ -5084,6 +5325,7 @@
         <div class="pcard-check">✓</div>
       </div>
       <div class="pcard-body">
+        <div class="pcard-cat-badge cat-${cat}">${catInfo.emoji} ${catInfo.label}</div>
         <div class="pcard-name">${p.name}</div>
         <div class="pcard-sci">${p.scientific_name || ''}</div>
         <div class="pcard-bar-row">
@@ -5099,14 +5341,6 @@
       </div>
     </div>`;
       }).join('');
-    }
-
-    function filterPlants(q) {
-      const f = state.plants.filter(p =>
-        p.name.toLowerCase().includes(q.toLowerCase()) ||
-        (p.scientific_name || '').toLowerCase().includes(q.toLowerCase())
-      );
-      renderPlantGrid(f);
     }
 
     function selectPlant(id) {
@@ -5224,7 +5458,7 @@
       });
       state.currentScreen = screen;
       if (screen === 'alerts') { state.alerts.forEach(a => a.unread = false); loadAlerts(); renderAlerts(); }
-      if (screen === 'plants') { renderPlantGrid(state.plants); }
+      if (screen === 'plants') { renderCategoryFilter(); applyPlantFilters(); }
     }
 
     /* ── TOAST ───────────────────────────── */
@@ -5417,6 +5651,13 @@
       document.getElementById('drawer-emoji').textContent = p.emoji || '🌱';
       document.getElementById('drawer-name').textContent = p.name;
       document.getElementById('drawer-sci').textContent = p.scientific_name || '';
+      const cat = getPlantCategory(p);
+      const catInfo = getCategoryInfo(cat);
+      const catEl = document.getElementById('drawer-category');
+      if (catEl) {
+        catEl.className = `pcard-cat-badge cat-${cat}`;
+        catEl.textContent = `${catInfo.emoji} ${catInfo.label}`;
+      }
       document.getElementById('drawer-water').textContent = p.water_level || p.water_need || '—';
       const sun = p.sunlight ? p.sunlight.charAt(0).toUpperCase() + p.sunlight.slice(1) : '—';
       document.getElementById('drawer-sun').textContent = sun;
