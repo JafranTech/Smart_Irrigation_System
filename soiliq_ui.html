@@ -5964,7 +5964,7 @@ INSTRUCTIONS & RULES:
               temperature: 0.5,
               max_tokens: 800
             }),
-            signal: AbortSignal.timeout(attachedImage ? 30000 : 15000)
+            signal: AbortSignal.timeout(45000)
           });
 
           if (!response.ok) {
