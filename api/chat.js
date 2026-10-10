@@ -39,7 +39,9 @@ export default async function handler(req, res) {
     }
 
     // Convert OpenAI-style messages to Gemini generateContent format
-    const { model = 'gemini-2.0-flash', messages = [], temperature = 0.5, max_tokens = 800 } = req.body;
+    const { model = 'gemini-flash-latest', messages = [], temperature = 0.5, max_tokens = 800 } = req.body;
+    // Map older/deprecated model IDs to gemini-flash-latest
+    const targetModel = (!model || model.includes('2.0') || model.includes('2.5')) ? 'gemini-flash-latest' : model;
 
     // Extract system prompt (Gemini uses systemInstruction separately)
     const systemMsg = messages.find(m => m.role === 'system');
@@ -86,7 +88,7 @@ export default async function handler(req, res) {
     if (systemInstruction) geminiBody.systemInstruction = systemInstruction;
 
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

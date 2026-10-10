@@ -4628,13 +4628,13 @@
           <button class="ai-icon-btn close" onclick="toggleAISettings(false)">&#x2715;</button>
         </div>
         <p class="ai-settings-desc">
-          Powered by <strong>Google Gemini 2.0 Flash Vision</strong> &#x2014; best-in-class multimodal AI for accurate plant species identification and disease diagnosis.
+          Powered by <strong>Google Gemini Flash Vision</strong> &#x2014; best-in-class multimodal AI for accurate plant species identification and disease diagnosis.
         </p>
         <div style="background:rgba(97,246,156,0.07);border:1px solid rgba(97,246,156,0.2);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--muted);line-height:1.8;margin-top:8px;">
           &#x1F512; <strong style="color:var(--text)">API key is secured server-side.</strong><br/>
           The Gemini API key is stored as a private environment variable on the server. It is never sent to or stored in the browser.<br/><br/>
           &#x1F4F8; <strong style="color:var(--text)">Image Analysis:</strong> Upload or paste (Ctrl+V) a plant photo for instant species &amp; health diagnosis.<br/><br/>
-          &#x26A1; <strong style="color:var(--text)">Model:</strong> gemini-2.0-flash
+          &#x26A1; <strong style="color:var(--text)">Model:</strong> gemini-flash-latest
         </div>
       </div>
       <button class="ai-settings-btn-save" onclick="toggleAISettings(false)">
@@ -5478,7 +5478,7 @@
     ═══════════════════════════════════════ */
     const AI_CONFIG = {
       defaultKey: '',
-      defaultModel: 'gemini-2.0-flash',
+      defaultModel: 'gemini-flash-latest',
       proxyEndpoint: 'https://smart-irrigation-soiliq.vercel.app/api/chat',
       directEndpoint: '',
     };
@@ -5554,7 +5554,7 @@
     }
 
     function getAIModelId() {
-      return 'gemini-2.0-flash';
+      return 'gemini-flash-latest';
     }
 
     function toggleAIChat(forceState) {
@@ -5730,7 +5730,7 @@
       const plantName = p ? p.name : 'your plant';
       const moistStr = state.moisture ? `${state.moisture} ADC` : 'Live';
 
-      const welcomeText = `👋 Hello! I am your **SoilIQ AI Agronomist**, powered by **Google Gemini 2.0 Flash Vision** with direct real-time telemetry from your **ESP32-01** sensor.
+      const welcomeText = `👋 Hello! I am your **SoilIQ AI Agronomist**, powered by **Google Gemini Flash Vision** with direct real-time telemetry from your **ESP32-01** sensor.
 
 Currently monitoring: **${plantName}** (${moistStr}).
 * 🌿 Ask any plant care, watering, or gardening question.
