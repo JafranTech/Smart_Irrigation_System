@@ -10,17 +10,17 @@ export const config = {
   maxDuration: 60,
 };
 
-// Gemini models to try in order. If the first times out / 503s, we fall to the next.
-// Using 'gemini-flash-latest' = Google's stable alias, always points to their current
-// recommended model automatically — no more manual updates when Google renames models.
+// Gemini models to try in order. If one fails (404, 429 quota, 503 busy, timeout), we fall to the next.
+// gemini-3.5-flash & gemini-3.5-flash-lite are verified active with multimodal vision.
 const MODEL_FALLBACK_CHAIN = [
-  'gemini-flash-latest',  // ← auto-updates with Google, never goes stale
-  'gemini-1.5-flash',     // ← proven fallback, very stable
+  'gemini-3.5-flash',       // Primary: Fast, multimodal vision, active
+  'gemini-3.5-flash-lite',  // High-availability fallback: separate quota pool
+  'gemini-3.8-flash',       // Advanced next-gen model
+  'gemini-flash-latest',    // Dynamic latest alias
 ];
 
-// Per-attempt timeout (ms). Must be well under Vercel's 60 s maxDuration so we
-// have time to try the fallback model before Vercel kills the function.
-const GEMINI_TIMEOUT_MS = 25000;
+// Per-attempt timeout (ms). Keep at 15s so we can try fallbacks before Vercel 60s limit
+const GEMINI_TIMEOUT_MS = 15000;
 
 async function callGemini(apiKey, modelId, geminiBody) {
   const controller = new AbortController();
@@ -114,11 +114,12 @@ export default async function handler(req, res) {
           const msg = errData?.error?.message || `Gemini ${geminiRes.status}`;
           console.warn(`[chat] model=${modelId} status=${geminiRes.status}: ${msg}`);
           lastError = { status: geminiRes.status, message: msg };
-          // Only retry on transient errors (429, 500, 503)
-          if (![429, 500, 503].includes(geminiRes.status)) {
+          // If auth failed (401/403 invalid key), fail fast
+          if ([401, 403].includes(geminiRes.status)) {
             return res.status(geminiRes.status).json({ error: msg, details: errData });
           }
-          continue; // try next model
+          // For 404 (model retired/alias changed), 429 (rate/quota limit), 500, 502, 503 (busy) — try next model
+          continue;
         }
 
         const data = await geminiRes.json();

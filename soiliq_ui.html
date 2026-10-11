@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -2494,18 +2494,47 @@
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      margin-bottom: 10px;
-      margin-top: 16px;
+      margin-bottom: 0;
+      margin-top: 14px;
       display: flex;
       align-items: center;
       gap: 8px;
+      user-select: none;
+      padding: 4px 0;
     }
-
+    .drawer-section-label.collapsible {
+      cursor: pointer;
+      padding: 6px 0;
+      border-radius: 6px;
+      transition: color 0.2s;
+    }
+    .drawer-section-label.collapsible:hover { color: var(--primary); }
     .drawer-section-label::after {
       content: '';
       flex: 1;
       height: 1px;
       background: rgba(255, 255, 255, 0.07);
+    }
+    /* Chevron arrow inside the label */
+    .drawer-section-label .accordion-chevron {
+      font-size: 14px;
+      transition: transform 0.3s ease;
+      margin-left: 2px;
+      flex-shrink: 0;
+      color: var(--muted);
+    }
+    .drawer-section-label.open .accordion-chevron {
+      transform: rotate(180deg);
+      color: var(--primary);
+    }
+    /* Accordion content wrapper */
+    .drawer-accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .drawer-accordion-body.open {
+      max-height: 800px;
     }
 
     .drawer-row {
@@ -2546,6 +2575,37 @@
 
     .drawer-row-val.blue {
       color: var(--blue);
+    }
+
+    .disease-risk-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-family: var(--mono);
+    }
+
+    .disease-risk-badge.risk-high {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .disease-risk-badge.risk-medium {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .disease-risk-badge.risk-low {
+      background: rgba(34, 197, 94, 0.15);
+      color: #4ade80;
+      border: 1px solid rgba(34, 197, 94, 0.35);
     }
 
     .drawer-mbar {
@@ -4574,33 +4634,49 @@
       <button class="drawer-close" onclick="closePlantDetail()">&#10005;</button>
     </div>
     <div class="drawer-body">
-      <div class="drawer-section-label"><span class="mi sm">eco</span> Plant Info</div>
-      <div class="drawer-row"><span class="drawer-row-key">Water Need</span><span class="drawer-row-val green"
-          id="drawer-water">—</span></div>
-      <div class="drawer-row"><span class="drawer-row-key">Sunlight</span><span class="drawer-row-val blue"
-          id="drawer-sun">—</span></div>
-      <div class="drawer-row"><span class="drawer-row-key">Watering Freq</span><span class="drawer-row-val"
-          id="drawer-freq">—</span></div>
-      <div class="drawer-row"><span class="drawer-row-key">Fertilizer</span><span class="drawer-row-val"
-          id="drawer-fert">—</span></div>
-      <div class="drawer-mbar">
-        <div class="drawer-mbar-labels"><span>MOISTURE RANGE</span><span id="drawer-range-pct"
-            style="color:var(--primary)">—%</span></div>
-        <div class="drawer-mbar-track">
-          <div class="drawer-mbar-fill" id="drawer-bar" style="width:0%;left:0"></div>
-        </div>
-        <div class="drawer-mbar-adc" id="drawer-adc">ADC —</div>
+      <!-- ── PLANT INFO (Always On) ── -->
+      <div class="drawer-section-label">
+        <span class="mi sm">eco</span> Plant Info
       </div>
-      <div class="drawer-section-label" style="margin-top:18px"><span class="mi sm">warning</span> Care Notes</div>
-      <div class="drawer-row"><span class="drawer-row-key">Description</span><span class="drawer-row-val"
-          id="drawer-desc" style="max-width:210px">—</span></div>
-      <div class="drawer-row"><span class="drawer-row-key">Overwatering Issue</span><span class="drawer-row-val warn"
-          id="drawer-overwater">—</span></div>
-      <div class="drawer-row"><span class="drawer-row-key">Solution</span><span class="drawer-row-val"
-          id="drawer-solution">—</span></div>
-      <div class="drawer-row"><span class="drawer-row-key">pH Need</span><span class="drawer-row-val blue"
-          id="drawer-ph">—</span></div>
-      <button class="drawer-select-btn" id="drawer-select-btn" onclick="selectFromDrawer()">
+      <div class="drawer-info-content">
+        <div class="drawer-row"><span class="drawer-row-key">Water Need</span><span class="drawer-row-val green" id="drawer-water">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">Sunlight</span><span class="drawer-row-val blue" id="drawer-sun">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">Watering Freq</span><span class="drawer-row-val" id="drawer-freq">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">Fertilizer</span><span class="drawer-row-val" id="drawer-fert">—</span></div>
+        <div class="drawer-mbar">
+          <div class="drawer-mbar-labels"><span>MOISTURE RANGE</span><span id="drawer-range-pct" style="color:var(--primary)">—%</span></div>
+          <div class="drawer-mbar-track">
+            <div class="drawer-mbar-fill" id="drawer-bar" style="width:0%;left:0"></div>
+          </div>
+          <div class="drawer-mbar-adc" id="drawer-adc">ADC —</div>
+        </div>
+      </div>
+      <!-- ── CARE NOTES accordion ── -->
+      <div class="drawer-section-label collapsible" id="acc-header-care" onclick="toggleDrawerSection('care')" style="margin-top:14px">
+        <span class="mi sm">warning</span> Care Notes
+        <span class="accordion-chevron">&#8964;</span>
+      </div>
+      <div class="drawer-accordion-body" id="acc-body-care">
+        <div class="drawer-row"><span class="drawer-row-key">Description</span><span class="drawer-row-val" id="drawer-desc" style="max-width:210px">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">Overwatering Issue</span><span class="drawer-row-val warn" id="drawer-overwater">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">Solution</span><span class="drawer-row-val" id="drawer-solution">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">pH Need</span><span class="drawer-row-val blue" id="drawer-ph">—</span></div>
+      </div>
+      <!-- ── SOIL & DISEASE accordion ── -->
+      <div class="drawer-section-label collapsible" id="acc-header-disease" onclick="toggleDrawerSection('disease')" style="margin-top:10px">
+        <span class="mi sm">coronavirus</span> Soil &amp; Disease
+        <span class="accordion-chevron">&#8964;</span>
+      </div>
+      <div class="drawer-accordion-body" id="acc-body-disease">
+        <div class="drawer-row"><span class="drawer-row-key">Associated Disease</span><span class="drawer-row-val warn" id="drawer-disease-name">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">Pathogen</span><span class="drawer-row-val" id="drawer-disease-pathogen" style="font-style:italic">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">Pathogen Type</span><span class="drawer-row-val" id="drawer-disease-type">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">Soil Cause</span><span class="drawer-row-val" id="drawer-disease-cause" style="max-width:210px">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">Symptoms</span><span class="drawer-row-val" id="drawer-disease-symptoms" style="max-width:210px">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">Soil Prevention</span><span class="drawer-row-val green" id="drawer-disease-prevent" style="max-width:210px">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key">Soil Risk Level</span><span class="drawer-row-val" id="drawer-disease-risk">—</span></div>
+      </div>
+      <button class="drawer-select-btn" id="drawer-select-btn" onclick="selectFromDrawer()" style="margin-top:18px">
         <span class="mi sm">check_circle</span>
         <span id="drawer-select-label">Select This Plant</span>
       </button>
@@ -5823,6 +5899,48 @@
       document.getElementById('drawer-solution').textContent = p.solution || '—';
       document.getElementById('drawer-ph').textContent = p.ph_need || '—';
 
+      // Soil & Disease Accordion population
+      const diseaseHeader = document.getElementById('acc-header-disease');
+      const diseaseBody = document.getElementById('acc-body-disease');
+      const hasDisease = !!(p.soil_disease_name || p.soil_pathogen);
+      if (diseaseHeader) {
+        if (hasDisease) {
+          diseaseHeader.style.display = 'flex';
+          if (diseaseBody) diseaseBody.style.display = '';
+          document.getElementById('drawer-disease-name').textContent = p.soil_disease_name || '—';
+          document.getElementById('drawer-disease-pathogen').textContent = p.soil_pathogen || '—';
+          document.getElementById('drawer-disease-type').textContent = p.soil_pathogen_type || '—';
+          document.getElementById('drawer-disease-cause').textContent = p.soil_disease_cause || '—';
+          document.getElementById('drawer-disease-symptoms').textContent = p.soil_disease_symptoms || '—';
+          document.getElementById('drawer-disease-prevent').textContent = p.soil_disease_prevent || '—';
+          const riskEl = document.getElementById('drawer-disease-risk');
+          if (riskEl) {
+            const risk = (p.soil_risk_level || '').toLowerCase();
+            if (risk === 'high') {
+              riskEl.innerHTML = '<span class="disease-risk-badge risk-high">🔴 High</span>';
+            } else if (risk === 'medium') {
+              riskEl.innerHTML = '<span class="disease-risk-badge risk-medium">🟠 Medium</span>';
+            } else if (risk === 'low') {
+              riskEl.innerHTML = '<span class="disease-risk-badge risk-low">🟢 Low</span>';
+            } else {
+              riskEl.textContent = p.soil_risk_level || '—';
+            }
+          }
+        } else {
+          diseaseHeader.style.display = 'none';
+          if (diseaseBody) {
+            diseaseBody.classList.remove('open');
+            diseaseBody.style.display = 'none';
+          }
+        }
+      }
+
+      // Reset accordion open state on opening a new plant
+      ['care','disease'].forEach(k => {
+        document.getElementById('acc-body-' + k)?.classList.remove('open');
+        document.getElementById('acc-header-' + k)?.classList.remove('open');
+      });
+
       const minPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_max / 4095) * 100)));
       const maxPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_min / 4095) * 100)));
       document.getElementById('drawer-range-pct').textContent = minPct + '–' + maxPct + '%';
@@ -5849,6 +5967,20 @@
       document.getElementById('plant-drawer-overlay').classList.remove('open');
       document.getElementById('plant-drawer').classList.remove('open');
       document.body.style.overflow = '';
+      // Reset accordions to closed for next open
+      ['care','disease'].forEach(k => {
+        document.getElementById('acc-body-' + k)?.classList.remove('open');
+        document.getElementById('acc-header-' + k)?.classList.remove('open');
+      });
+    }
+
+    function toggleDrawerSection(key) {
+      const body   = document.getElementById('acc-body-' + key);
+      const header = document.getElementById('acc-header-' + key);
+      if (!body) return;
+      const isOpen = body.classList.contains('open');
+      body.classList.toggle('open', !isOpen);
+      header.classList.toggle('open', !isOpen);
     }
 
     async function selectFromDrawer() {
@@ -5874,7 +6006,7 @@
     ═══════════════════════════════════════ */
     const AI_CONFIG = {
       defaultKey: '',
-      defaultModel: 'gemini-flash-latest',
+      defaultModel: 'gemini-3.5-flash',
       proxyEndpoint: 'https://smart-irrigation-soiliq.vercel.app/api/chat',
       directEndpoint: '',
     };
@@ -5950,7 +6082,7 @@
     }
 
     function getAIModelId() {
-      return 'gemini-flash-latest';
+      return 'gemini-3.5-flash';
     }
 
     function toggleAIChat(forceState) {
