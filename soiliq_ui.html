@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -6376,14 +6376,21 @@ INSTRUCTIONS & RULES:
             break;
           }
         } catch (err) {
-          lastError = err.message;
-          console.warn(`[SoilIQ AI] Attempt via ${endpoint} failed:`, err.message);
+          let apiMsg = err.message;
+          try { const b = err._body ? JSON.parse(err._body) : null; if (b?.error) apiMsg = b.error; } catch (_) {}
+          lastError = apiMsg;
+          console.warn(`[SoilIQ AI] Attempt via ${endpoint} failed:`, apiMsg);
         }
       }
 
       if (!gotReply) {
         removeAITyping();
-        appendAIMessage('assistant', `⚠️ **AI Service Notice:** Could not connect to Gemini (${lastError || 'Network Error'}).\n\n` + generateLocalAgronomistAnswer(text, telemetry, attachedImage));
+        const isTimeout = (lastError||'').toLowerCase().includes('timeout') || (lastError||'').toLowerCase().includes('timed out') || (lastError||'').toLowerCase().includes('signal');
+        const isBusy    = (lastError||'').toLowerCase().includes('503') || (lastError||'').toLowerCase().includes('unavailable') || (lastError||'').toLowerCase().includes('overloaded');
+        let icon = '⚠️', title = 'AI Service Notice', note = `Could not reach AI (${lastError||'Network Error'}). **Check your connection.**\n\n`;
+        if (isTimeout) { icon = '⏱️'; title = 'Gemini Timed Out'; note = 'Request took too long. **Please try again in a few seconds.**\n\n'; }
+        else if (isBusy) { icon = '🔄'; title = 'Gemini Overloaded'; note = 'Gemini is busy (503). A backup model was tried. **Please retry shortly.**\n\n'; }
+        appendAIMessage('assistant', `${icon} **${title}:** ${note}> 🤖 *Offline Mode — pre-programmed response:*\n\n` + generateLocalAgronomistAnswer(text, telemetry, attachedImage));
       }
 
       aiIsGenerating = false;

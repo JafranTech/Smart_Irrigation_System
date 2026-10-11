@@ -10,8 +10,40 @@ export const config = {
   maxDuration: 60,
 };
 
+// Gemini models to try in order. If the first times out / 503s, we fall to the next.
+const MODEL_FALLBACK_CHAIN = [
+  'gemini-2.0-flash',
+  'gemini-1.5-flash',
+];
+
+// Per-attempt timeout (ms). Must be well under Vercel's 60 s maxDuration so we
+// have time to try the fallback model before Vercel kills the function.
+const GEMINI_TIMEOUT_MS = 25000;
+
+async function callGemini(apiKey, modelId, geminiBody) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(geminiBody),
+        signal: controller.signal,
+      }
+    );
+    clearTimeout(timer);
+    return res;
+  } catch (err) {
+    clearTimeout(timer);
+    throw err; // re-throw (includes AbortError on timeout)
+  }
+}
+
 export default async function handler(req, res) {
-  // CORS Headers
+  // ── CORS ──────────────────────────────────────────────────────────────────
   const origin = req.headers.origin || '*';
   res.setHeader('Access-Control-Allow-Origin', origin);
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -20,55 +52,37 @@ export default async function handler(req, res) {
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization'
   );
 
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
+  if (req.method === 'OPTIONS') { res.status(200).end(); return; }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  // ── API key ───────────────────────────────────────────────────────────────
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'GEMINI_API_KEY is not set in Vercel environment variables.' });
   }
 
   try {
-    // API key is a server-side secret stored in Vercel environment variables.
-    // It is NEVER sent from or exposed to the browser.
-    const apiKey = process.env.GEMINI_API_KEY;
+    // ── Parse request ───────────────────────────────────────────────────────
+    const { messages = [], temperature = 0.5, max_tokens = 800 } = req.body;
 
-    if (!apiKey) {
-      return res.status(500).json({ error: 'Gemini API key is not configured on the server. Set GEMINI_API_KEY in Vercel environment variables.' });
-    }
-
-    // Convert OpenAI-style messages to Gemini generateContent format
-    const { model = 'gemini-flash-latest', messages = [], temperature = 0.5, max_tokens = 800 } = req.body;
-    // Map older/deprecated model IDs to gemini-flash-latest
-    const targetModel = (!model || model.includes('2.0') || model.includes('2.5')) ? 'gemini-flash-latest' : model;
-
-    // Extract system prompt (Gemini uses systemInstruction separately)
+    // ── Build Gemini payload ────────────────────────────────────────────────
     const systemMsg = messages.find(m => m.role === 'system');
     const systemInstruction = systemMsg
       ? { parts: [{ text: systemMsg.content }] }
       : undefined;
 
-    // Build Gemini contents from non-system messages
     const contents = messages
       .filter(m => m.role !== 'system')
       .map(m => {
-        // Map OpenAI roles: 'assistant' -> 'model'
         const role = m.role === 'assistant' ? 'model' : 'user';
 
-        // Handle multimodal content (array with text + image_url)
         if (Array.isArray(m.content)) {
           const parts = m.content.map(part => {
-            if (part.type === 'text') {
-              return { text: part.text };
-            } else if (part.type === 'image_url') {
+            if (part.type === 'text') return { text: part.text };
+            if (part.type === 'image_url') {
               const url = part.image_url?.url || '';
-              // base64 data URI: data:image/jpeg;base64,<data>
               const match = url.match(/^data:([^;]+);base64,(.+)$/);
-              if (match) {
-                return { inlineData: { mimeType: match[1], data: match[2] } };
-              }
-              // Plain public URL
+              if (match) return { inlineData: { mimeType: match[1], data: match[2] } };
               return { fileData: { mimeType: 'image/jpeg', fileUri: url } };
             }
             return { text: '' };
@@ -76,40 +90,64 @@ export default async function handler(req, res) {
           return { role, parts };
         }
 
-        // Plain text content
         return { role, parts: [{ text: m.content || '' }] };
       });
 
-    // Build Gemini request body
     const geminiBody = {
       contents,
       generationConfig: { temperature, maxOutputTokens: max_tokens },
     };
     if (systemInstruction) geminiBody.systemInstruction = systemInstruction;
 
-    const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(geminiBody),
+    // ── Try each model in the fallback chain ────────────────────────────────
+    let lastError = null;
+
+    for (const modelId of MODEL_FALLBACK_CHAIN) {
+      try {
+        const geminiRes = await callGemini(apiKey, modelId, geminiBody);
+
+        // Gemini returned a non-2xx (e.g. 503 overloaded) — try next model
+        if (!geminiRes.ok) {
+          const errData = await geminiRes.json().catch(() => ({}));
+          const msg = errData?.error?.message || `Gemini ${geminiRes.status}`;
+          console.warn(`[chat] model=${modelId} status=${geminiRes.status}: ${msg}`);
+          lastError = { status: geminiRes.status, message: msg };
+          // Only retry on transient errors (429, 500, 503)
+          if (![429, 500, 503].includes(geminiRes.status)) {
+            return res.status(geminiRes.status).json({ error: msg, details: errData });
+          }
+          continue; // try next model
+        }
+
+        const data = await geminiRes.json();
+        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+
+        // ── Success: return OpenAI-style response ───────────────────────────
+        return res.status(200).json({
+          choices: [{ message: { role: 'assistant', content: text }, finish_reason: data?.candidates?.[0]?.finishReason || 'stop' }],
+          model: modelId,
+          usage: data?.usageMetadata || {},
+        });
+
+      } catch (err) {
+        const isTimeout = err.name === 'AbortError';
+        console.warn(`[chat] model=${modelId} ${isTimeout ? 'TIMED OUT' : 'FETCH ERROR'}: ${err.message}`);
+        lastError = { status: isTimeout ? 504 : 500, message: isTimeout ? `Gemini timed out (>${GEMINI_TIMEOUT_MS / 1000}s)` : err.message };
+        // Always try next model on timeout / network error
+        continue;
       }
-    );
-
-    const data = await geminiRes.json();
-
-    if (!geminiRes.ok) {
-      return res.status(geminiRes.status).json({ error: data?.error?.message || 'Gemini API error', details: data });
     }
 
-    // Translate Gemini response back to OpenAI-style for the frontend
-    const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    return res.status(200).json({
-      choices: [{ message: { role: 'assistant', content: text }, finish_reason: data?.candidates?.[0]?.finishReason || 'stop' }],
-      model,
-      usage: data?.usageMetadata || {},
+    // ── All models failed ───────────────────────────────────────────────────
+    const statusCode = lastError?.status || 503;
+    console.error(`[chat] All Gemini models failed. Last error: ${JSON.stringify(lastError)}`);
+    return res.status(statusCode).json({
+      error: lastError?.message || 'Gemini is temporarily unavailable. Please try again.',
+      retryable: true,
     });
+
   } catch (err) {
+    console.error('[chat] Unexpected error:', err);
     return res.status(500).json({ error: err.message });
   }
 }
