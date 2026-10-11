@@ -11,9 +11,11 @@ export const config = {
 };
 
 // Gemini models to try in order. If the first times out / 503s, we fall to the next.
+// Using 'gemini-flash-latest' = Google's stable alias, always points to their current
+// recommended model automatically — no more manual updates when Google renames models.
 const MODEL_FALLBACK_CHAIN = [
-  'gemini-2.0-flash',
-  'gemini-1.5-flash',
+  'gemini-flash-latest',  // ← auto-updates with Google, never goes stale
+  'gemini-1.5-flash',     // ← proven fallback, very stable
 ];
 
 // Per-attempt timeout (ms). Must be well under Vercel's 60 s maxDuration so we
