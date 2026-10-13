@@ -1,0 +1,1222 @@
+[
+  {
+    "id": "ebf4325c-5c2e-4df7-af9e-4209c0a15d54",
+    "name": "African Baobab Bonsai",
+    "scientific_name": "Adansonia digitata"
+  },
+  {
+    "id": "71eb04ff-346a-4a9a-bab0-01bc6e1e2dcb",
+    "name": "Alexandrian Senna",
+    "scientific_name": "Senna alexandrina"
+  },
+  {
+    "id": "055a9186-ae58-4913-920a-1581009cc231",
+    "name": "Alocasia Polly",
+    "scientific_name": "Alocasia amazonica"
+  },
+  {
+    "id": "4ee5ac2d-b5ce-40a2-9656-58d4b0223edd",
+    "name": "Alocasia Zebrina",
+    "scientific_name": "Alocasia zebrina"
+  },
+  {
+    "id": "bca34955-4688-488c-bb33-cc9338047230",
+    "name": "Aloe Vera",
+    "scientific_name": "Aloe barbadensis"
+  },
+  {
+    "id": "792d5269-c76b-4c49-b10f-cc0f2362f76a",
+    "name": "Aloe Vera Barbadensis",
+    "scientific_name": "Aloe barbadensis Miller"
+  },
+  {
+    "id": "f420e751-5e38-46f0-a30b-7f6198c6af53",
+    "name": "Amla Indian Gooseberry",
+    "scientific_name": "Phyllanthus emblica"
+  },
+  {
+    "id": "96721f51-28da-4d64-8dfb-00a1e83d6acf",
+    "name": "Anthurium",
+    "scientific_name": "Anthurium andraeanum"
+  },
+  {
+    "id": "897b0876-4602-4987-97ae-a31b2b4dd848",
+    "name": "Anthurium Clarinervium",
+    "scientific_name": "Anthurium clarinervium"
+  },
+  {
+    "id": "60f51b8e-db82-417e-9d95-f7d195b617f9",
+    "name": "Apple Tree",
+    "scientific_name": "Malus domestica"
+  },
+  {
+    "id": "2a61dd59-8419-41a6-802a-d007684e072b",
+    "name": "Areca Palm",
+    "scientific_name": "Dypsis lutescens"
+  },
+  {
+    "id": "51b33ce5-c4e6-4505-b27d-d7d6b0b487b8",
+    "name": "Ashwagandha",
+    "scientific_name": "Withania somnifera"
+  },
+  {
+    "id": "c7878d73-a513-4fba-9bdd-3e512de8a6f7",
+    "name": "Asparagus",
+    "scientific_name": "Asparagus officinalis"
+  },
+  {
+    "id": "f2e6379c-cd50-4c5a-9617-e594c9ae83c4",
+    "name": "Atlas Cedar Bonsai",
+    "scientific_name": "Cedrus atlantica"
+  },
+  {
+    "id": "38755dc8-ef3c-47eb-b38e-45a82cd77ff6",
+    "name": "Avocado",
+    "scientific_name": "Persea americana"
+  },
+  {
+    "id": "0cda7be8-4829-461d-86d6-776895e4aca4",
+    "name": "Baheda Bibhitaki",
+    "scientific_name": "Terminalia bellirica"
+  },
+  {
+    "id": "bd8fc2d8-8d06-4cfd-97ee-db36ed0e7950",
+    "name": "Bald Cypress Bonsai",
+    "scientific_name": "Taxodium distichum"
+  },
+  {
+    "id": "bd5ea52e-b7c0-407b-b7ee-16044cf0bb45",
+    "name": "Bamboo",
+    "scientific_name": "Bambusoideae"
+  },
+  {
+    "id": "65ba3be5-87dc-4d3b-a723-575f93456aa0",
+    "name": "Banana",
+    "scientific_name": "Musa"
+  },
+  {
+    "id": "d00cf92a-0356-4ffa-b6b6-34a75a7c2b51",
+    "name": "Banana Leaf Fig",
+    "scientific_name": "Ficus maclellandii"
+  },
+  {
+    "id": "b2b1a7d1-0084-40ac-afac-7c3b96a8b952",
+    "name": "Basil",
+    "scientific_name": "Ocimum basilicum"
+  },
+  {
+    "id": "2cfbf237-3235-4e30-b3ff-64a487fa64b5",
+    "name": "Bean (Green)",
+    "scientific_name": "Phaseolus vulgaris"
+  },
+  {
+    "id": "3e5f2640-ecc1-44ca-a9df-e2b777bc5833",
+    "name": "Beetroot",
+    "scientific_name": "Beta vulgaris"
+  },
+  {
+    "id": "aa1ea557-a43b-4e73-adb0-23eb6af75271",
+    "name": "Bell Pepper",
+    "scientific_name": "Capsicum annuum"
+  },
+  {
+    "id": "09042cae-2b3b-4991-89f4-47aed81dd895",
+    "name": "Bird of Paradise",
+    "scientific_name": "Strelitzia reginae"
+  },
+  {
+    "id": "d21717d3-7749-4158-a5c9-81a491be9966",
+    "name": "Bird's Nest Fern",
+    "scientific_name": "Asplenium nidus"
+  },
+  {
+    "id": "73c6b268-476d-4cfe-997c-d07b760d00e6",
+    "name": "Black Elderberry",
+    "scientific_name": "Sambucus nigra"
+  },
+  {
+    "id": "c3c5b0c3-97e3-43b0-a836-419b862a7525",
+    "name": "Blueberry",
+    "scientific_name": "Vaccinium corymbosum"
+  },
+  {
+    "id": "e3f1dcc3-0ecd-469a-9e00-b191a65489cd",
+    "name": "Boston Fern",
+    "scientific_name": "Nephrolepis exaltata"
+  },
+  {
+    "id": "67ff4077-89ba-440e-9e32-9fe8bd56c427",
+    "name": "Bougainvillea",
+    "scientific_name": "Bougainvillea"
+  },
+  {
+    "id": "40501eeb-a17d-499e-ac80-74d5fe4d1a45",
+    "name": "Bougainvillea Bonsai",
+    "scientific_name": "Bougainvillea glabra"
+  },
+  {
+    "id": "013b3d84-4a76-4476-85ca-b54e1b88d587",
+    "name": "Brahmi",
+    "scientific_name": "Bacopa monnieri"
+  },
+  {
+    "id": "2abb1c97-5653-48cc-8639-bd62f9fd0aa1",
+    "name": "Brazilian Raintree Bonsai",
+    "scientific_name": "Chloroleucon tortum"
+  },
+  {
+    "id": "507071b6-2b83-4f32-ae77-814f84c8b7db",
+    "name": "Broccoli",
+    "scientific_name": "Brassica oleracea"
+  },
+  {
+    "id": "b968dc74-9865-4c0c-af61-1b79a2c020c0",
+    "name": "Bromeliad Guzmania",
+    "scientific_name": "Guzmania lingulata"
+  },
+  {
+    "id": "2739e20b-e4ff-46a6-b403-f770415073d6",
+    "name": "Cabbage",
+    "scientific_name": "Brassica oleracea var."
+  },
+  {
+    "id": "0c0dd2bb-ac23-4689-b732-947de6d7b889",
+    "name": "Cactus",
+    "scientific_name": "Cactaceae"
+  },
+  {
+    "id": "cd9b7416-9e95-4843-9e7a-dba24a36215a",
+    "name": "Calathea Medallion",
+    "scientific_name": "Goeppertia veitchiana"
+  },
+  {
+    "id": "0aa3341a-318d-4d6f-8ecf-dde71a45e291",
+    "name": "Calathea Orbifolia",
+    "scientific_name": "Goeppertia orbifolia"
+  },
+  {
+    "id": "8f630671-7bdf-4388-bc36-32a0bf0fb348",
+    "name": "Candyleaf Stevia",
+    "scientific_name": "Stevia rebaudiana"
+  },
+  {
+    "id": "21dfdca3-169c-4645-ada2-7bf764436840",
+    "name": "Canna Lily",
+    "scientific_name": "Canna indica"
+  },
+  {
+    "id": "5c7911ad-c3f3-4c06-9d24-4c2b4648692c",
+    "name": "Carrot",
+    "scientific_name": "Daucus carota"
+  },
+  {
+    "id": "c2320253-faa4-4bc3-8b22-83a80ec1cdca",
+    "name": "Cat's Claw Una de Gato",
+    "scientific_name": "Uncaria tomentosa"
+  },
+  {
+    "id": "639d014d-5d00-494f-9624-cc8b7a33c876",
+    "name": "Cauliflower",
+    "scientific_name": "Brassica oleracea botrytis"
+  },
+  {
+    "id": "9846bf62-3b1b-4f20-9a5f-4ad61187a1c6",
+    "name": "Cedar of Lebanon Bonsai",
+    "scientific_name": "Cedrus libani"
+  },
+  {
+    "id": "510b68b2-bc17-49f3-a85d-f57c544c5ff0",
+    "name": "Cherry Tree",
+    "scientific_name": "Prunus avium"
+  },
+  {
+    "id": "ee045853-23c5-48aa-bb5b-0107098e069e",
+    "name": "Chili",
+    "scientific_name": "Capsicum annuum"
+  },
+  {
+    "id": "9a446229-5871-4323-85e9-9ac4e40eafad",
+    "name": "Chinese Banyan Bonsai",
+    "scientific_name": "Ficus microcarpa"
+  },
+  {
+    "id": "97f26190-881a-4a0e-8f47-a6a1ab4e153c",
+    "name": "Chinese Elm Bonsai",
+    "scientific_name": "Ulmus parvifolia"
+  },
+  {
+    "id": "313e5439-8fd5-4c54-956b-065254cfb0ed",
+    "name": "Chinese Fan Palm",
+    "scientific_name": "Livistona chinensis"
+  },
+  {
+    "id": "7cc4688b-0d65-4682-be3c-25a4fe390ad9",
+    "name": "Chinese Sweet Plum Bonsai",
+    "scientific_name": "Sageretia theezans"
+  },
+  {
+    "id": "b64feeff-e2f2-4eb0-9bf5-63288c2becb0",
+    "name": "Chrysanthemum",
+    "scientific_name": "Chrysanthemum"
+  },
+  {
+    "id": "0452687d-c435-4c06-ae1e-d7eff7c08ef5",
+    "name": "Coconut",
+    "scientific_name": "Cocos nucifera"
+  },
+  {
+    "id": "3681c396-fc26-4e7b-9b2c-cdb90a5e669b",
+    "name": "Coffee Plant",
+    "scientific_name": "Coffea arabica"
+  },
+  {
+    "id": "f7c20990-6f09-4c3d-89c9-0ae5afaddf9a",
+    "name": "Common Dandelion",
+    "scientific_name": "Taraxacum officinale"
+  },
+  {
+    "id": "b0e433fd-d0f8-4ae0-ac83-713d7f3a2b76",
+    "name": "Common Hawthorn Bonsai",
+    "scientific_name": "Crataegus monogyna"
+  },
+  {
+    "id": "0568bd3d-7bdb-4db7-bc64-abe352f04b55",
+    "name": "Common Thyme",
+    "scientific_name": "Thymus vulgaris"
+  },
+  {
+    "id": "55a1a0d8-fc43-43a0-8ac0-0491c35170e2",
+    "name": "Common Valerian",
+    "scientific_name": "Valeriana officinalis"
+  },
+  {
+    "id": "78559e57-1101-49e3-940a-b432c114add7",
+    "name": "Common Yarrow",
+    "scientific_name": "Achillea millefolium"
+  },
+  {
+    "id": "6e00391a-7895-453a-943e-a59923d5b903",
+    "name": "Cordyline",
+    "scientific_name": "Cordyline fruticosa"
+  },
+  {
+    "id": "dd34ddb1-6357-4522-ba5b-ff46a2def473",
+    "name": "Coriander",
+    "scientific_name": "Coriandrum sativum"
+  },
+  {
+    "id": "99144d72-469e-4a74-998f-6293c3e4228b",
+    "name": "Corn",
+    "scientific_name": "Zea mays"
+  },
+  {
+    "id": "2e5906b4-b451-438e-b9d9-1467a6ba7d71",
+    "name": "Croton",
+    "scientific_name": "Codiaeum variegatum"
+  },
+  {
+    "id": "861281ff-22bc-4b75-be33-63f4ad4481c6",
+    "name": "Cucumber",
+    "scientific_name": "Cucumis sativus"
+  },
+  {
+    "id": "2b1e0a01-53b8-40fd-9520-6b6cd07b36d1",
+    "name": "Culinary Ginger",
+    "scientific_name": "Zingiber officinale"
+  },
+  {
+    "id": "8cd7d227-c403-44cb-9d4d-53c2f9d4b91a",
+    "name": "Culinary Sage",
+    "scientific_name": "Salvia officinalis"
+  },
+  {
+    "id": "7ddf0f2f-9659-4e6c-91da-35f1d7e46968",
+    "name": "Daisy",
+    "scientific_name": "Bellis perennis"
+  },
+  {
+    "id": "d69ccdf0-1740-4b56-b5be-3ff9e0aee374",
+    "name": "Dawn Redwood Bonsai",
+    "scientific_name": "Metasequoia glyptostroboides"
+  },
+  {
+    "id": "bef15e19-74fd-4b15-bbed-25d584f6a60f",
+    "name": "Dieffenbachia",
+    "scientific_name": "Dieffenbachia seguine"
+  },
+  {
+    "id": "ea5082ac-2902-4636-b901-97a5292c4530",
+    "name": "Dill",
+    "scientific_name": "Anethum graveolens"
+  },
+  {
+    "id": "03a7ec03-8a23-4d9f-ad6f-058faa9c881d",
+    "name": "Dracaena Fragrans",
+    "scientific_name": "Dracaena fragrans"
+  },
+  {
+    "id": "8aac46a9-629d-4f7f-af74-88f7902930c5",
+    "name": "Dragon Fruit",
+    "scientific_name": "Selenicereus undatus"
+  },
+  {
+    "id": "b94ad721-0e78-45ee-befd-f732acc92d60",
+    "name": "Dragon Tree",
+    "scientific_name": "Dracaena marginata"
+  },
+  {
+    "id": "db5efdec-70f5-4c39-8dbf-10d681ba13d5",
+    "name": "Dwarf Jade Portulacaria Bonsai",
+    "scientific_name": "Portulacaria afra"
+  },
+  {
+    "id": "9618be65-2a90-46a3-a25a-55cfe09d7236",
+    "name": "Dwarf Pomegranate Bonsai",
+    "scientific_name": "Punica granatum 'Nana'"
+  },
+  {
+    "id": "9996ef3a-6c01-4261-bf33-cf2c9296e111",
+    "name": "Echinacea Purple Coneflower",
+    "scientific_name": "Echinacea purpurea"
+  },
+  {
+    "id": "90be6986-a831-4b57-b25c-82058eec7ef5",
+    "name": "Eggplant",
+    "scientific_name": "Solanum melongena"
+  },
+  {
+    "id": "fe8e20a3-e375-490a-9117-1c86b106b1b8",
+    "name": "English Lavender",
+    "scientific_name": "Lavandula angustifolia"
+  },
+  {
+    "id": "aee79f4d-6af0-42a5-aa9f-163b2edcdfed",
+    "name": "English Yew Bonsai",
+    "scientific_name": "Taxus baccata"
+  },
+  {
+    "id": "ad99314a-448b-4d44-9a15-887ade3f6bdc",
+    "name": "Eucalyptus",
+    "scientific_name": "Eucalyptus globulus"
+  },
+  {
+    "id": "2fc276c8-5241-4de2-92e5-b6ab024801e8",
+    "name": "European Beech Bonsai",
+    "scientific_name": "Fagus sylvatica"
+  },
+  {
+    "id": "9a6369a3-b3aa-423a-8ced-d53bf239505c",
+    "name": "European Hornbeam Bonsai",
+    "scientific_name": "Carpinus betulus"
+  },
+  {
+    "id": "57b73a6a-fed2-44bc-8276-928b249a194c",
+    "name": "European Larch Bonsai",
+    "scientific_name": "Larix decidua"
+  },
+  {
+    "id": "5aafffb3-e5f0-4de3-92fb-46287e6c5b72",
+    "name": "Fennel",
+    "scientific_name": "Foeniculum vulgare"
+  },
+  {
+    "id": "deea79ad-2da9-4f5a-a73e-aa127dbde9a1",
+    "name": "Fenugreek Methi",
+    "scientific_name": "Trigonella foenum-graecum"
+  },
+  {
+    "id": "1abac459-847b-498f-bcf0-b7c706b175e5",
+    "name": "Fern",
+    "scientific_name": "Nephrolepis exaltata"
+  },
+  {
+    "id": "9f84d419-4895-480b-8cfa-d433c55be1f6",
+    "name": "Feverfew",
+    "scientific_name": "Tanacetum parthenium"
+  },
+  {
+    "id": "9ada2e89-b209-4113-b159-418a33abf317",
+    "name": "Ficus Audrey",
+    "scientific_name": "Ficus benghalensis"
+  },
+  {
+    "id": "1583f4a2-3a6f-402c-ad7e-332c54a5dc82",
+    "name": "Ficus Retusa Bonsai",
+    "scientific_name": "Ficus retusa"
+  },
+  {
+    "id": "a00f009d-7d99-4750-ac3a-6265e152a7cf",
+    "name": "Fiddle Leaf Fig",
+    "scientific_name": "Ficus lyrata"
+  },
+  {
+    "id": "7f6240ff-4d74-4521-a8b1-28b7ffbe068a",
+    "name": "Firethorn Bonsai",
+    "scientific_name": "Pyracantha coccinea"
+  },
+  {
+    "id": "ddf38c02-1bfb-4f4d-8e07-d4751d7ca4e4",
+    "name": "Flowering Quince Bonsai",
+    "scientific_name": "Chaenomeles speciosa"
+  },
+  {
+    "id": "b3a813e2-dffd-4666-b9eb-489b7db6a5f8",
+    "name": "Fukien Tea Bonsai",
+    "scientific_name": "Carmona retusa"
+  },
+  {
+    "id": "600451d7-ba6d-40d1-a634-cfd18eae2f27",
+    "name": "Garlic",
+    "scientific_name": "Allium sativum"
+  },
+  {
+    "id": "341d2ac5-8138-4037-87ef-dad61f37ea15",
+    "name": "Geranium",
+    "scientific_name": "Pelargonium"
+  },
+  {
+    "id": "deb8ecc9-1bc7-4ec2-bdb8-b2cdced2d607",
+    "name": "German Chamomile",
+    "scientific_name": "Matricaria chamomilla"
+  },
+  {
+    "id": "73b9d650-2b66-4749-9968-e4eb12a0d801",
+    "name": "Giloy Guduchi",
+    "scientific_name": "Tinospora cordifolia"
+  },
+  {
+    "id": "4f0f252f-ec6b-469f-8c09-ff0857bda1f1",
+    "name": "Ginger",
+    "scientific_name": "Zingiber officinale"
+  },
+  {
+    "id": "b33a7d06-7872-43a6-9fc8-867d903f4dc3",
+    "name": "Ginseng Ficus Bonsai",
+    "scientific_name": "Ficus microcarpa"
+  },
+  {
+    "id": "050eb965-8c6c-4057-b65f-f7ca8667945e",
+    "name": "Golden Pothos",
+    "scientific_name": "Epipremnum aureum"
+  },
+  {
+    "id": "d3c0d398-405a-4cac-acde-3712c287d9f8",
+    "name": "Golden Root Rhodiola",
+    "scientific_name": "Rhodiola rosea"
+  },
+  {
+    "id": "4080f950-9a71-4bd8-abc0-a388b7baacac",
+    "name": "Goldenseal",
+    "scientific_name": "Hydrastis canadensis"
+  },
+  {
+    "id": "519bf646-02e6-4d06-9ae3-c60b9346edd7",
+    "name": "Gotu Kola Asiatic Pennywort",
+    "scientific_name": "Centella asiatica"
+  },
+  {
+    "id": "e31f32ad-bc9e-42a5-a45a-5eed6ee6ca4c",
+    "name": "Grape Vine",
+    "scientific_name": "Vitis vinifera"
+  },
+  {
+    "id": "b0ed9a1b-78c6-46cf-9469-ddc4c31aa0eb",
+    "name": "Greek Oregano",
+    "scientific_name": "Origanum vulgare"
+  },
+  {
+    "id": "d1b35d8b-7b5a-4d66-bb00-a5818cb456a1",
+    "name": "Guava",
+    "scientific_name": "Psidium guajava"
+  },
+  {
+    "id": "f639fb8e-d5f6-4f1d-b140-9a5cf93d9305",
+    "name": "Hall Crabapple Bonsai",
+    "scientific_name": "Malus halliana"
+  },
+  {
+    "id": "bac3647c-4d35-48c2-95d9-947ef91c56d1",
+    "name": "Haritaki Chebulic Myrobalan",
+    "scientific_name": "Terminalia chebula"
+  },
+  {
+    "id": "2ac19ee2-3731-49db-a4e7-8143a4f34c0b",
+    "name": "Heliconia",
+    "scientific_name": "Heliconia psittacorum"
+  },
+  {
+    "id": "fa634b0c-98dc-4a07-b991-7b6890cea78e",
+    "name": "Hibiscus",
+    "scientific_name": "Hibiscus rosa-sinensis"
+  },
+  {
+    "id": "209e00a0-887a-4ce2-8eb4-dae7120294e7",
+    "name": "Hinoki Cypress Bonsai",
+    "scientific_name": "Chamaecyparis obtusa"
+  },
+  {
+    "id": "8fff3d0b-f209-4daf-a6e3-1bad81603065",
+    "name": "Hosta",
+    "scientific_name": "Hosta plantaginea"
+  },
+  {
+    "id": "72e5d1a3-c4ba-419f-8e0e-93aca4c91475",
+    "name": "Huang Qi Astragalus",
+    "scientific_name": "Astragalus membranaceus"
+  },
+  {
+    "id": "ed972610-1574-4b09-aa6f-3a312b9ae1c4",
+    "name": "Hydrangea",
+    "scientific_name": "Hydrangea macrophylla"
+  },
+  {
+    "id": "4f646b8a-9374-4fe1-859d-57456fb50249",
+    "name": "Indian Neem",
+    "scientific_name": "Azadirachta indica"
+  },
+  {
+    "id": "146cbc2c-0b0d-4c13-a7b0-895d4cdc1fe4",
+    "name": "Jade Plant",
+    "scientific_name": "Crassula ovata"
+  },
+  {
+    "id": "0aa09cff-6db7-4d75-b7f4-07370263058d",
+    "name": "Japanese Apricot Bonsai",
+    "scientific_name": "Prunus mume"
+  },
+  {
+    "id": "d4aca74a-aa23-49a0-b0a2-06cb78e4dcc7",
+    "name": "Japanese Beech Bonsai",
+    "scientific_name": "Fagus crenata"
+  },
+  {
+    "id": "6bf98bd2-d152-4dc4-a6b2-60fd3015257a",
+    "name": "Japanese Black Pine Bonsai",
+    "scientific_name": "Pinus thunbergii"
+  },
+  {
+    "id": "dfcb50d6-ca51-4131-8641-d4cc6cb5bfb5",
+    "name": "Japanese Cedar Sugi Bonsai",
+    "scientific_name": "Cryptomeria japonica"
+  },
+  {
+    "id": "0329e0ec-d21c-45a0-9c6f-e5cd4c93ce91",
+    "name": "Japanese Flowering Cherry Bonsai",
+    "scientific_name": "Prunus serrulata"
+  },
+  {
+    "id": "7e5b7d5b-ca79-4219-830f-c2114beb06c5",
+    "name": "Japanese Larch Bonsai",
+    "scientific_name": "Larix kaempferi"
+  },
+  {
+    "id": "5bdcf9d2-01c5-4b51-a124-288f57a97d31",
+    "name": "Japanese Maple Bonsai",
+    "scientific_name": "Acer palmatum"
+  },
+  {
+    "id": "c0046543-b945-4f42-8c31-3139d02cc889",
+    "name": "Japanese Red Pine Bonsai",
+    "scientific_name": "Pinus densiflora"
+  },
+  {
+    "id": "0813bf0a-dd97-4d04-b6ad-bb14419bf47f",
+    "name": "Japanese Stewartia Bonsai",
+    "scientific_name": "Stewartia pseudocamellia"
+  },
+  {
+    "id": "a2dd6967-682a-4105-b384-0debf454e374",
+    "name": "Japanese White Pine Bonsai",
+    "scientific_name": "Pinus parviflora"
+  },
+  {
+    "id": "de6e0cec-59bc-4156-9185-b93f149e0ceb",
+    "name": "Japanese Wisteria Bonsai",
+    "scientific_name": "Wisteria floribunda"
+  },
+  {
+    "id": "7ad746aa-e459-424a-bf84-45633a663239",
+    "name": "Japanese Yew Bonsai",
+    "scientific_name": "Taxus cuspidata"
+  },
+  {
+    "id": "3de71b65-7635-4149-b21b-f9d39f8a585e",
+    "name": "Japanese Zelkova Bonsai",
+    "scientific_name": "Zelkova serrata"
+  },
+  {
+    "id": "8c26e4c8-66ea-4780-8f43-e0c7cbd94b73",
+    "name": "Jasmine",
+    "scientific_name": "Jasminum"
+  },
+  {
+    "id": "6175551e-fc32-4953-a27b-062eac8b1c84",
+    "name": "Kale",
+    "scientific_name": "Brassica oleracea acephala"
+  },
+  {
+    "id": "6880a80a-ca98-4144-a4b0-6f2646ab7e2d",
+    "name": "Kalmegh Green Chiretta",
+    "scientific_name": "Andrographis paniculata"
+  },
+  {
+    "id": "de423e1d-c9e1-4db6-ac30-d889dbcd7f0a",
+    "name": "Kentia Palm",
+    "scientific_name": "Howea forsteriana"
+  },
+  {
+    "id": "5eea9b78-47ba-4684-a980-3021421758d4",
+    "name": "Kingsville Boxwood Bonsai",
+    "scientific_name": "Buxus microphylla 'Compacta'"
+  },
+  {
+    "id": "deaacedc-e582-41e3-9e36-9d86e0f7e354",
+    "name": "Korean Hornbeam Bonsai",
+    "scientific_name": "Carpinus coreana"
+  },
+  {
+    "id": "0d877c4b-8adf-4325-93f9-eab1c93ae937",
+    "name": "Korean Red Ginseng",
+    "scientific_name": "Panax ginseng"
+  },
+  {
+    "id": "078970fd-e789-47a4-b2a4-d1038746dc3c",
+    "name": "Kurume Azalea Bonsai",
+    "scientific_name": "Rhododendron kiusianum"
+  },
+  {
+    "id": "3c5c4747-7400-4608-adca-e85b9d6ac49c",
+    "name": "Lavender",
+    "scientific_name": "Lavandula"
+  },
+  {
+    "id": "6a9db35a-4606-406b-afd6-1944fe270e43",
+    "name": "Leek",
+    "scientific_name": "Allium ampeloprasum"
+  },
+  {
+    "id": "7b0be6e3-cc12-43ca-8989-0db70b6c18ee",
+    "name": "Lemon Balm",
+    "scientific_name": "Melissa officinalis"
+  },
+  {
+    "id": "8c46a32d-a569-46ca-94e9-376c3e34592f",
+    "name": "Lemon Tree",
+    "scientific_name": "Citrus limon"
+  },
+  {
+    "id": "4bc484af-0087-405c-b110-ba78679c5c34",
+    "name": "Lemongrass",
+    "scientific_name": "Cymbopogon citratus"
+  },
+  {
+    "id": "583428be-95d3-41ad-b234-538923e86a32",
+    "name": "Lettuce",
+    "scientific_name": "Lactuca sativa"
+  },
+  {
+    "id": "647d9185-f914-4577-b3dd-6b0a5e44b14a",
+    "name": "Licorice Root",
+    "scientific_name": "Glycyrrhiza glabra"
+  },
+  {
+    "id": "def2a664-7a05-4b0b-9d99-5dfa76189ad7",
+    "name": "Lily",
+    "scientific_name": "Lilium"
+  },
+  {
+    "id": "b1ea6e26-03e4-43fa-893f-78a0919cdc35",
+    "name": "Lotus",
+    "scientific_name": "Nelumbo nucifera"
+  },
+  {
+    "id": "2b11bd99-f61d-416d-809c-b22cf2227b0e",
+    "name": "Maidenhair Fern",
+    "scientific_name": "Adiantum raddianum"
+  },
+  {
+    "id": "824cfaa9-be97-407f-9a10-20a5f3fa7170",
+    "name": "Maidenhair Ginkgo",
+    "scientific_name": "Ginkgo biloba"
+  },
+  {
+    "id": "e6528fd8-bf3d-48fe-97d0-41e9e6405362",
+    "name": "Maidenhair Tree Bonsai",
+    "scientific_name": "Ginkgo biloba"
+  },
+  {
+    "id": "aab84ba8-80c6-4986-960c-cfeea390f396",
+    "name": "Majesty Palm",
+    "scientific_name": "Ravenea rivularis"
+  },
+  {
+    "id": "b2df999b-a446-4e29-b2a6-8ef64836e243",
+    "name": "Mango",
+    "scientific_name": "Mangifera indica"
+  },
+  {
+    "id": "41a39f69-c0d9-4022-a07d-3dd7431f0f57",
+    "name": "Marigold",
+    "scientific_name": "Tagetes"
+  },
+  {
+    "id": "11f5522c-0c2b-4bf9-a1df-c366e9777ce9",
+    "name": "Marshmallow Herb",
+    "scientific_name": "Althaea officinalis"
+  },
+  {
+    "id": "3e736d06-528b-4e53-96b7-93a6a4c77750",
+    "name": "Medicinal Garlic",
+    "scientific_name": "Allium sativum"
+  },
+  {
+    "id": "dd1a882d-edaf-4e68-8676-865b937edd48",
+    "name": "Medinilla Magnifica",
+    "scientific_name": "Medinilla magnifica"
+  },
+  {
+    "id": "8002f662-4ac1-488b-bee7-bf29450186f6",
+    "name": "Melon",
+    "scientific_name": "Cucumis melo"
+  },
+  {
+    "id": "3f181919-f7d4-4089-bc53-8d668cd43beb",
+    "name": "Mexican Mint",
+    "scientific_name": "Plectranthus amboinicus"
+  },
+  {
+    "id": "7a2590b1-eff4-4d91-8dea-6c0da27e920b",
+    "name": "Milk Thistle",
+    "scientific_name": "Silybum marianum"
+  },
+  {
+    "id": "f6fc9700-08c3-451c-ac8a-ee09ae22b716",
+    "name": "Mint",
+    "scientific_name": "Mentha"
+  },
+  {
+    "id": "f4730044-76c4-4af4-8caf-529cb91956a8",
+    "name": "Money Plant",
+    "scientific_name": "Epipremnum aureum"
+  },
+  {
+    "id": "2239939b-2e26-4195-857e-e7675a9828e9",
+    "name": "Monstera",
+    "scientific_name": "Monstera deliciosa"
+  },
+  {
+    "id": "ab815847-04ec-45b5-bcab-2eea3ea60858",
+    "name": "Monstera Deliciosa",
+    "scientific_name": "Monstera deliciosa"
+  },
+  {
+    "id": "ac313011-c4c6-4131-87cd-3f080dd93926",
+    "name": "Moringa Miracle Tree",
+    "scientific_name": "Moringa oleifera"
+  },
+  {
+    "id": "593a2577-4be6-404a-b56b-3520195b7642",
+    "name": "Mountain Arnica",
+    "scientific_name": "Arnica montana"
+  },
+  {
+    "id": "d31ad5fd-fa70-4a58-96fe-bd9598615066",
+    "name": "Neem Tree",
+    "scientific_name": "Azadirachta indica"
+  },
+  {
+    "id": "befca6f1-36a2-4969-bf9a-09132efed0ce",
+    "name": "Neoregelia Bromeliad",
+    "scientific_name": "Neoregelia carolinae"
+  },
+  {
+    "id": "2d2f05ae-449b-4a20-8950-8d7573848210",
+    "name": "Olive Tree Bonsai",
+    "scientific_name": "Olea europaea"
+  },
+  {
+    "id": "1c5b4b9c-fe6d-4ff6-a92d-c1e11d3e6ec5",
+    "name": "Onion",
+    "scientific_name": "Allium cepa"
+  },
+  {
+    "id": "f9180abe-d54d-479b-aea2-8c03abad96e3",
+    "name": "Orange Tree",
+    "scientific_name": "Citrus sinensis"
+  },
+  {
+    "id": "0318ca77-47bd-4165-a7c7-1745a4e39c01",
+    "name": "Orchid",
+    "scientific_name": "Orchidaceae"
+  },
+  {
+    "id": "fa72eb38-84b6-46fa-88bd-04c873514501",
+    "name": "Pachira Money Tree",
+    "scientific_name": "Pachira aquatica"
+  },
+  {
+    "id": "66d79540-5387-4ec8-8e75-25cd8572df18",
+    "name": "Papaya",
+    "scientific_name": "Carica papaya"
+  },
+  {
+    "id": "1d4d7037-8c4b-4812-b254-72cc5837c786",
+    "name": "Parlor Palm",
+    "scientific_name": "Chamaedorea elegans"
+  },
+  {
+    "id": "fc485f90-fec8-4531-aa5b-02f6dba4f70a",
+    "name": "Pea",
+    "scientific_name": "Pisum sativum"
+  },
+  {
+    "id": "556a5786-8049-4026-9b57-d248eca6c3ef",
+    "name": "Peace Lily",
+    "scientific_name": "Spathiphyllum wallisii"
+  },
+  {
+    "id": "e63d51bd-b984-4dfc-a8e1-d1a749bb8150",
+    "name": "Peach Tree",
+    "scientific_name": "Prunus persica"
+  },
+  {
+    "id": "967e6ada-9d3d-4180-b669-8342cec981df",
+    "name": "Peanut",
+    "scientific_name": "Arachis hypogaea"
+  },
+  {
+    "id": "4623800d-dcae-4d03-ab2a-c21be19508f6",
+    "name": "Pear Tree",
+    "scientific_name": "Pyrus communis"
+  },
+  {
+    "id": "25d9b759-c464-47e9-9903-9679fb7c14ba",
+    "name": "Peppermint",
+    "scientific_name": "Mentha x piperita"
+  },
+  {
+    "id": "37bd9029-c70d-4b34-8f5b-e49f7303cc99",
+    "name": "Petunia",
+    "scientific_name": "Petunia x hybrida"
+  },
+  {
+    "id": "cb33f28c-f0ab-455e-a4e1-140db361934f",
+    "name": "Philodendron Birkin",
+    "scientific_name": "Philodendron cordatum cv."
+  },
+  {
+    "id": "c615ecad-da00-4b5a-a693-e698415167bc",
+    "name": "Philodendron Gloriosum",
+    "scientific_name": "Philodendron gloriosum"
+  },
+  {
+    "id": "640974a2-08ce-4de4-a3bd-a68bdf0bd1c6",
+    "name": "Philodendron Pink Princess",
+    "scientific_name": "Philodendron erubescens"
+  },
+  {
+    "id": "b6586dae-204d-4a1f-b31d-db89ed6cd979",
+    "name": "Pineapple",
+    "scientific_name": "Ananas comosus"
+  },
+  {
+    "id": "08d307c7-3527-4453-b14a-e3f3b1dea0d8",
+    "name": "Plumeria Frangipani",
+    "scientific_name": "Plumeria rubra"
+  },
+  {
+    "id": "c0a9bc57-59de-42db-8c38-5ba7faeac0a5",
+    "name": "Pomegranate",
+    "scientific_name": "Punica granatum"
+  },
+  {
+    "id": "7922dc2e-e7d2-414e-bd92-044ccc8e5df1",
+    "name": "Ponytail Palm",
+    "scientific_name": "Beaucarnea recurvata"
+  },
+  {
+    "id": "b01edb42-8702-41ed-b946-3264f8195670",
+    "name": "Pot Marigold Calendula",
+    "scientific_name": "Calendula officinalis"
+  },
+  {
+    "id": "9a1414b0-2957-4eca-b4ad-8a4ddda7f3f0",
+    "name": "Potato",
+    "scientific_name": "Solanum tuberosum"
+  },
+  {
+    "id": "3d7334e3-bfc5-40eb-8806-3d6b0514e9f9",
+    "name": "Pothos",
+    "scientific_name": "Epipremnum aureum"
+  },
+  {
+    "id": "633d2c96-5eca-4f20-b9c4-8947890a1087",
+    "name": "Procumbens Nana Juniper Bonsai",
+    "scientific_name": "Juniperus procumbens 'Nana'"
+  },
+  {
+    "id": "ecfb14a8-87d8-470b-9897-aad3a4ba9e39",
+    "name": "Pumpkin",
+    "scientific_name": "Cucurbita maxima"
+  },
+  {
+    "id": "aebdae22-b6ac-4915-b8b6-0c7ddd87e684",
+    "name": "Purple Passionflower",
+    "scientific_name": "Passiflora incarnata"
+  },
+  {
+    "id": "7a1c037e-3c0b-4419-a06c-c0fa4c5083be",
+    "name": "Radish",
+    "scientific_name": "Raphanus sativus"
+  },
+  {
+    "id": "32e66ef9-2f8e-411a-a4b2-cb2579825835",
+    "name": "Rattlesnake Plant",
+    "scientific_name": "Goeppertia insignis"
+  },
+  {
+    "id": "ae7a9768-3065-4898-912d-1265eb67fe79",
+    "name": "Red Aglaonema",
+    "scientific_name": "Aglaonema commutatum"
+  },
+  {
+    "id": "550e7fff-b6bb-4594-8ebe-bd6939b45f91",
+    "name": "Rhaphidophora Tetrasperma",
+    "scientific_name": "Rhaphidophora tetrasperma"
+  },
+  {
+    "id": "40ec3778-9dbe-43e0-9aaf-f0357465f162",
+    "name": "Rockspray Cotoneaster Bonsai",
+    "scientific_name": "Cotoneaster horizontalis"
+  },
+  {
+    "id": "b3cfecc4-5059-4451-91c8-6806c3ab8872",
+    "name": "Rose",
+    "scientific_name": "Rosa"
+  },
+  {
+    "id": "e4dc213b-1b3f-44e4-b130-aa8ffe42e82b",
+    "name": "Rosemary",
+    "scientific_name": "Salvia rosmarinus"
+  },
+  {
+    "id": "89f696de-f9f4-48da-8fd0-c13c7510e3f8",
+    "name": "Rubber Plant",
+    "scientific_name": "Ficus elastica"
+  },
+  {
+    "id": "baf40b24-3272-491c-a995-e95e36aeed75",
+    "name": "Rubber Tree",
+    "scientific_name": "Ficus elastica"
+  },
+  {
+    "id": "d94ecd08-d806-4689-8ef9-79814c27adeb",
+    "name": "Russian Comfrey",
+    "scientific_name": "Symphytum officinale"
+  },
+  {
+    "id": "0dfe8e2f-ec9f-46c3-b996-b93192a7c272",
+    "name": "Saffron",
+    "scientific_name": "Crocus sativus"
+  },
+  {
+    "id": "9de9da90-aaba-492e-8afc-0f9bb4989172",
+    "name": "Sage",
+    "scientific_name": "Salvia officinalis"
+  },
+  {
+    "id": "d366197c-7354-4d38-b0e4-9be5ec88fb76",
+    "name": "Satsuki Azalea Bonsai",
+    "scientific_name": "Rhododendron indicum"
+  },
+  {
+    "id": "406e894e-5cda-4a5f-bdb5-160277b0259a",
+    "name": "Schefflera Umbrella Tree",
+    "scientific_name": "Schefflera arboricola"
+  },
+  {
+    "id": "a7d05944-0fa1-42c3-8995-be3a0676ddd0",
+    "name": "Shatavari Wild Asparagus",
+    "scientific_name": "Asparagus racemosus"
+  },
+  {
+    "id": "6b6c93aa-8304-4ca7-b0ac-58a167e874af",
+    "name": "Shimpaku Juniper Bonsai",
+    "scientific_name": "Juniperus chinensis 'Shimpaku'"
+  },
+  {
+    "id": "58153276-7569-4203-8370-22fb0576d99e",
+    "name": "Snake Plant",
+    "scientific_name": "Sansevieria trifasciata"
+  },
+  {
+    "id": "27e9589e-0690-4f11-8bc7-8d6ba519be70",
+    "name": "Snowrose Serissa Bonsai",
+    "scientific_name": "Serissa japonica"
+  },
+  {
+    "id": "37fc13e1-9fa5-4514-9b19-47e827638d46",
+    "name": "Spearmint",
+    "scientific_name": "Mentha spicata"
+  },
+  {
+    "id": "b71553f4-4f1f-4247-9d16-3ae263c19e35",
+    "name": "Spider Plant",
+    "scientific_name": "Chlorophytum comosum"
+  },
+  {
+    "id": "89ddf9de-b2d0-442e-a056-dfe5742fac42",
+    "name": "Spinach",
+    "scientific_name": "Spinacia oleracea"
+  },
+  {
+    "id": "3fd9a6c0-6249-4720-843e-a1a8af75bf3f",
+    "name": "St. John's Wort",
+    "scientific_name": "Hypericum perforatum"
+  },
+  {
+    "id": "628f5642-e9f7-4039-b13b-883129533a36",
+    "name": "Staghorn Fern",
+    "scientific_name": "Platycerium bifurcatum"
+  },
+  {
+    "id": "a580b998-b7af-408f-a37b-4bc87a75f0b7",
+    "name": "Strawberry",
+    "scientific_name": "Fragaria x ananassa"
+  },
+  {
+    "id": "6e3e23a4-8390-45fd-88a5-728652d75732",
+    "name": "Stromanthe Triostar",
+    "scientific_name": "Stromanthe thalia"
+  },
+  {
+    "id": "0322d902-4892-45e3-800b-7071f5a26200",
+    "name": "Succulent",
+    "scientific_name": "Echeveria"
+  },
+  {
+    "id": "52a5a399-e213-4efe-9989-4d2d6464db2c",
+    "name": "Sunflower",
+    "scientific_name": "Helianthus annuus"
+  },
+  {
+    "id": "8acbb26d-3a9f-469d-bcaf-0990f9e3d93c",
+    "name": "Sweet Potato",
+    "scientific_name": "Ipomoea batatas"
+  },
+  {
+    "id": "4f2229bc-f5c3-4fb0-8063-ff935ea68ae9",
+    "name": "Swiss Cheese Vine",
+    "scientific_name": "Monstera adansonii"
+  },
+  {
+    "id": "b0c6ea1f-7ef7-4ac3-8626-493d0aeb9231",
+    "name": "Syngonium Neon Robusta",
+    "scientific_name": "Syngonium podophyllum"
+  },
+  {
+    "id": "2f07d848-1fd0-4d9b-893b-4697fb682602",
+    "name": "Tamarind",
+    "scientific_name": "Tamarindus indica"
+  },
+  {
+    "id": "a6007252-1e58-499a-8d6c-43fcb3ad7a00",
+    "name": "Tamarind Bonsai",
+    "scientific_name": "Tamarindus indica"
+  },
+  {
+    "id": "bce3f197-4415-4e55-8de3-5ddfd8c591c4",
+    "name": "Thaumatophyllum Xanadu",
+    "scientific_name": "Thaumatophyllum xanadu"
+  },
+  {
+    "id": "3ffc02f9-3a93-4336-a53a-9f12329a5bfe",
+    "name": "Thyme",
+    "scientific_name": "Thymus vulgaris"
+  },
+  {
+    "id": "4ad56a49-e62b-4a8b-8224-f2503db9e44d",
+    "name": "Ti Plant",
+    "scientific_name": "Cordyline terminalis"
+  },
+  {
+    "id": "2ef52a99-beee-4751-8ef3-34b1d53823d6",
+    "name": "Tomato",
+    "scientific_name": "Solanum lycopersicum"
+  },
+  {
+    "id": "2e41f38f-09b7-4fb4-a95a-ff4145d7ec6f",
+    "name": "Trident Maple Bonsai",
+    "scientific_name": "Acer buergerianum"
+  },
+  {
+    "id": "74e30e79-c53c-4759-aca8-a39c6adbd6ca",
+    "name": "Tulip",
+    "scientific_name": "Tulipa"
+  },
+  {
+    "id": "570cdf93-28e3-4877-aa07-89e344fd10be",
+    "name": "Tulsi Holy Basil",
+    "scientific_name": "Ocimum tenuiflorum"
+  },
+  {
+    "id": "3581f411-1495-4db5-a3a3-db56b86949fd",
+    "name": "Turmeric",
+    "scientific_name": "Curcuma longa"
+  },
+  {
+    "id": "cb361256-a80d-4ac5-9420-67a4b03009f7",
+    "name": "Turmeric Curcuma",
+    "scientific_name": "Curcuma longa"
+  },
+  {
+    "id": "bfbbc577-90f0-4c21-a58d-ce5d0e8ded7e",
+    "name": "Vasaka Malabar Nut",
+    "scientific_name": "Justicia adhatoda"
+  },
+  {
+    "id": "5a4b6edb-0f57-44b9-b237-c3e375dcb795",
+    "name": "Venus Flytrap",
+    "scientific_name": "Dionaea muscipula"
+  },
+  {
+    "id": "a2beadb9-5401-4cf1-9481-3d00d4be8c3a",
+    "name": "Watermelon",
+    "scientific_name": "Citrullus lanatus"
+  },
+  {
+    "id": "3af312a7-3ae4-48a7-ab03-322a723903b4",
+    "name": "West Indian Lemongrass",
+    "scientific_name": "Cymbopogon citratus"
+  },
+  {
+    "id": "910e3490-9e6d-4697-ad49-bc3c04910c50",
+    "name": "Wheat",
+    "scientific_name": "Triticum aestivum"
+  },
+  {
+    "id": "65a8934e-6fe3-4da7-9924-0dbabeed8cef",
+    "name": "White Ginger Lily",
+    "scientific_name": "Hedychium coronarium"
+  },
+  {
+    "id": "d4579478-0193-46f3-9d96-1cabce226072",
+    "name": "Willow Leaf Ficus Bonsai",
+    "scientific_name": "Ficus salicaria"
+  },
+  {
+    "id": "8733d1ae-3a2d-407a-aa85-c4f33dbcba65",
+    "name": "Zebra Plant",
+    "scientific_name": "Aphelandra squarrosa"
+  },
+  {
+    "id": "6d496ccd-9865-49e1-a094-e8e00676450a",
+    "name": "Zucchini",
+    "scientific_name": "Cucurbita pepo"
+  },
+  {
+    "id": "133eb353-0ad3-4d29-94cd-3ad6e13b24d9",
+    "name": "ZZ Plant",
+    "scientific_name": "Zamioculcas zamiifolia"
+  }
+]

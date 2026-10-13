@@ -394,19 +394,33 @@
       justify-content: space-between;
       padding: 0 24px;
       z-index: 40;
+      gap: 16px;
     }
 
     .topbar-label {
       font-family: var(--mono);
-      font-size: 10px;
+      font-size: 11px;
       color: var(--muted2);
       text-transform: uppercase;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.12em;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      justify-content: flex-end;
+      min-width: 0;
     }
 
     .topbar-search {
       position: relative;
-      width: 220px;
+      width: 260px;
+      max-width: 340px;
+      min-width: 140px;
     }
 
     .topbar-search input {
@@ -443,25 +457,205 @@
     .topbar-actions {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
+      flex-shrink: 0;
     }
 
-    .topbar-btn {
-      width: 36px;
-      height: 36px;
+    .topbar-profile-btn {
+      position: relative;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      background: none;
-      border: none;
+      background: rgba(97, 246, 156, 0.08);
+      border: 1px solid rgba(97, 246, 156, 0.25);
+      color: var(--primary);
       cursor: pointer;
       display: grid;
       place-items: center;
-      color: var(--muted);
-      transition: color var(--transition);
+      transition: all var(--transition);
+      flex-shrink: 0;
+      padding: 0;
     }
 
-    .topbar-btn:hover {
-      color: var(--primary);
+    .topbar-profile-btn:hover {
+      background: rgba(97, 246, 156, 0.18);
+      border-color: rgba(97, 246, 156, 0.45);
+      transform: scale(1.05);
     }
+
+    .topbar-profile-btn .mi {
+      font-size: 22px;
+    }
+
+    .topbar-lang-badge {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      padding: 1px 4px;
+      background: #0d1a10;
+      border: 1px solid rgba(97, 246, 156, 0.5);
+      border-radius: 6px;
+      color: var(--primary);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── LANGUAGE PILL in topbar ── */
+    .lang-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      background: rgba(97,246,156,0.08);
+      border: 1px solid rgba(97,246,156,0.25);
+      border-radius: 100px;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: var(--font);
+      cursor: pointer;
+      transition: all var(--transition);
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+    .lang-pill:hover {
+      background: rgba(97,246,156,0.16);
+      border-color: rgba(97,246,156,0.5);
+    }
+    .lang-pill .mi { font-size: 15px; }
+
+    /* ── PROFILE MODAL OVERLAY ── */
+    .profile-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .profile-overlay.open { opacity: 1; pointer-events: all; }
+
+    .profile-modal {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      border-radius: 20px;
+      width: 420px;
+      max-width: 92vw;
+      max-height: 88vh;
+      overflow-y: auto;
+      padding: 28px 24px 24px;
+      transform: translateY(20px) scale(0.97);
+      transition: transform 0.25s ease;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+    }
+    .profile-overlay.open .profile-modal { transform: translateY(0) scale(1); }
+
+    .profile-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .profile-modal-title { font-size: 17px; font-weight: 700; color: var(--text); }
+    .profile-close-btn {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.06);
+      color: var(--muted);
+      cursor: pointer;
+      display: grid; place-items: center;
+      font-size: 18px;
+      transition: all var(--transition);
+    }
+    .profile-close-btn:hover { background: rgba(255,255,255,0.12); color: var(--text); }
+
+    .profile-avatar-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: var(--surface2);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+    .profile-avatar-circle {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, #3ed982 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; font-weight: 800; color: #0d1a10;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(97,246,156,0.3);
+    }
+    .profile-user-name { font-size: 15px; font-weight: 700; color: var(--text); }
+    .profile-user-role { font-size: 12px; color: var(--muted); margin-top: 2px; }
+    .profile-user-badge {
+      display: inline-block; margin-top: 6px;
+      padding: 2px 8px;
+      background: rgba(97,246,156,0.12);
+      border: 1px solid rgba(97,246,156,0.3);
+      border-radius: 100px;
+      font-size: 10px; font-weight: 600;
+      color: var(--primary);
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+
+    .profile-section-label {
+      font-size: 11px; font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .profile-section-label .mi { font-size: 14px; color: var(--primary); }
+
+    .lang-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .lang-option-card {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px;
+      background: var(--surface2);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .lang-option-card:hover {
+      border-color: rgba(97,246,156,0.35);
+      background: rgba(97,246,156,0.05);
+    }
+    .lang-option-card.active {
+      border-color: var(--primary);
+      background: rgba(97,246,156,0.1);
+    }
+    .lang-flag { font-size: 22px; line-height: 1; }
+    .lang-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .lang-native { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .lang-check { margin-left: auto; color: var(--primary); font-size: 16px; display: none; }
+    .lang-option-card.active .lang-check { display: block; }
+
+    .profile-info-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .profile-info-row:last-child { border-bottom: none; }
+    .profile-info-key { font-size: 12px; color: var(--muted); }
+    .profile-info-val { font-size: 12px; font-weight: 600; color: var(--text); font-family: var(--mono); }
 
     /* Main content */
     .main-content {
@@ -1681,10 +1875,39 @@
     .alert-unread-dot {
       position: absolute;
       top: 14px;
-      right: 14px;
+      right: 40px;
       width: 9px;
       height: 9px;
       border-radius: 50%;
+    }
+
+    .alert-dismiss-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      transition: all var(--transition);
+      z-index: 2;
+    }
+
+    .alert-dismiss-btn:hover {
+      background: rgba(255, 75, 75, 0.18);
+      border-color: rgba(255, 75, 75, 0.35);
+      color: #ff6b6b;
+    }
+
+    .alert-dismiss-btn .mi {
+      font-size: 14px;
     }
 
     .alert-icon-box {
@@ -2246,6 +2469,34 @@
 
       .topbar {
         left: 0;
+        padding: 0 14px;
+        height: 56px;
+        gap: 10px;
+      }
+
+      .topbar-label {
+        display: none !important;
+      }
+
+      .topbar-right {
+        width: 100%;
+        gap: 10px;
+      }
+
+      .topbar-search {
+        flex: 1;
+        width: auto;
+        max-width: none;
+        min-width: 0;
+      }
+
+      .topbar-search input {
+        font-size: 13px;
+        padding: 8px 12px 8px 34px;
+      }
+
+      .lang-pill {
+        display: none !important;
       }
 
       .main-content {
@@ -3965,16 +4216,16 @@
     </div>
     <div class="sidenav-links">
       <button class="nav-link active" id="snav-dashboard" onclick="goTo('dashboard')">
-        <span class="mi">dashboard</span> Dashboard
+        <span class="mi">dashboard</span> <span data-i18n="nav_live">Live</span>
       </button>
       <button class="nav-link" id="snav-plants" onclick="goTo('plants')">
-        <span class="mi">potted_plant</span> Plants
+        <span class="mi">potted_plant</span> <span data-i18n="nav_plants">Plants</span>
       </button>
       <button class="nav-link" id="snav-alerts" onclick="goTo('alerts')">
-        <span class="mi">notifications</span> Alerts
+        <span class="mi">notifications</span> <span data-i18n="nav_alerts">Alerts</span>
       </button>
       <button class="nav-link" id="snav-settings" onclick="goTo('settings')">
-        <span class="mi">settings_input_component</span> Settings
+        <span class="mi">settings_input_component</span> <span data-i18n="nav_settings">Settings</span>
       </button>
     </div>
     <div class="sidenav-footer">
@@ -3990,14 +4241,17 @@
      TOP BAR
 ══════════════════════════════ -->
   <header class="topbar">
-    <span class="topbar-label">Live Dashboard</span>
-    <div style="display:flex;align-items:center;gap:12px">
+    <span class="topbar-label" data-i18n="page_dashboard">Live Dashboard</span>
+    <div class="topbar-right">
       <div class="topbar-search">
         <span class="mi">search</span>
         <input type="text" placeholder="Search plants…" oninput="filterPlants(this.value)" />
       </div>
       <div class="topbar-actions">
-        <button class="topbar-btn"><span class="mi">account_circle</span></button>
+        <button class="topbar-profile-btn" id="profile-topbar-btn" onclick="openProfileModal()" title="Profile & Language" aria-label="Profile & Language">
+          <span class="mi">account_circle</span>
+          <span class="topbar-lang-badge" id="topbar-lang-badge">EN</span>
+        </button>
       </div>
     </div>
   </header>
@@ -4007,16 +4261,16 @@
 ══════════════════════════════ -->
   <nav class="bottom-nav">
     <button class="bnav-item active" id="bnav-dashboard" onclick="goTo('dashboard')">
-      <span class="mi">dashboard</span>Live
+      <span class="mi">dashboard</span><span data-i18n="nav_live">Live</span>
     </button>
     <button class="bnav-item" id="bnav-plants" onclick="goTo('plants')">
-      <span class="mi">potted_plant</span>Plants
+      <span class="mi">potted_plant</span><span data-i18n="nav_plants">Plants</span>
     </button>
     <button class="bnav-item" id="bnav-alerts" onclick="goTo('alerts')">
-      <span class="mi">notifications</span>Alerts
+      <span class="mi">notifications</span><span data-i18n="nav_alerts">Alerts</span>
     </button>
     <button class="bnav-item" id="bnav-settings" onclick="goTo('settings')">
-      <span class="mi">settings_input_component</span>Settings
+      <span class="mi">settings_input_component</span><span data-i18n="nav_settings">Settings</span>
     </button>
   </nav>
 
@@ -4032,8 +4286,8 @@
       <div class="page-body">
 
         <div class="page-header">
-          <h2 class="page-title">Welcome Back! 👋</h2>
-          <p class="page-subtitle" id="last-updated">Monitor your plants and save every drop.</p>
+          <h2 class="page-title" data-i18n="welcome_back">Welcome Back! 👋</h2>
+          <p class="page-subtitle" id="last-updated" data-i18n="monitor_sub">Monitor your plants and save every drop.</p>
         </div>
 
         <!-- Online pill -->
@@ -4050,7 +4304,7 @@
 
             <!-- Active Plant -->
             <div class="card plant-info-card">
-              <div class="card-label"><span class="mi sm">potted_plant</span> Active Plant</div>
+              <div class="card-label"><span class="mi sm">potted_plant</span> <span data-i18n="active_plant_label">Active Plant</span></div>
               <div class="plant-info-row">
                 <div class="plant-icon-box" id="dash-plant-emoji">🌱</div>
                 <div>
@@ -4059,7 +4313,7 @@
                 </div>
               </div>
               <div class="plant-range-row">
-                <span class="plant-range-label">Target Range</span>
+                <span class="plant-range-label" data-i18n="target_range_lbl">Target Range</span>
                 <span class="plant-range-val" id="target-range">—</span>
               </div>
             </div>
@@ -4068,7 +4322,7 @@
             <div class="moisture-gauge-card">
               <div class="gauge-title">
                 <span class="mi sm fill" style="color:#61f69c">water_drop</span>
-                SOIL MOISTURE
+                <span data-i18n="soil_moisture_title">SOIL MOISTURE</span>
               </div>
 
               <!-- SVG Gauge -->
@@ -4109,7 +4363,7 @@
                   <!-- Needle -->
                   <g id="gauge-needle-g">
                     <line id="gauge-needle" x1="130" y1="140" x2="130" y2="48" stroke="rgba(255,255,255,0.9)"
-                      stroke-width="2.5" stroke-linecap="round" />
+                    stroke-width="2.5" stroke-linecap="round" />
                     <circle cx="130" cy="140" r="5" fill="rgba(255,255,255,0.9)" />
                     <circle cx="130" cy="140" r="2.5" fill="#0d1a10" />
                   </g>
@@ -4120,7 +4374,7 @@
                   <text x="164" y="100" text-anchor="middle" font-family="Inter, sans-serif" font-size="16"
                     fill="#8aA08c">%</text>
                   <text x="130" y="134" text-anchor="middle" font-family="Inter, sans-serif" font-size="11"
-                    fill="#8aA08c">Current Moisture</text>
+                    fill="#8aA08c" data-i18n="current_moisture_sub">Current Moisture</text>
 
                   <!-- Scale labels -->
                   <text x="14" y="158" text-anchor="middle" font-family="Space Mono, monospace" font-size="10"
@@ -4139,11 +4393,11 @@
               <div class="gauge-stats">
                 <div class="gauge-stat">
                   <div class="gauge-stat-val" id="gauge-target">—%</div>
-                  <div class="gauge-stat-key">Target Moisture</div>
+                  <div class="gauge-stat-key" data-i18n="target_moisture_lbl">Target Moisture</div>
                 </div>
                 <div class="gauge-stat">
                   <div class="gauge-stat-val" id="gauge-water-needed">—%</div>
-                  <div class="gauge-stat-key">Water Needed</div>
+                  <div class="gauge-stat-key" data-i18n="water_needed_lbl">Water Needed</div>
                 </div>
               </div>
             </div>
@@ -4155,13 +4409,13 @@
 
             <!-- Irrigation Control -->
             <div class="card">
-              <div class="card-label"><span class="mi sm">tune</span> Irrigation Control</div>
-              <div class="ctrl-label">Mode</div>
+              <div class="card-label"><span class="mi sm">tune</span> <span data-i18n="controls_label">Irrigation Control</span></div>
+              <div class="ctrl-label" data-i18n="ctrl_mode">Mode</div>
               <div class="mode-toggle" style="margin-bottom:16px">
-                <button class="mode-btn active" id="btn-auto" onclick="setMode('auto')">AUTO</button>
-                <button class="mode-btn" id="btn-manual" onclick="setMode('manual')">MANUAL</button>
+                <button class="mode-btn active" id="btn-auto" onclick="setMode('auto')" data-i18n="auto_mode">AUTO</button>
+                <button class="mode-btn" id="btn-manual" onclick="setMode('manual')" data-i18n="manual_mode">MANUAL</button>
               </div>
-              <div class="ctrl-label">Pump</div>
+              <div class="ctrl-label" data-i18n="ctrl_pump">Pump</div>
               <button class="pump-btn" id="pump-btn" onclick="togglePump()">
                 <span class="mi sm">water_drop</span>
                 <span id="pump-label">OFF</span>
@@ -4169,7 +4423,7 @@
               <div class="irrigation-progress" id="irrigation-progress">
                 <div class="irr-status">
                   <div class="irr-dot"></div>
-                  Watering in Progress…
+                  <span data-i18n="watering_in_progress">Watering in Progress…</span>
                 </div>
                 <div class="irr-track">
                   <div class="irr-fill"></div>
@@ -4179,12 +4433,12 @@
 
             <!-- Weather -->
             <div class="card weather-card">
-              <div class="card-label"><span class="mi sm">cloud</span> Weather</div>
+              <div class="card-label"><span class="mi sm">cloud</span> <span data-i18n="weather_label">Weather</span></div>
               <div class="wx-main">
                 <div class="wx-condition">
                   <div class="wx-icon-wrap" id="wx-icon">⏳</div>
                   <div>
-                    <div class="wx-title" id="wx-desc">Loading…</div>
+                    <div class="wx-title" id="wx-desc" data-i18n="weather_loading">Loading…</div>
                     <div class="wx-subtitle"><span class="wx-loc-bold" id="wx-loc">Detecting location…</span></div>
                   </div>
                 </div>
@@ -4194,16 +4448,16 @@
                 </div>
               </div>
               <div class="wx-rain-row">
-                <span class="wx-rain-label">🌧️ Rain</span>
+                <span class="wx-rain-label" data-i18n="weather_rain">🌧️ Rain</span>
                 <div class="wx-rain-track">
                   <div class="wx-rain-fill" id="wx-rain-fill" style="width:0%"></div>
                 </div>
                 <span class="wx-rain-pct" id="wx-rain-pct">0%</span>
               </div>
               <div class="wx-footer">
-                <span class="wx-loc-tag" id="wx-loc-tag">🌐 Plant Location</span>
+                <span class="wx-loc-tag" id="wx-loc-tag" data-i18n="plant_location">🌐 Plant Location</span>
                 <div class="rain-toggle-row">
-                  <span class="rain-toggle-label">Rain Expected</span>
+                  <span class="rain-toggle-label" data-i18n="rain_expected">Rain Expected</span>
                   <button class="rain-toggle-btn" id="rain-toggle-btn" onclick="toggleRainExpected()">
                     <span id="rain-toggle-text">OFF</span>
                   </button>
@@ -4212,8 +4466,8 @@
             </div>
 
             <!-- Rain Banner -->
-            <div class="rain-banner" id="rain-banner">
-              🌧️ Rain expected — <strong>Auto-watering paused</strong> to conserve water.
+            <div class="rain-banner" id="rain-banner" data-i18n="rain_banner_text">
+              🌧️ Rain expected — Auto-watering paused to conserve water.
             </div>
 
           </div><!-- /col2 -->
@@ -4223,19 +4477,19 @@
 
             <!-- Stats -->
             <div class="card" style="padding:14px 12px">
-              <div class="card-label" style="margin-bottom:10px"><span class="mi sm">analytics</span> Sensor Stats</div>
+              <div class="card-label" style="margin-bottom:10px"><span class="mi sm">analytics</span> <span data-i18n="sensor_stats">Sensor Stats</span></div>
               <div class="stats-row">
                 <div class="stat-card">
                   <div class="stat-val" id="stat-raw">—</div>
-                  <div class="stat-key">CURRENT %</div>
+                  <div class="stat-key" data-i18n="current_pct">CURRENT %</div>
                 </div>
                 <div class="stat-card">
                   <div class="stat-val" id="stat-sessions">—</div>
-                  <div class="stat-key">SESSIONS</div>
+                  <div class="stat-key" data-i18n="sessions_lbl">SESSIONS</div>
                 </div>
                 <div class="stat-card">
                   <div class="stat-val" id="stat-avg">—</div>
-                  <div class="stat-key">AVG MOIST.</div>
+                  <div class="stat-key" data-i18n="avg_moist_lbl">AVG MOIST.</div>
                 </div>
               </div>
             </div>
@@ -4244,32 +4498,32 @@
             <div class="card reco-card">
               <div class="reco-header">
                 <span style="font-size:20px">🧠</span>
-                <span class="reco-title">Smart Recommendation</span>
+                <span class="reco-title" data-i18n="smart_reco">Smart Recommendation</span>
               </div>
               <p class="reco-text" id="reco-text">Select a plant to get watering recommendations.</p>
             </div>
 
             <!-- Sparkline -->
             <div class="card">
-              <div class="card-label"><span class="mi sm">show_chart</span> Moisture History</div>
+              <div class="card-label"><span class="mi sm">show_chart</span> <span data-i18n="moisture_history">Moisture History</span></div>
               <div class="chart-wrap"><canvas id="sparkline"></canvas></div>
             </div>
 
             <!-- Environment -->
             <div class="card">
-              <div class="card-label"><span class="mi sm">device_thermostat</span> Environment</div>
+              <div class="card-label"><span class="mi sm">device_thermostat</span> <span data-i18n="environment_label">Environment</span></div>
               <div class="env-row">
                 <div class="env-stat">
                   <span class="mi" style="color:#fca5a5">thermostat</span>
                   <div>
-                    <div class="env-key">Temp</div>
+                    <div class="env-key" data-i18n="temp_lbl">Temp</div>
                     <div class="env-val" id="wx-temp-mini">—°C</div>
                   </div>
                 </div>
                 <div class="env-stat">
                   <span class="mi" style="color:#93c5fd">humidity_mid</span>
                   <div>
-                    <div class="env-key">Humidity</div>
+                    <div class="env-key" data-i18n="humidity_lbl">Humidity</div>
                     <div class="env-val" id="wx-hum-mini">—%</div>
                   </div>
                 </div>
@@ -4280,8 +4534,8 @@
             <div class="card tip-card">
               <div class="tip-icon"><span class="mi sm fill">lightbulb</span></div>
               <div>
-                <div class="tip-label">Tip of the Day</div>
-                <p class="tip-text">Water your plants early in the morning to reduce evaporation and prevent fungal
+                <div class="tip-label" data-i18n="tip_of_day">Tip of the Day</div>
+                <p class="tip-text" data-i18n="tip_content">Water your plants early in the morning to reduce evaporation and prevent fungal
                   disease.</p>
               </div>
             </div>
@@ -4292,7 +4546,7 @@
           <div class="card water-reservoir-card">
             <div class="water-card-header">
               <span class="mi sm fill" style="color:#00aaff">water_drop</span>
-              <span class="water-card-title">Water Reservoir</span>
+              <span class="water-card-title" data-i18n="water_reservoir">Water Reservoir</span>
               <span class="water-status-badge" id="water-status-badge">SAFE</span>
             </div>
             <div class="water-content">
@@ -4304,36 +4558,36 @@
                   </div>
                   <div class="bottle-fish-zone">
                     <span style="font-size:14px">🐟</span>
-                    <span class="bottle-fish-label">200ml Fish Reserve</span>
+                    <span class="bottle-fish-label" data-i18n="fish_reserve_badge">200ml Fish Reserve</span>
                   </div>
                 </div>
               </div>
               <div class="water-stats-col">
                 <div class="water-remaining-big" id="water-remaining-big">—</div>
-                <div class="water-remaining-label">ml remaining for plant</div>
+                <div class="water-remaining-label" data-i18n="ml_remaining_plant">ml remaining for plant</div>
                 <div class="water-progress-track">
                   <div class="water-progress-fill" id="water-progress-fill" style="width:0%"></div>
                 </div>
                 <div class="water-details-wrap">
                   <div class="water-detail-row">
-                    <span class="water-detail-key">Bottle size</span>
+                    <span class="water-detail-key" data-i18n="bottle_size_lbl">Bottle size</span>
                     <span class="water-detail-val" id="wdet-bottle">500 ml</span>
                   </div>
                   <div class="water-detail-row">
-                    <span class="water-detail-key">Water used</span>
+                    <span class="water-detail-key" data-i18n="water_used_lbl">Water used</span>
                     <span class="water-detail-val" id="wdet-used">0 ml</span>
                   </div>
                   <div class="water-detail-row">
-                    <span class="water-detail-key">Plant available</span>
+                    <span class="water-detail-key" data-i18n="plant_avail_lbl">Plant available</span>
                     <span class="water-detail-val" id="wdet-avail">300 ml</span>
                   </div>
                   <div class="water-detail-row water-fish-row">
-                    <span class="water-detail-key">🐟 Fish reserve</span>
-                    <span class="water-detail-val fish">200 ml (fixed)</span>
+                    <span class="water-detail-key" data-i18n="fish_reserve_lbl">🐟 Fish reserve</span>
+                    <span class="water-detail-val fish" data-i18n="fish_fixed">200 ml (fixed)</span>
                   </div>
                 </div>
                 <button class="water-refill-btn" id="water-refill-btn" onclick="refillReset()">
-                  <span class="mi sm">restart_alt</span> Refill &amp; Reset
+                  <span class="mi sm">restart_alt</span> <span data-i18n="refill_and_reset">Refill &amp; Reset</span>
                 </button>
               </div>
             </div>
@@ -4351,8 +4605,8 @@
       <div class="page-body">
         <div class="plants-header">
           <div>
-            <h2 class="plants-big-title">Botany Gallery</h2>
-            <p class="plants-sub">Select your plant to calibrate irrigation.</p>
+            <h2 class="plants-big-title" data-i18n="botany_gallery_title">Botany Gallery</h2>
+            <p class="plants-sub" data-i18n="botany_gallery_sub">Select your plant to calibrate irrigation.</p>
           </div>
           <div class="search-bar">
             <span class="mi">search</span>
@@ -4364,13 +4618,13 @@
         <div class="category-filter-wrap" id="category-filter-wrap"></div>
 
         <div class="plant-grid" id="plant-grid">
-          <div style="text-align:center;padding:60px 20px;color:var(--muted);font-family:var(--mono);font-size:13px">
+          <div style="text-align:center;padding:60px 20px;color:var(--muted);font-family:var(--mono);font-size:13px" data-i18n="loading_plants">
             Loading plants…</div>
         </div>
 
         <div class="confirm-btn-wrap">
           <button class="confirm-btn" id="confirm-plant-btn" onclick="confirmPlant()" disabled>
-            ✓ &nbsp;Confirm Plant Selection
+            ✓ &nbsp;<span data-i18n="confirm_plant_selection">Confirm Plant Selection</span>
           </button>
         </div>
       </div>
@@ -4383,11 +4637,11 @@
       <div class="page-body">
         <div class="alerts-header">
           <div>
-            <h2 class="page-title">Action Required</h2>
+            <h2 class="page-title" data-i18n="page_alerts_title">Action Required</h2>
             <p class="page-subtitle" id="unread-count">0 unread</p>
           </div>
           <button class="clear-btn" onclick="clearAlerts()">
-            <span class="mi sm">clear_all</span> Clear All
+            <span class="mi sm">clear_all</span> <span data-i18n="clear_all">Clear All</span>
           </button>
         </div>
         <div class="alert-list" id="alert-list"></div>
@@ -4400,8 +4654,8 @@
     <section class="screen" id="settings">
       <div class="page-body">
         <div class="page-header">
-          <h2 class="page-title">Device Configuration</h2>
-          <p class="page-subtitle">Manage parameters for your SoilIQ device</p>
+          <h2 class="page-title" data-i18n="page_settings">Device Configuration</h2>
+          <p class="page-subtitle" data-i18n="page_settings_sub">Manage parameters for your SoilIQ device</p>
         </div>
 
         <div class="settings-grid">
@@ -4410,15 +4664,15 @@
           <div class="card">
             <div class="settings-block-title">
               <span class="mi">memory</span>
-              <h3>Device Information</h3>
+              <h3 data-i18n="device_info">Device Information</h3>
             </div>
-            <div class="info-row"><span class="info-key">Hardware ID</span><span class="info-val"
+            <div class="info-row"><span class="info-key" data-i18n="hardware_id">Hardware ID</span><span class="info-val"
                 id="device-id-display">Loading…</span></div>
-            <div class="info-row"><span class="info-key">Device Name</span><span
+            <div class="info-row"><span class="info-key" data-i18n="device_name">Device Name</span><span
                 class="info-val">SoilIQ-Device-01</span></div>
-            <div class="info-row"><span class="info-key">Firmware</span><span class="info-val">v2.0.0</span></div>
+            <div class="info-row"><span class="info-key" data-i18n="firmware">Firmware</span><span class="info-val">v2.0.0</span></div>
             <div class="network-status">
-              <span class="network-label">Network Status</span>
+              <span class="network-label" data-i18n="network_status">Network Status</span>
               <div class="network-val">
                 <div class="sidenav-status-dot" id="settings-online-dot"></div>
                 <span id="settings-online-label"
@@ -4431,13 +4685,13 @@
           <div class="card">
             <div class="settings-block-title">
               <span class="mi" style="color:#ffa9a3">tune</span>
-              <h3>Sensor Calibration</h3>
+              <h3 data-i18n="sensor_cal">Sensor Calibration</h3>
             </div>
             <div class="cal-item">
               <div class="cal-row">
                 <div>
-                  <div class="cal-label">Polling Interval</div>
-                  <div class="cal-sub">Frequency of data sync</div>
+                  <div class="cal-label" data-i18n="polling_interval">Polling Interval</div>
+                  <div class="cal-sub" data-i18n="polling_sub">Frequency of data sync</div>
                 </div>
                 <div class="cal-input-wrap">
                   <input type="number" class="cal-input" id="poll-interval" value="5" min="1" max="60" />
@@ -4451,8 +4705,8 @@
             <div class="cal-item">
               <div class="cal-row">
                 <div>
-                  <div class="cal-label">Dry Soil Threshold</div>
-                  <div class="cal-sub">Triggers irrigation routine</div>
+                  <div class="cal-label" data-i18n="dry_threshold">Dry Soil Threshold</div>
+                  <div class="cal-sub" data-i18n="dry_threshold_sub">Triggers irrigation routine</div>
                 </div>
                 <div class="cal-input-wrap">
                   <input type="number" class="cal-input" id="dry-threshold" value="20" min="0" max="100" />
@@ -4469,7 +4723,7 @@
           <div class="card">
             <div class="settings-block-title">
               <span class="mi" style="color:#00aaff">water_drop</span>
-              <h3>Water Reservoir</h3>
+              <h3 data-i18n="water_reservoir">Water Reservoir</h3>
             </div>
             <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px">
               Set your bottle/container size. Water usage is estimated from pump runtime.<br />
@@ -4478,8 +4732,8 @@
             <div class="cal-item">
               <div class="cal-row">
                 <div>
-                  <div class="cal-label">Bottle Capacity</div>
-                  <div class="cal-sub">Total volume of your water container</div>
+                  <div class="cal-label" data-i18n="bottle_cap_label">Bottle Capacity</div>
+                  <div class="cal-sub" data-i18n="bottle_cap_sub">Total volume of your water container</div>
                 </div>
                 <div class="cal-input-wrap">
                   <input type="number" class="cal-input" id="bottle-cap-input" value="500" min="300" max="10000"
@@ -4491,21 +4745,21 @@
             <div class="bottle-cap-preview">
               <div class="bottle-cap-stat">
                 <div class="bottle-cap-stat-val" id="bottle-plant-ml">300 ml</div>
-                <div class="bottle-cap-stat-key">🌱 For Plant</div>
+                <div class="bottle-cap-stat-key" data-i18n="for_plant_lbl">🌱 For Plant</div>
               </div>
               <div class="bottle-cap-divider"></div>
               <div class="bottle-cap-stat">
                 <div class="bottle-cap-stat-val fish">200 ml</div>
-                <div class="bottle-cap-stat-key">🐟 Fish Reserve</div>
+                <div class="bottle-cap-stat-key" data-i18n="fish_reserve_sub">🐟 Fish Reserve</div>
               </div>
               <div class="bottle-cap-divider"></div>
               <div class="bottle-cap-stat">
                 <div class="bottle-cap-stat-val" id="bottle-stop-sec" style="color:#fbbf24">15 sec</div>
-                <div class="bottle-cap-stat-key">⏱ Pump Stops At</div>
+                <div class="bottle-cap-stat-key" data-i18n="pump_stops_at">⏱ Pump Stops At</div>
               </div>
             </div>
             <button class="loc-btn" style="margin-top:14px;width:100%" onclick="saveBottleCapacity()">
-              <span class="mi sm">save</span> Save Bottle Size
+              <span class="mi sm">save</span> <span data-i18n="save_bottle_btn">Save Bottle Size</span>
             </button>
           </div>
 
@@ -4513,10 +4767,10 @@
           <div class="card">
             <div class="settings-block-title">
               <span class="mi" style="color:var(--secondary)">location_on</span>
-              <h3>Physical Location 🌱</h3>
+              <h3 data-i18n="physical_location">Physical Location 🌱</h3>
             </div>
-            <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px">
-              Weather uses your <strong style="color:var(--text)">plant's location</strong>, not where you browse from.
+            <p style="font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:14px" data-i18n="location_desc">
+              Weather uses your plant's location, not where you browse from.
               Set it once here.
             </p>
             <div class="map-preview">
@@ -4530,9 +4784,9 @@
             <div class="loc-saved" id="loc-saved-display">📍 No location saved yet</div>
             <div class="loc-btn-row">
               <button class="loc-btn" onclick="setPlantLocation()">
-                <span class="mi sm">my_location</span> Detect &amp; Save
+                <span class="mi sm">my_location</span> <span data-i18n="detect_save_loc">Detect &amp; Save</span>
               </button>
-              <button class="loc-btn secondary" onclick="clearPlantLocation()">Clear</button>
+              <button class="loc-btn secondary" onclick="clearPlantLocation()" data-i18n="clear_loc">Clear</button>
             </div>
           </div>
 
@@ -4540,7 +4794,7 @@
           <div class="card">
             <div class="settings-block-title">
               <span class="mi">notifications</span>
-              <h3>Alert Preferences</h3>
+              <h3 data-i18n="alert_prefs">Alert Preferences</h3>
             </div>
 
             <div class="toggle-row">
@@ -4550,8 +4804,8 @@
                   <span class="mi sm" style="color:#ffa9a3">water_drop</span>
                 </div>
                 <div>
-                  <div class="toggle-label">Overwater Warning</div>
-                  <div class="toggle-sub">Alert when moisture exceeds threshold</div>
+                  <div class="toggle-label" data-i18n="overwater_warn">Overwater Warning</div>
+                  <div class="toggle-sub" data-i18n="overwater_sub">Alert when moisture exceeds threshold</div>
                 </div>
               </div>
               <label class="toggle-switch">
@@ -4568,8 +4822,8 @@
                   <span class="mi sm" style="color:var(--primary)">grass</span>
                 </div>
                 <div>
-                  <div class="toggle-label">Dry Soil Alert</div>
-                  <div class="toggle-sub">Notify immediately when threshold reached</div>
+                  <div class="toggle-label" data-i18n="dry_soil_alert">Dry Soil Alert</div>
+                  <div class="toggle-sub" data-i18n="dry_soil_sub">Notify immediately when threshold reached</div>
                 </div>
               </div>
               <label class="toggle-switch">
@@ -4585,8 +4839,8 @@
                   <span class="mi sm" style="color:var(--muted)">wifi_off</span>
                 </div>
                 <div>
-                  <div class="toggle-label" style="opacity:0.6">Device Offline</div>
-                  <div class="toggle-sub" style="opacity:0.6">Alert if sensor loses connection</div>
+                  <div class="toggle-label" style="opacity:0.6" data-i18n="offline_alert">Device Offline</div>
+                  <div class="toggle-sub" style="opacity:0.6" data-i18n="offline_sub">Alert if sensor loses connection</div>
                 </div>
               </div>
               <label class="toggle-switch">
@@ -4603,15 +4857,15 @@
         <div class="card" style="margin-top:16px;max-width:960px">
           <div class="settings-block-title">
             <span class="mi" style="color:var(--secondary)">info</span>
-            <h3>About SoilIQ v2.0.0</h3>
+            <h3 data-i18n="about_soiliq">About SoilIQ v2.0.0</h3>
           </div>
           <div class="about-grid">
-            <div class="about-item">50 Plant Profiles</div>
-            <div class="about-item">Live Sensor Data</div>
-            <div class="about-item">Weather Dashboard</div>
-            <div class="about-item">Rain Detection</div>
-            <div class="about-item">Smart Auto-Alerts</div>
-            <div class="about-item">Manual Override</div>
+            <div class="about-item" data-i18n="profiles_count">244 Plant Profiles</div>
+            <div class="about-item" data-i18n="live_sensor_data">Live Sensor Data</div>
+            <div class="about-item" data-i18n="wx_dashboard">Weather Dashboard</div>
+            <div class="about-item" data-i18n="rain_detect">Rain Detection</div>
+            <div class="about-item" data-i18n="smart_alerts">Smart Auto-Alerts</div>
+            <div class="about-item" data-i18n="manual_override">Manual Override</div>
           </div>
         </div>
 
@@ -4636,15 +4890,15 @@
     <div class="drawer-body">
       <!-- ── PLANT INFO (Always On) ── -->
       <div class="drawer-section-label">
-        <span class="mi sm">eco</span> Plant Info
+        <span class="mi sm">eco</span> <span data-i18n="plant_info_section">Plant Info</span>
       </div>
       <div class="drawer-info-content">
-        <div class="drawer-row"><span class="drawer-row-key">Water Need</span><span class="drawer-row-val green" id="drawer-water">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">Sunlight</span><span class="drawer-row-val blue" id="drawer-sun">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">Watering Freq</span><span class="drawer-row-val" id="drawer-freq">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">Fertilizer</span><span class="drawer-row-val" id="drawer-fert">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_water_need">Water Need</span><span class="drawer-row-val green" id="drawer-water">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_sunlight">Sunlight</span><span class="drawer-row-val blue" id="drawer-sun">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_freq">Watering Freq</span><span class="drawer-row-val" id="drawer-freq">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_fert">Fertilizer</span><span class="drawer-row-val" id="drawer-fert">—</span></div>
         <div class="drawer-mbar">
-          <div class="drawer-mbar-labels"><span>MOISTURE RANGE</span><span id="drawer-range-pct" style="color:var(--primary)">—%</span></div>
+          <div class="drawer-mbar-labels"><span data-i18n="moisture_range">MOISTURE RANGE</span><span id="drawer-range-pct" style="color:var(--primary)">—%</span></div>
           <div class="drawer-mbar-track">
             <div class="drawer-mbar-fill" id="drawer-bar" style="width:0%;left:0"></div>
           </div>
@@ -4653,33 +4907,124 @@
       </div>
       <!-- ── CARE NOTES accordion ── -->
       <div class="drawer-section-label collapsible" id="acc-header-care" onclick="toggleDrawerSection('care')" style="margin-top:14px">
-        <span class="mi sm">warning</span> Care Notes
+        <span class="mi sm">warning</span> <span data-i18n="care_notes_section">Care Notes</span>
         <span class="accordion-chevron">&#8964;</span>
       </div>
       <div class="drawer-accordion-body" id="acc-body-care">
-        <div class="drawer-row"><span class="drawer-row-key">Description</span><span class="drawer-row-val" id="drawer-desc" style="max-width:210px">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">Overwatering Issue</span><span class="drawer-row-val warn" id="drawer-overwater">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">Solution</span><span class="drawer-row-val" id="drawer-solution">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">pH Need</span><span class="drawer-row-val blue" id="drawer-ph">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_desc">Description</span><span class="drawer-row-val" id="drawer-desc" style="max-width:210px">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_overwater">Overwatering Issue</span><span class="drawer-row-val warn" id="drawer-overwater">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_solution">Solution</span><span class="drawer-row-val" id="drawer-solution">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_ph">pH Need</span><span class="drawer-row-val blue" id="drawer-ph">—</span></div>
       </div>
       <!-- ── SOIL & DISEASE accordion ── -->
       <div class="drawer-section-label collapsible" id="acc-header-disease" onclick="toggleDrawerSection('disease')" style="margin-top:10px">
-        <span class="mi sm">coronavirus</span> Soil &amp; Disease
+        <span class="mi sm">coronavirus</span> <span data-i18n="soil_disease_section">Soil &amp; Disease</span>
         <span class="accordion-chevron">&#8964;</span>
       </div>
       <div class="drawer-accordion-body" id="acc-body-disease">
-        <div class="drawer-row"><span class="drawer-row-key">Associated Disease</span><span class="drawer-row-val warn" id="drawer-disease-name">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">Pathogen</span><span class="drawer-row-val" id="drawer-disease-pathogen" style="font-style:italic">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">Pathogen Type</span><span class="drawer-row-val" id="drawer-disease-type">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">Soil Cause</span><span class="drawer-row-val" id="drawer-disease-cause" style="max-width:210px">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">Symptoms</span><span class="drawer-row-val" id="drawer-disease-symptoms" style="max-width:210px">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">Soil Prevention</span><span class="drawer-row-val green" id="drawer-disease-prevent" style="max-width:210px">—</span></div>
-        <div class="drawer-row"><span class="drawer-row-key">Soil Risk Level</span><span class="drawer-row-val" id="drawer-disease-risk">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_associated_disease">Associated Disease</span><span class="drawer-row-val warn" id="drawer-disease-name">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_pathogen">Pathogen</span><span class="drawer-row-val" id="drawer-disease-pathogen" style="font-style:italic">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_pathogen_type">Pathogen Type</span><span class="drawer-row-val" id="drawer-disease-type">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_soil_cause">Soil Cause</span><span class="drawer-row-val" id="drawer-disease-cause" style="max-width:210px">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_symptoms">Symptoms</span><span class="drawer-row-val" id="drawer-disease-symptoms" style="max-width:210px">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_prevention">Soil Prevention</span><span class="drawer-row-val green" id="drawer-disease-prevent" style="max-width:210px">—</span></div>
+        <div class="drawer-row"><span class="drawer-row-key" data-i18n="drawer_risk_level">Soil Risk Level</span><span class="drawer-row-val" id="drawer-disease-risk">—</span></div>
       </div>
       <button class="drawer-select-btn" id="drawer-select-btn" onclick="selectFromDrawer()" style="margin-top:18px">
         <span class="mi sm">check_circle</span>
-        <span id="drawer-select-label">Select This Plant</span>
+        <span id="drawer-select-label" data-i18n="select_plant">Select This Plant</span>
       </button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════
+     PROFILE & LANGUAGE MODAL
+════════════════════════════════════ -->
+  <div class="profile-overlay" id="profile-overlay" onclick="closeProfileOnBackdrop(event)">
+    <div class="profile-modal" id="profile-modal">
+      <div class="profile-modal-header">
+        <span class="profile-modal-title" data-i18n="profile_title">Profile & Preferences</span>
+        <button class="profile-close-btn" onclick="closeProfileModal()" aria-label="Close">&#215;</button>
+      </div>
+
+      <!-- Avatar Section -->
+      <div class="profile-avatar-section">
+        <div class="profile-avatar-circle">HA</div>
+        <div class="profile-user-info">
+          <div class="profile-user-name">Syed Mohamed Haafiz</div>
+          <div class="profile-user-role" data-i18n="profile_role">Lead Agronomist · SoilIQ</div>
+          <span class="profile-user-badge" data-i18n="profile_badge">Pro Grower</span>
+        </div>
+      </div>
+
+      <!-- Language Selector -->
+      <div class="profile-section-label">
+        <span class="mi">language</span>
+        <span data-i18n="profile_lang_label">Display Language</span>
+      </div>
+      <div class="lang-options-grid">
+        <div class="lang-option-card active" id="lang-card-en" onclick="setLanguage('en')">
+          <span class="lang-flag">🇬🇧</span>
+          <div>
+            <div class="lang-name">English</div>
+            <div class="lang-native">English</div>
+          </div>
+          <span class="mi lang-check">check_circle</span>
+        </div>
+        <div class="lang-option-card" id="lang-card-ta" onclick="setLanguage('ta')">
+          <span class="lang-flag">🇮🇳</span>
+          <div>
+            <div class="lang-name">Tamil</div>
+            <div class="lang-native">தமிழ்</div>
+          </div>
+          <span class="mi lang-check">check_circle</span>
+        </div>
+        <div class="lang-option-card" id="lang-card-hi" onclick="setLanguage('hi')">
+          <span class="lang-flag">🇮🇳</span>
+          <div>
+            <div class="lang-name">Hindi</div>
+            <div class="lang-native">हिंदी</div>
+          </div>
+          <span class="mi lang-check">check_circle</span>
+        </div>
+        <div class="lang-option-card" id="lang-card-ko" onclick="setLanguage('ko')">
+          <span class="lang-flag">🇰🇷</span>
+          <div>
+            <div class="lang-name">Korean</div>
+            <div class="lang-native">한국어</div>
+          </div>
+          <span class="mi lang-check">check_circle</span>
+        </div>
+      </div>
+
+      <!-- Device Info -->
+      <div class="profile-section-label">
+        <span class="mi">devices</span>
+        <span data-i18n="profile_device_label">Device</span>
+      </div>
+      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:4px 14px;margin-bottom:20px">
+        <div class="profile-info-row">
+          <span class="profile-info-key" data-i18n="profile_device_id">Device ID</span>
+          <span class="profile-info-val">ESP32-01</span>
+        </div>
+        <div class="profile-info-row">
+          <span class="profile-info-key" data-i18n="profile_firmware">Firmware</span>
+          <span class="profile-info-val">v2.0.0</span>
+        </div>
+        <div class="profile-info-row">
+          <span class="profile-info-key" data-i18n="profile_platform">Platform</span>
+          <span class="profile-info-val">SoilIQ Cloud</span>
+        </div>
+        <div class="profile-info-row">
+          <span class="profile-info-key" data-i18n="profile_ai_engine">AI Engine</span>
+          <span class="profile-info-val">Gemini Flash Vision</span>
+        </div>
+      </div>
+
+      <!-- App version -->
+      <div style="text-align:center;font-size:11px;color:var(--muted2);font-family:var(--mono)">
+        SoilIQ v2.0.0 · Smart Irrigation Platform
+      </div>
     </div>
   </div>
 
@@ -4744,23 +5089,23 @@
     <!-- Defined Preset Queries -->
     <div class="ai-quick-section">
       <div class="ai-quick-label">
-        <span class="mi sm" style="font-size:13px">bolt</span> Quick Queries (Live Sensor Analysis)
+        <span class="mi sm" style="font-size:13px">bolt</span> <span data-i18n="ai_quick_label">Quick Queries (Live Sensor Analysis)</span>
       </div>
       <div class="ai-quick-chips">
         <button class="ai-chip" onclick="askQuickPrompt('plant_care')">
-          <span>🌿</span> Plant & Care Guide
+          <span>🌿</span> <span data-i18n="ai_chip_plant_care">Plant &amp; Care Guide</span>
         </button>
         <button class="ai-chip" onclick="askQuickPrompt('watering_predict')">
-          <span>💧</span> When will next watering happen?
+          <span>💧</span> <span data-i18n="ai_chip_watering">When will next watering happen?</span>
         </button>
         <button class="ai-chip" onclick="askQuickPrompt('safety_check')">
-          <span>⚡</span> System & Pump Safety Check
+          <span>⚡</span> <span data-i18n="ai_chip_safety">System &amp; Pump Safety Check</span>
         </button>
         <button class="ai-chip" onclick="askQuickPrompt('weather_impact')">
-          <span>🌧️</span> Weather & Rain Impact
+          <span>🌧️</span> <span data-i18n="ai_chip_weather">Weather &amp; Rain Impact</span>
         </button>
         <button class="ai-chip" onclick="askQuickPrompt('how_it_works')">
-          <span>📖</span> How SoilIQ Works
+          <span>📖</span> <span data-i18n="ai_chip_how">How SoilIQ Works</span>
         </button>
       </div>
     </div>
@@ -4988,25 +5333,32 @@
       // Status badge
       const badge = document.getElementById('moisture-status-badge');
       if (!p) { badge.textContent = '—'; badge.className = 'moisture-badge badge-optimal'; return; }
+      const pDisplayName = getPlantDisplayName(p);
       if (raw > p.moisture_max) {
-        badge.textContent = 'DRY'; badge.className = 'moisture-badge badge-dry';
+        badge.textContent = t('soil_dry'); badge.className = 'moisture-badge badge-dry';
         if (document.getElementById('toggle-dry')?.checked)
-          addAlert('dry', `🌵 ${p.name} is DRY (${pct}%). Pump should activate.`);
+          addAlert('dry', `🌵 ${pDisplayName} ${t('alert_is_dry')} (${pct}%). ${t('alert_pump_activate')}`);
         if (state.rainExpected && state.mode === 'auto')
           document.getElementById('rain-banner').style.display = 'block';
       } else if (raw < p.moisture_min) {
-        badge.textContent = 'OVERWATERED'; badge.className = 'moisture-badge badge-wet';
+        badge.textContent = t('soil_overwatered'); badge.className = 'moisture-badge badge-wet';
         document.getElementById('rain-banner').style.display = 'none';
       } else {
-        badge.textContent = 'OPTIMAL'; badge.className = 'moisture-badge badge-optimal';
+        badge.textContent = t('soil_optimal'); badge.className = 'moisture-badge badge-optimal';
         document.getElementById('rain-banner').style.display = 'none';
       }
+    }
+
+    function getPlantDisplayName(p, lang = currentLang) {
+      if (!p) return '';
+      if (lang === 'en') return p.name || '';
+      return p['name_' + lang] || p.name || '';
     }
 
     function updatePlantUI() {
       const p = state.selectedPlant;
       if (!p) return;
-      document.getElementById('selected-plant-name').textContent = p.name;
+      document.getElementById('selected-plant-name').textContent = getPlantDisplayName(p);
       document.getElementById('dash-plant-emoji').textContent = p.emoji || '🌱';
       document.getElementById('dash-plant-sci').textContent = p.scientific_name || 'Smart Irrigation Active';
       const minPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_max / 4095) * 100)));
@@ -5024,7 +5376,7 @@
       const btn = document.getElementById('pump-btn');
       const lbl = document.getElementById('pump-label');
       const prog = document.getElementById('irrigation-progress');
-      lbl.textContent = state.pumpOn ? 'ON' : 'OFF';
+      lbl.textContent = state.pumpOn ? t('pump_on') : t('pump_off');
       btn.classList.toggle('on', state.pumpOn);
       prog.classList.toggle('show', state.pumpOn);
     }
@@ -5034,18 +5386,18 @@
       const dot = document.getElementById('online-dot');
       const lbl = document.getElementById('online-label');
       dot.classList.toggle('online', online);
-      lbl.textContent = online ? 'ONLINE' : 'OFFLINE';
+      lbl.textContent = online ? t('status_online') : t('status_offline');
       lbl.style.color = online ? 'var(--primary)' : '';
 
       const snd = document.getElementById('snav-dot');
       const snl = document.getElementById('snav-label');
       if (snd) snd.classList.toggle('online', online);
-      if (snl) { snl.textContent = online ? 'ONLINE' : 'OFFLINE'; snl.style.color = online ? 'var(--primary)' : ''; }
+      if (snl) { snl.textContent = online ? t('status_online') : t('status_offline'); snl.style.color = online ? 'var(--primary)' : ''; }
 
       const setD = document.getElementById('settings-online-dot');
       const setL = document.getElementById('settings-online-label');
       if (setD) setD.classList.toggle('online', online);
-      if (setL) { setL.textContent = online ? 'CONNECTED' : 'OFFLINE'; setL.style.color = online ? 'var(--primary)' : ''; }
+      if (setL) { setL.textContent = online ? t('status_connected') : t('status_offline'); setL.style.color = online ? 'var(--primary)' : ''; }
     }
 
     function updateStats(history) {
@@ -5058,16 +5410,18 @@
     function updateReco(raw) {
       const p = state.selectedPlant;
       const el = document.getElementById('reco-text');
-      if (!p) { el.textContent = 'Select a plant to get watering recommendations.'; return; }
+      if (!el) return;
+      if (!p) { el.textContent = t('reco_select_plant'); return; }
+      const pDisplayName = getPlantDisplayName(p);
       const pct = Math.max(0, Math.min(100, Math.round((1 - raw / 4095) * 100)));
       const minPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_max / 4095) * 100)));
       const maxPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_min / 4095) * 100)));
       if (raw > p.moisture_max) {
-        el.textContent = `${p.name} soil is DRY (${pct}%). Target range ${minPct}–${maxPct}%. Pump should turn ON.`;
+        el.textContent = `${pDisplayName} ${t('reco_dry')} (${pct}%). ${t('target_range_lbl')} ${minPct}–${maxPct}%. ${t('pump_should_on')}`;
       } else if (raw < p.moisture_min) {
-        el.textContent = `${p.name} soil is OVERWATERED (${pct}%). Target range ${minPct}–${maxPct}%. Pump should be OFF.`;
+        el.textContent = `${pDisplayName} ${t('reco_wet')} (${pct}%). ${t('target_range_lbl')} ${minPct}–${maxPct}%. ${t('pump_should_off')}`;
       } else {
-        el.textContent = `${p.name} is OPTIMAL (${pct}%, target ${minPct}–${maxPct}%). System monitoring.`;
+        el.textContent = `${pDisplayName} ${t('reco_optimal')} (${pct}%, ${t('target_range_lbl')} ${minPct}–${maxPct}%). ${t('system_monitoring')}`;
       }
     }
 
@@ -5459,7 +5813,9 @@
     }
 
     function getCategoryInfo(catId) {
-      return PLANT_CATEGORIES.find(c => c.id === catId) || { id: catId, label: 'Plant', emoji: '🌱' };
+      const cat = PLANT_CATEGORIES.find(c => c.id === catId);
+      if (!cat) return { id: catId, label: 'Plant', emoji: '🌱' };
+      return { id: catId, label: t('cat_' + catId) || cat.label, emoji: cat.emoji };
     }
 
     function renderCategoryFilter() {
@@ -5476,10 +5832,11 @@
       wrap.innerHTML = PLANT_CATEGORIES.map(cat => {
         const count = counts[cat.id] || 0;
         const isActive = (state.selectedCategory || 'all') === cat.id;
+        const label = t('cat_' + cat.id) || cat.label;
         return `
           <button type="button" class="category-pill ${isActive ? 'active' : ''}" onclick="setPlantCategory('${cat.id}')">
             <span>${cat.emoji}</span>
-            <span>${cat.label}</span>
+            <span>${label}</span>
             <span class="cat-count">${count}</span>
           </button>
         `;
@@ -5514,7 +5871,10 @@
         const pCat = getPlantCategory(p);
         const matchesCategory = (currentCat === 'all' || pCat === currentCat);
         const matchesSearch = !q ||
-          p.name.toLowerCase().includes(q) ||
+          (p.name || '').toLowerCase().includes(q) ||
+          (p.name_ta || '').toLowerCase().includes(q) ||
+          (p.name_hi || '').toLowerCase().includes(q) ||
+          (p.name_ko || '').toLowerCase().includes(q) ||
           (p.scientific_name || '').toLowerCase().includes(q) ||
           pCat.includes(q);
         return matchesCategory && matchesSearch;
@@ -5529,10 +5889,10 @@
         grid.innerHTML = `
           <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);font-family:var(--font);">
             <div style="font-size:36px;margin-bottom:8px;">🔍</div>
-            <div style="font-weight:700;font-size:16px;color:var(--text);margin-bottom:4px;">No specimens found</div>
-            <p style="font-size:13px;color:var(--muted);">No plants match the selected category or search filter.</p>
+            <div style="font-weight:700;font-size:16px;color:var(--text);margin-bottom:4px;">${t('no_specimens')}</div>
+            <p style="font-size:13px;color:var(--muted);">${t('no_specimens_sub')}</p>
             <button type="button" onclick="clearPlantFilters()" style="margin-top:14px;padding:8px 18px;background:var(--surface2);border:1px solid var(--border2);border-radius:100px;color:var(--primary);font-size:12px;cursor:pointer;font-weight:600;">
-              Reset Filter
+              ${t('reset_filter')}
             </button>
           </div>
         `;
@@ -5545,23 +5905,25 @@
         const minPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_max / 4095) * 100)));
         const maxPct = Math.max(0, Math.min(100, Math.round((1 - p.moisture_min / 4095) * 100)));
         const barW = maxPct - minPct;
+        const statusBadge = sel ? t('selected_badge') : t('available_badge');
+        const pDisplayName = getPlantDisplayName(p);
         return `
     <div class="plant-card-sel ${sel ? 'selected' : ''}" id="pcard-${p.id}" onclick="openPlantDetail('${p.id}')">
       <div class="pcard-img">
         <span>${p.emoji || '🌱'}</span>
         <div class="pcard-status ${sel ? 'selected-badge' : ''}">
           <span style="font-size:10px">${sel ? '●' : '○'}</span>
-          ${sel ? 'SELECTED' : 'AVAILABLE'}
+          ${statusBadge}
         </div>
         <div class="pcard-check">✓</div>
       </div>
       <div class="pcard-body">
         <div class="pcard-cat-badge cat-${cat}">${catInfo.emoji} ${catInfo.label}</div>
-        <div class="pcard-name">${p.name}</div>
+        <div class="pcard-name">${pDisplayName}</div>
         <div class="pcard-sci">${p.scientific_name || ''}</div>
         <div class="pcard-bar-row">
           <div class="pcard-bar-labels">
-            <span>MOISTURE RANGE</span>
+            <span>${t('moisture_range')}</span>
             <span style="color:var(--primary)">${minPct}–${maxPct}%</span>
           </div>
           <div class="pcard-bar" style="position:relative">
@@ -5585,15 +5947,15 @@
     async function confirmPlant() {
       if (!state.pendingPlant) return;
       const btn = document.getElementById('confirm-plant-btn');
-      btn.disabled = true; btn.textContent = 'Saving…';
+      btn.disabled = true; btn.textContent = t('saving_btn') || 'Saving…';
       const ok = await patchDevice({ plant_id: state.pendingPlant.id });
       if (ok) {
         state.selectedPlant = state.pendingPlant;
         updatePlantUI(); updateMoistureUI(state.moisture); updateReco(state.moisture);
-        showToast('✅ ' + state.selectedPlant.name + ' selected', 'success');
+        showToast('✅ ' + getPlantDisplayName(state.selectedPlant) + ' ' + t('toast_selected'), 'success');
         goTo('dashboard');
       }
-      btn.disabled = false; btn.textContent = '✓  Confirm Plant Selection';
+      btn.disabled = false; btn.textContent = '✓  ' + (t('confirm_plant_selection') || 'Confirm Plant Selection');
     }
 
     /* ── CONTROLS ────────────────────────── */
@@ -5612,17 +5974,18 @@
 
     /* ── ALERTS ──────────────────────────── */
     function addAlert(type, msg) {
-      state.alerts.unshift({ type, msg, time: new Date().toLocaleTimeString(), unread: true });
+      const id = 'local_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+      state.alerts.unshift({ id, type, msg, time: new Date().toLocaleTimeString(), unread: true });
       if (state.alerts.length > 20) state.alerts.pop();
       renderAlerts();
     }
 
     const ALERT_CFG = {
-      dry: { icon: 'water_drop', title: 'Dry Soil Warning' },
-      overwater: { icon: 'water', title: 'Overwater Alert' },
-      offline: { icon: 'wifi_off', title: 'Device Offline' },
-      info: { icon: 'info', title: 'System Info' },
-      water_low: { icon: 'water_drop', title: 'Water Low — Refill Needed' },
+      dry: { icon: 'water_drop', key: 'dry_soil_alert', fallback: 'Dry Soil Warning' },
+      overwater: { icon: 'water', key: 'overwater_warn', fallback: 'Overwater Alert' },
+      offline: { icon: 'wifi_off', key: 'offline_alert', fallback: 'Device Offline' },
+      info: { icon: 'info', key: 'alert_sys_info', fallback: 'System Info' },
+      water_low: { icon: 'water_drop', key: 'alert_water_low', fallback: 'Water Low — Refill Needed' },
     };
 
     function renderAlerts() {
@@ -5632,14 +5995,18 @@
         ...state.alerts.map(a => ({ ...a, isDb: false })),
       ];
       const unread = combined.filter(a => a.unread || !a.is_read).length;
-      document.getElementById('unread-count').textContent = unread + ' unread';
+      const unreadEl = document.getElementById('unread-count');
+      if (unreadEl) unreadEl.textContent = unread + ' ' + (t('unread_count') || 'unread');
+
+      const badges = document.querySelectorAll('.alert-nav-badge');
+      badges.forEach(b => { b.textContent = unread; b.style.display = unread ? 'inline-flex' : 'none'; });
 
       if (!combined.length) {
         list.innerHTML = `
       <div class="alert-empty">
         <div class="alert-empty-icon">✅</div>
-        All Clear<br/>
-        <span style="font-size:11px;color:var(--muted2)">No alerts yet. System is monitoring.</span>
+        ${t('all_clear') || 'All Clear'}<br/>
+        <span style="font-size:11px;color:var(--muted2)">${t('all_clear_sub') || 'No alerts yet. System is monitoring.'}</span>
       </div>`;
         return;
       }
@@ -5647,20 +6014,26 @@
       list.innerHTML = combined.map(a => {
         const type = a.isDb ? (a.alert_type || 'info') : (a.type || 'info');
         const cfg = ALERT_CFG[type] || ALERT_CFG.info;
+        const title = t(cfg.key) || cfg.fallback;
         const msg = a.isDb ? a.message : a.msg;
         const time = a.isDb ? new Date(a.created_at).toLocaleTimeString() : a.time;
         const unread = a.isDb ? !a.is_read : a.unread;
+        const alertId = a.id || '';
+        const isDbFlag = a.isDb ? 'true' : 'false';
         const refillBtn = (a.isDb && type === 'water_low')
           ? `<button class="water-refill-alert-btn" onclick="refillReset('${a.id}')">
-           <span class="mi sm">restart_alt</span> Refill &amp; Reset
+           <span class="mi sm">restart_alt</span> ${t('refill_and_reset') || 'Refill &amp; Reset'}
          </button>` : '';
         return `
     <div class="alert-item ${type} ${unread ? 'unread' : ''}">
       <div class="alert-bar"></div>
       ${unread ? '<div class="alert-unread-dot"></div>' : ''}
+      <button class="alert-dismiss-btn" onclick="dismissAlert('${alertId}', ${isDbFlag})" title="Dismiss alert" aria-label="Dismiss alert">
+        <span class="mi">close</span>
+      </button>
       <div class="alert-icon-box"><span class="mi fill">${cfg.icon}</span></div>
       <div class="alert-body">
-        <div class="alert-title">${cfg.title}</div>
+        <div class="alert-title">${title}</div>
         <div class="alert-msg">${msg}</div>
         <div class="alert-time">${time}</div>
         ${refillBtn}
@@ -5669,14 +6042,46 @@
       }).join('');
     }
 
-    function clearAlerts() {
-      state.alerts = [];
-      // Mark DB alerts as read
-      if (state.dbAlerts.length) {
-        sb.from('alerts').update({ is_read: true }).eq('device_id', DEVICE_ID).then(() => loadAlerts());
+    async function dismissAlert(id, isDb) {
+      if (isDb && id) {
+        state.dbAlerts = (state.dbAlerts || []).filter(a => a.id !== id);
+        try {
+          if (typeof sb !== 'undefined' && sb) {
+            await sb.from('alerts').delete().eq('id', id);
+          }
+        } catch (err) {
+          console.error('Failed to delete alert from DB:', err);
+        }
+      } else if (id) {
+        state.alerts = (state.alerts || []).filter(a => a.id !== id);
       }
       renderAlerts();
-      showToast('🗑️ Alerts cleared');
+      showToast('🗑️ ' + (t('alert_dismissed') || 'Alert dismissed'));
+    }
+
+    async function clearAlerts() {
+      const dbIds = (state.dbAlerts || []).map(a => a.id).filter(Boolean);
+      state.alerts = [];
+      state.dbAlerts = [];
+      renderAlerts();
+
+      const unreadCount = document.getElementById('unread-count');
+      if (unreadCount) unreadCount.textContent = '0 ' + (t('unread_count') || 'unread');
+      const badges = document.querySelectorAll('.alert-nav-badge');
+      badges.forEach(b => { b.textContent = '0'; b.style.display = 'none'; });
+
+      try {
+        if (typeof sb !== 'undefined' && sb) {
+          if (dbIds.length > 0) {
+            await sb.from('alerts').delete().in('id', dbIds);
+          }
+          await sb.from('alerts').delete().eq('device_id', DEVICE_ID);
+        }
+      } catch (err) {
+        console.error('Failed to delete alerts from database:', err);
+      }
+
+      showToast('🗑️ ' + (t('alerts_cleared') || 'Alerts cleared'));
     }
 
     /* ── NAVIGATION ──────────────────────── */
@@ -5880,7 +6285,7 @@
       state.pendingPlant = p;
 
       document.getElementById('drawer-emoji').textContent = p.emoji || '🌱';
-      document.getElementById('drawer-name').textContent = p.name;
+      document.getElementById('drawer-name').textContent = getPlantDisplayName(p);
       document.getElementById('drawer-sci').textContent = p.scientific_name || '';
       const cat = getPlantCategory(p);
       const catInfo = getCategoryInfo(cat);
@@ -5952,7 +6357,7 @@
       const btn = document.getElementById('drawer-select-btn');
       const lbl = document.getElementById('drawer-select-label');
       btn.className = 'drawer-select-btn' + (isSelected ? ' already' : '');
-      lbl.textContent = isSelected ? '✓ Currently Active' : 'Select This Plant';
+      lbl.textContent = isSelected ? t('currently_active') : t('select_plant');
 
       // Sync card highlight
       document.querySelectorAll('.plant-card-sel').forEach(c => c.classList.remove('selected'));
@@ -5988,17 +6393,17 @@
       if (state.selectedPlant?.id === state.pendingPlant.id) { closePlantDetail(); return; }
       const btn = document.getElementById('drawer-select-btn');
       const lbl = document.getElementById('drawer-select-label');
-      btn.disabled = true; lbl.textContent = 'Saving…';
+      btn.disabled = true; lbl.textContent = t('saving_btn') || 'Saving…';
       const ok = await patchDevice({ plant_id: state.pendingPlant.id });
       if (ok) {
         state.selectedPlant = state.pendingPlant;
         updatePlantUI(); updateMoistureUI(state.moisture); updateReco(state.moisture);
         renderPlantGrid(state.plants);
-        showToast('✅ ' + state.selectedPlant.name + ' selected!', 'success');
+        showToast('✅ ' + getPlantDisplayName(state.selectedPlant) + ' ' + t('toast_selected'), 'success');
         closePlantDetail();
         goTo('dashboard');
       }
-      btn.disabled = false; lbl.textContent = 'Select This Plant';
+      btn.disabled = false; lbl.textContent = t('select_plant');
     }
 
     /* ═══════════════════════════════════════
@@ -6228,39 +6633,38 @@
 
       if (plantEl) {
         const p = state.selectedPlant;
-        plantEl.textContent = p ? `🌱 ${p.name}` : '🌱 No Plant';
+        plantEl.textContent = p ? `🌱 ${getPlantDisplayName(p)}` : `🌱 ${t('no_plant') || 'No Plant'}`;
       }
       if (moistEl) {
         const raw = state.moisture || 0;
         const p = state.selectedPlant;
-        let cond = 'Optimal';
+        let cond = t('soil_optimal') || 'Optimal';
         let cls = 'green';
         if (raw >= 4000) {
           cond = 'Air/Disconnected'; cls = 'warn';
         } else if (p) {
-          if (raw < p.moisture_min) { cond = 'Dry'; cls = 'warn'; }
-          else if (raw > p.moisture_max) { cond = 'Wet'; cls = 'blue'; }
+          if (raw < p.moisture_min) { cond = t('soil_dry') || 'Dry'; cls = 'warn'; }
+          else if (raw > p.moisture_max) { cond = t('soil_overwatered') || 'Wet'; cls = 'blue'; }
         }
         moistEl.textContent = `💧 ${raw} ADC (${cond})`;
         moistEl.className = `ai-telem-chip ${cls}`;
       }
       if (pumpEl) {
-        pumpEl.textContent = state.pumpOn ? '⚡ Pump: ON' : '⚡ Pump: OFF';
+        pumpEl.textContent = state.pumpOn ? `⚡ ${t('ctrl_pump') || 'Pump'}: ${t('pump_on') || 'ON'}` : `⚡ ${t('ctrl_pump') || 'Pump'}: ${t('pump_off') || 'OFF'}`;
         pumpEl.className = `ai-telem-chip ${state.pumpOn ? 'green' : ''}`;
       }
       if (modeEl) {
-        modeEl.textContent = state.mode === 'auto' ? '⚙️ Auto' : '🖐️ Manual';
+        modeEl.textContent = state.mode === 'auto' ? `⚙️ ${t('auto_mode') || 'Auto'}` : `🖐️ ${t('manual_mode') || 'Manual'}`;
       }
     }
 
     function initAIWelcome() {
       const p = state.selectedPlant;
-      const plantName = p ? p.name : 'your plant';
+      const plantName = p ? getPlantDisplayName(p) : (t('no_plant') || 'your plant');
       const moistStr = state.moisture ? `${state.moisture} ADC` : 'Live';
 
-      const welcomeText = `👋 Hello! I am your **SoilIQ AI Agronomist**, powered by **Google Gemini Flash Vision** with direct real-time telemetry from your **ESP32-01** sensor.
-
-Currently monitoring: **${plantName}** (${moistStr}).
+      const prefix = t('ai_welcome_prefix') || 'Hello! I am your SoilIQ AI Agronomist, connected live to your ESP32 system. Active plant:';
+      const welcomeText = `👋 ${prefix} **${plantName}** (${moistStr}).
 * 🌿 Ask any plant care, watering, or gardening question.
 * 📸 **Upload or paste (Ctrl+V)** a leaf or plant photo for accurate species & health diagnosis!
 * ⚡ Or tap any quick query button above.`;
@@ -6426,6 +6830,7 @@ Currently monitoring: **${plantName}** (${moistStr}).
       if (sendBtn) sendBtn.disabled = true;
 
       const telemetry = getLiveTelemetrySnapshot();
+      const langInstruction = LANG_AI_INSTRUCTION[currentLang] || '';
 
       const systemPrompt = `You are SoilIQ AI Agronomist, a world-class botanical scientist and IoT systems engineer integrated into the SoilIQ Smart Irrigation platform.
 You have direct, real-time access to the user's IoT hardware telemetry.
@@ -6444,7 +6849,8 @@ INSTRUCTIONS & RULES:
 3. If asked about general plant advice (e.g. "which plant is good for home inside?"), answer thoughtfully with great botanical knowledge.
 4. If asked about next watering or moisture, ALWAYS ground your answer in the exact live telemetry numbers (${telemetry.soil_sensor.raw_adc} ADC, min ${telemetry.plant.moisture_min} ADC, max ${telemetry.plant.moisture_max} ADC).
 5. Format your output cleanly in markdown with bullet points, bold text, and emojis.
-6. Keep responses punchy, concise, and focused (around 120-170 words).`;
+6. Keep responses punchy, concise, and focused (around 120-170 words).
+${langInstruction ? `7. ${langInstruction}` : ''}`;
 
       const modelId = getAIModelId();
 
@@ -6707,6 +7113,834 @@ You can ask me about plant health, fertilizer recommendations, watering cycles, 
       });
     }
   </script>
-</body>
 
+  <!-- ════════════════════════════════════
+     MULTI-LANGUAGE ENGINE
+════════════════════════════════════ -->
+  <script>
+    
+    /* SOILIQ MULTI-LANGUAGE SYSTEM
+       Supported: en (English), ta (Tamil), hi (Hindi), ko (Korean) */
+
+    const TRANSLATIONS = {
+  "en": {
+    "nav_live": "Live",
+    "nav_plants": "Plants",
+    "nav_alerts": "Alerts",
+    "nav_settings": "Settings",
+    "page_dashboard": "Live Dashboard",
+    "page_plants": "Botany Gallery",
+    "page_alerts": "Alerts",
+    "page_alerts_title": "System Alerts",
+    "page_settings": "Device Configuration",
+    "page_settings_sub": "Manage parameters for your SoilIQ device",
+    "welcome_back": "Welcome Back! 👋",
+    "monitor_sub": "SoilIQ Intelligent Irrigation System",
+    "search_placeholder": "Search plants…",
+    "search_specimens": "Search 240+ botanical specimens…",
+    "active_plant_label": "ACTIVE PLANT",
+    "target_range_lbl": "TARGET RANGE",
+    "no_plant": "No Plant Selected",
+    "soil_moisture_title": "SOIL MOISTURE",
+    "moisture_label": "Soil Moisture",
+    "current_moisture_sub": "Current Moisture",
+    "target_moisture_lbl": "Target Moisture",
+    "water_needed_lbl": "Water Needed",
+    "soil_optimal": "OPTIMAL",
+    "soil_dry": "DRY",
+    "soil_wet": "WET",
+    "soil_overwatered": "OVERWATERED",
+    "controls_label": "QUICK CONTROLS",
+    "ctrl_mode": "Irrigation Mode",
+    "ctrl_pump": "Water Pump",
+    "auto_mode": "Auto",
+    "manual_mode": "Manual",
+    "pump_on": "ON",
+    "pump_off": "OFF",
+    "watering_in_progress": "Watering in progress…",
+    "weather_label": "LIVE WEATHER",
+    "weather_loading": "Detecting location…",
+    "weather_rain": "Rain probability",
+    "plant_location": "Plant Location",
+    "rain_expected": "Rain Expected — Irrigation Paused",
+    "rain_banner_text": "Rain expected — Auto-irrigation paused.",
+    "environment_label": "ENVIRONMENT",
+    "temp_lbl": "Temperature",
+    "humidity_lbl": "Humidity",
+    "sensor_stats": "SENSOR STATS",
+    "current_pct": "Current Reading",
+    "sessions_lbl": "Watering Cycles",
+    "avg_moist_lbl": "Average Level",
+    "smart_reco": "SMART RECOMMENDATION",
+    "reco_select_plant": "Please select a plant to view personalized recommendations.",
+    "reco_dry": "Soil is critically dry! Irrigation required immediately.",
+    "reco_wet": "Soil is saturated. Avoid further watering to protect roots.",
+    "reco_optimal": "Soil moisture is in the optimal range. Plant is thriving.",
+    "pump_should_on": "Pump should be active to hydrate root system.",
+    "pump_should_off": "Pump should remain idle to conserve water.",
+    "system_monitoring": "System is monitoring soil conditions continuously.",
+    "moisture_history": "Moisture History",
+    "tip_of_day": "AGRONOMIST TIP OF THE DAY",
+    "tip_content": "Consistent deep watering in the early morning promotes deeper root growth and minimizes evaporation losses.",
+    "water_reservoir": "WATER RESERVOIR",
+    "fish_reserve_badge": "Fish Reserve Protected",
+    "ml_remaining_plant": "Remaining for plant",
+    "bottle_size_lbl": "Bottle Size",
+    "water_used_lbl": "Water Used",
+    "plant_avail_lbl": "Plant Available",
+    "fish_reserve_lbl": "Fish Reserve",
+    "fish_fixed": "Fixed 150ml safe level",
+    "refill_and_reset": "Refill & Reset",
+    "botany_gallery_title": "BOTANY GALLERY",
+    "botany_gallery_sub": "Select a plant to automatically calibrate SoilIQ thresholds and care guidance",
+    "confirm_plant_selection": "Confirm Plant Selection",
+    "selected_badge": "ACTIVE",
+    "available_badge": "AVAILABLE",
+    "moisture_range": "Target:",
+    "loading_plants": "Loading botanical collection…",
+    "no_specimens": "No botanical specimens found",
+    "no_specimens_sub": "Try adjusting your search query or category filter.",
+    "reset_filter": "Reset Filter",
+    "cat_all": "All Plants",
+    "cat_tropical": "Tropical",
+    "cat_bonsai": "Bonsai",
+    "cat_medicinal": "Medicinal",
+    "cat_vegetables": "Vegetables",
+    "cat_fruits": "Fruits",
+    "cat_herbs": "Herbs",
+    "cat_houseplants": "Houseplants",
+    "cat_flowers": "Flowers",
+    "cat_succulents": "Succulents & Cacti",
+    "plant_info_section": "PLANT INFORMATION",
+    "drawer_water_need": "Water Requirement",
+    "drawer_sunlight": "Sunlight Need",
+    "drawer_freq": "Watering Frequency",
+    "drawer_fert": "Fertilizer Schedule",
+    "care_notes_section": "BOTANICAL CARE GUIDANCE",
+    "drawer_desc": "Description",
+    "drawer_overwater": "Overwatering Signs",
+    "drawer_solution": "Corrective Action",
+    "drawer_ph": "Optimal Soil pH",
+    "soil_disease_section": "SOIL-BORNE PATHOLOGY & RISKS",
+    "drawer_associated_disease": "Associated Disease",
+    "drawer_pathogen": "Pathogen",
+    "drawer_pathogen_type": "Pathogen Type",
+    "drawer_soil_cause": "Soil Moisture Trigger",
+    "drawer_symptoms": "Clinical Symptoms",
+    "drawer_prevention": "Preventative Protocol",
+    "drawer_risk_level": "Risk Level",
+    "select_plant": "Select This Plant",
+    "currently_active": "✓ Currently Active",
+    "unread_count": "Active Alerts",
+    "clear_all": "Clear All",
+    "all_clear": "All Systems Normal",
+    "all_clear_sub": "No warning thresholds currently triggered",
+    "dry_soil_alert": "Low Moisture Detected",
+    "overwater_warn": "Overwatering Detected",
+    "offline_alert": "Device Offline",
+    "alert_sys_info": "System Notice",
+    "alert_water_low": "Water reservoir is low (< 100ml remaining)",
+    "alert_is_dry": "Soil is critically dry! Target:",
+    "alert_pump_activate": "Pump activated for irrigation",
+    "alert_dismissed": "Alert dismissed",
+    "alerts_cleared": "All alerts cleared",
+    "device_info": "Device Information",
+    "hardware_id": "Hardware ID",
+    "device_name": "Device Name",
+    "firmware": "Firmware",
+    "network_status": "Network Status",
+    "sensor_cal": "Sensor Calibration",
+    "polling_interval": "Polling Interval",
+    "polling_sub": "Telemetry upload frequency",
+    "dry_threshold": "Dry Threshold",
+    "dry_threshold_sub": "Trigger irrigation below this level",
+    "bottle_cap_label": "Water Bottle Capacity",
+    "bottle_cap_sub": "Volume of your irrigation reservoir",
+    "for_plant_lbl": "For plant:",
+    "fish_reserve_sub": "Fish reserve (150ml) is protected automatically",
+    "pump_stops_at": "Pump automatically stops when only fish reserve remains",
+    "save_bottle_btn": "Save Bottle Capacity",
+    "saving_btn": "Saving…",
+    "physical_location": "Plant Physical Location",
+    "location_desc": "Coordinates used for local precipitation and weather forecasts",
+    "detect_save_loc": "Detect & Save Current Location",
+    "clear_loc": "Clear Location",
+    "alert_prefs": "Alert Preferences",
+    "overwater_sub": "Warn when moisture exceeds target range",
+    "dry_soil_sub": "Notify when soil drops below dry threshold",
+    "offline_sub": "Notify when device telemetry disconnects",
+    "about_soiliq": "About SoilIQ v2.0.0",
+    "profiles_count": "240+ Botanical Profiles",
+    "live_sensor_data": "Live Sensor Telemetry",
+    "wx_dashboard": "Open-Meteo Weather Integration",
+    "rain_detect": "Smart Rain Detection",
+    "smart_alerts": "Soil Disease Pathogen Intelligence",
+    "manual_override": "Manual Pump Override",
+    "profile_title": "Profile & Preferences",
+    "profile_role": "Lead Agronomist · SoilIQ",
+    "profile_badge": "Pro Grower",
+    "profile_lang_label": "Display Language",
+    "profile_device_label": "Connected Hardware",
+    "profile_device_id": "Device ID",
+    "profile_firmware": "Firmware",
+    "profile_platform": "Platform",
+    "profile_ai_engine": "AI Engine",
+    "ai_title": "AI Agronomist",
+    "ai_sub": "Gemini 2.5 Flash · Botanical Intelligence",
+    "ai_quick_label": "QUICK CONSULTATIONS",
+    "ai_chip_plant_care": "🌱 Plant Care Guide",
+    "ai_chip_watering": "💧 Watering Needs",
+    "ai_chip_safety": "🛡️ Disease Prevention",
+    "ai_chip_weather": "☀️ Weather Impact",
+    "ai_chip_how": "❓ How SoilIQ Works",
+    "ai_placeholder": "Ask your AI Agronomist…",
+    "ai_welcome_prefix": "Hello! I am your SoilIQ AI Agronomist.",
+    "status_online": "ONLINE",
+    "status_offline": "OFFLINE",
+    "status_connected": "CONNECTED",
+    "toast_selected": "Plant selected:"
+  },
+  "ta": {
+    "nav_live": "நேரடி",
+    "nav_plants": "தாவரங்கள்",
+    "nav_alerts": "எச்சரிக்கை",
+    "nav_settings": "அமைப்புகள்",
+    "page_dashboard": "நேரடி டாஷ்போர்டு",
+    "page_plants": "தாவரவியல் தொகுப்பு",
+    "page_alerts": "எச்சரிக்கைகள்",
+    "page_alerts_title": "கணினி எச்சரிக்கைகள்",
+    "page_settings": "சாதன அமைப்பு",
+    "page_settings_sub": "உங்கள் SoilIQ சாதனத்திற்கான அளவுருக்களை நிர்வகிக்கவும்",
+    "welcome_back": "மீண்டும் வருக! 👋",
+    "monitor_sub": "SoilIQ நுண்ணறிவு பாசன அமைப்பு",
+    "search_placeholder": "தாவரங்கள் தேடுக…",
+    "search_specimens": "240+ தாவர மாதிரிகளைத் தேடுங்கள்…",
+    "active_plant_label": "செயலில் உள்ள தாவரம்",
+    "target_range_lbl": "இலக்கு வரம்பு",
+    "no_plant": "எந்த தாவரமும் தேர்ந்தெடுக்கப்படவில்லை",
+    "soil_moisture_title": "மண் ஈரப்பதம்",
+    "moisture_label": "மண் ஈரப்பதம்",
+    "current_moisture_sub": "தற்போதைய ஈரப்பதம்",
+    "target_moisture_lbl": "இலக்கு ஈரப்பதம்",
+    "water_needed_lbl": "தேவையான நீர்",
+    "soil_optimal": "சரியான அளவு",
+    "soil_dry": "வறண்டது",
+    "soil_wet": "அதிக ஈரப்பதம்",
+    "soil_overwatered": "அதிகப்படியான நீர்",
+    "controls_label": "விரைவு கட்டுப்பாடுகள்",
+    "ctrl_mode": "பாசன முறை",
+    "ctrl_pump": "நீர் பம்ப்",
+    "auto_mode": "தானியங்கி",
+    "manual_mode": "கைமுறை",
+    "pump_on": "இயங்குகிறது",
+    "pump_off": "நிறுத்தம்",
+    "watering_in_progress": "நீர்ப்பாசனம் நடைபெறுகிறது…",
+    "weather_label": "நேரடி வானிலை",
+    "weather_loading": "இருப்பிடத்தைக் கண்டறிகிறது…",
+    "weather_rain": "மழைக்கான சாத்தியம்",
+    "plant_location": "தாவர இருப்பிடம்",
+    "rain_expected": "மழை எதிர்பார்க்கப்படுகிறது — பாசனம் இடைநிறுத்தப்பட்டது",
+    "rain_banner_text": "மழை எதிர்பார்க்கப்படுகிறது — தானியங்கி நீர்பாசனம் இடைநிறுத்தப்பட்டது.",
+    "environment_label": "சுற்றுச்சூழல்",
+    "temp_lbl": "வெப்பநிலை",
+    "humidity_lbl": "காற்றின் ஈரப்பதம்",
+    "sensor_stats": "சென்சார் புள்ளிவிவரங்கள்",
+    "current_pct": "தற்போதைய அளவீடு",
+    "sessions_lbl": "நீர்ப்பாசன சுழற்சிகள்",
+    "avg_moist_lbl": "சராசரி நிலை",
+    "smart_reco": "நுண்ணறிவு பரிந்துரை",
+    "reco_select_plant": "தனிப்பயனாக்கப்பட்ட பரிந்துரைகளைக் காண தாவரத்தைத் தேர்ந்தெடுக்கவும்.",
+    "reco_dry": "மண் மிகவும் வறண்டுள்ளது! உடனடியாக நீர்ப்பாசனம் தேவை.",
+    "reco_wet": "மண் அதிக ஈரமாக உள்ளது. வேர்களைப் பாதுகாக்க மேலும் தண்ணீர் ஊற்றுவதைத் தவிர்க்கவும்.",
+    "reco_optimal": "மண் ஈரப்பதம் சிறந்த வரம்பில் உள்ளது. தாவரம் நன்கு வளர்கிறது.",
+    "pump_should_on": "வேர் அமைப்பை ஈரப்படுத்த பம்ப் இயங்க வேண்டும்.",
+    "pump_should_off": "தண்ணீரைச் சேமிக்க பம்ப் நிறுத்தப்பட வேண்டும்.",
+    "system_monitoring": "கணினி மண் நிலையைத் தொடர்ந்து கண்காணித்து வருகிறது.",
+    "moisture_history": "ஈரப்பத வரலாறு",
+    "tip_of_day": "இன்றைய வேளாண் நிபுணர் குறிப்பு",
+    "tip_content": "அதிகாலையில் சீரான ஆழமான நீர்ப்பாசனம் ஆழமான வேர் வளர்ச்சியை ஊக்குவிக்கிறது மற்றும் ஆவியாதலைத் தடுக்கிறது.",
+    "water_reservoir": "நீர் தொட்டி",
+    "fish_reserve_badge": "மீன் இருப்பு பாதுகாக்கப்பட்டது",
+    "ml_remaining_plant": "தாவரத்திற்கு மீதமுள்ள நீர்",
+    "bottle_size_lbl": "பாட்டில் கொள்ளளவு",
+    "water_used_lbl": "பயன்படுத்தப்பட்ட நீர்",
+    "plant_avail_lbl": "தாவரத்திற்கு கிடைக்கும் நீர்",
+    "fish_reserve_lbl": "மீன் இருப்பு",
+    "fish_fixed": "நிலையான 150ml பாதுகாப்பான அளவு",
+    "refill_and_reset": "நிரப்பி மீட்டமைக்கவும்",
+    "botany_gallery_title": "தாவரவியல் தொகுப்பு",
+    "botany_gallery_sub": "SoilIQ வரம்புகள் மற்றும் பராமரிப்பு வழிகாட்டலை அளவீடு செய்ய ஒரு தாவரத்தைத் தேர்ந்தெடுக்கவும்",
+    "confirm_plant_selection": "தாவரத் தேர்வை உறுதிப்படுத்தவும்",
+    "selected_badge": "செயலில்",
+    "available_badge": "கிடைக்கிறது",
+    "moisture_range": "இலக்கு:",
+    "loading_plants": "தாவரவியல் சேகரிப்பு ஏற்றப்படுகிறது…",
+    "no_specimens": "தாவர மாதிரிகள் எதுவும் கிடைக்கவில்லை",
+    "no_specimens_sub": "தேடல் சொல் அல்லது வகை வடிப்பானை மாற்றி முயற்சிக்கவும்.",
+    "reset_filter": "வடிப்பானை மீட்டமை",
+    "cat_all": "அனைத்து தாவரங்கள்",
+    "cat_tropical": "வெப்பமண்டல",
+    "cat_bonsai": "போன்சாய்",
+    "cat_medicinal": "மருத்துவ தாவரங்கள்",
+    "cat_vegetables": "காய்கறிகள்",
+    "cat_fruits": "பழங்கள்",
+    "cat_herbs": "மூலிகைகள்",
+    "cat_houseplants": "வீட்டு தாவரங்கள்",
+    "cat_flowers": "மலர்கள்",
+    "cat_succulents": "கள்ளி & சதைப்பற்றுள்ள",
+    "plant_info_section": "தாவர தகவல்",
+    "drawer_water_need": "நீர் தேவை",
+    "drawer_sunlight": "சூரிய ஒளி தேவை",
+    "drawer_freq": "நீர்ப்பாசன இடைவெளி",
+    "drawer_fert": "உரமிடுதல் அட்டவணை",
+    "care_notes_section": "தாவரவியல் பராமரிப்பு வழிகாட்டல்",
+    "drawer_desc": "விளக்கம்",
+    "drawer_overwater": "அதிகப்படியான நீரின் அறிகுறிகள்",
+    "drawer_solution": "சரிசெய்யும் நடவடிக்கை",
+    "drawer_ph": "மண்ணின் உகந்த pH",
+    "soil_disease_section": "மண் சார்ந்த நோய்கள் மற்றும் அபாயங்கள்",
+    "drawer_associated_disease": "தொடர்புடைய நோய்",
+    "drawer_pathogen": "நோய்க்கிருமி",
+    "drawer_pathogen_type": "நோய்க்கிருமி வகை",
+    "drawer_soil_cause": "மண் ஈரப்பதக் காரணம்",
+    "drawer_symptoms": "நோய் அறிகுறிகள்",
+    "drawer_prevention": "தடுப்பு நெறிமுறை",
+    "drawer_risk_level": "அபாய நிலை",
+    "select_plant": "இந்த தாவரத்தை தேர்ந்தெடு",
+    "currently_active": "✓ தற்போது செயலில்",
+    "unread_count": "செயலில் உள்ள எச்சரிக்கைகள்",
+    "clear_all": "அனைத்தையும் அழி",
+    "all_clear": "அனைத்து அமைப்புகளும் சீராக உள்ளன",
+    "all_clear_sub": "எந்த எச்சரிக்கை வரம்பும் தற்போது தூண்டப்படவில்லை",
+    "dry_soil_alert": "குறைந்த ஈரப்பதம் கண்டறியப்பட்டது",
+    "overwater_warn": "அதிகப்படியான நீர் கண்டறியப்பட்டது",
+    "offline_alert": "சாதனம் ஆஃப்லைனில் உள்ளது",
+    "alert_sys_info": "கணினி அறிவிப்பு",
+    "alert_water_low": "நீர் தொட்டி குறைவாக உள்ளது (< 100ml மீதம்)",
+    "alert_is_dry": "மண் மிகவும் வறண்டுள்ளது! இலக்கு:",
+    "alert_pump_activate": "நீர்ப்பாசனத்திற்காக பம்ப் இயக்கப்பட்டது",
+    "alert_dismissed": "எச்சரிக்கை நீக்கப்பட்டது",
+    "alerts_cleared": "அனைத்து எச்சரிக்கைகளும் அழிக்கப்பட்டன",
+    "device_info": "சாதன தகவல்",
+    "hardware_id": "வன்பொருள் ID",
+    "device_name": "சாதன பெயர்",
+    "firmware": "நிலைபொருள்",
+    "network_status": "நெட்வோர்க் நிலை",
+    "sensor_cal": "சென்சார் அளவீடு",
+    "polling_interval": "கணிப்பு இடைவெளி",
+    "polling_sub": "டெலிமெட்ரி பதிவேற்ற இடைவெளி",
+    "dry_threshold": "வறட்சி வரம்பு",
+    "dry_threshold_sub": "இந்த அளவிற்கு கீழே பாசனத்தை இயக்கவும்",
+    "bottle_cap_label": "தண்ணீர் பாட்டில் கொள்ளளவு",
+    "bottle_cap_sub": "உங்கள் பாசன நீர்த் தொட்டியின் கொள்ளளவு",
+    "for_plant_lbl": "தாவரத்திற்கு:",
+    "fish_reserve_sub": "மீன் இருப்பு (150ml) தானாகவே பாதுகாக்கப்படுகிறது",
+    "pump_stops_at": "மீன் இருப்பு மட்டுமே இருக்கும்போது பம்ப் தானாகவே நின்றுவிடும்",
+    "save_bottle_btn": "பாட்டில் கொள்ளளவைச் சேமிக்கவும்",
+    "saving_btn": "சேமிக்கப்படுகிறது…",
+    "physical_location": "தாவரத்தின் இருப்பிடம்",
+    "location_desc": "மழை மற்றும் வானிலை முன்னறிவிப்புக்கு பயன்படும் ஆயத்தொலைவுகள்",
+    "detect_save_loc": "தற்போதைய இருப்பிடத்தைக் கண்டறிந்து சேமிக்கவும்",
+    "clear_loc": "இருப்பிடத்தை அழி",
+    "alert_prefs": "எச்சரிக்கை விருப்பங்கள்",
+    "overwater_sub": "ஈரப்பதம் இலக்கு வரம்பை தாண்டும்போது எச்சரிக்கவும்",
+    "dry_soil_sub": "மண் வறட்சி வரம்பிற்கு கீழே செல்லும்போது தெரிவிக்கவும்",
+    "offline_sub": "சாதன இணைப்பு துண்டிக்கப்படும்போது தெரிவிக்கவும்",
+    "about_soiliq": "SoilIQ v2.0.0 பற்றி",
+    "profiles_count": "240+ தாவர சுயவிவரங்கள்",
+    "live_sensor_data": "நேரடி சென்சார் டெலிமெட்ரி",
+    "wx_dashboard": "Open-Meteo வானிலை இணைப்பு",
+    "rain_detect": "நுண்ணறிவு மழை கண்டறிதல்",
+    "smart_alerts": "மண் நோய் நுண்ணறிவு",
+    "manual_override": "கைமுறை பம்ப் இயக்கம்",
+    "profile_title": "சுயவிவரம் & விருப்பத்தேர்வுகள்",
+    "profile_role": "தலைமை வேளாண் நிபுணர் · SoilIQ",
+    "profile_badge": "தொழில் வல்லுநர்",
+    "profile_lang_label": "காட்சி மொழி",
+    "profile_device_label": "இணைக்கப்பட்ட சாதனம்",
+    "profile_device_id": "சாதன ID",
+    "profile_firmware": "நிலைபொருள்",
+    "profile_platform": "தளம்",
+    "profile_ai_engine": "AI இயந்திரம்",
+    "ai_title": "AI வேளாண் நிபுணர்",
+    "ai_sub": "Gemini 2.5 Flash · தாவர நுண்ணறிவு",
+    "ai_quick_label": "விரைவு ஆலோசனைகள்",
+    "ai_chip_plant_care": "🌱 தாவர பராமரிப்பு வழிகாட்டி",
+    "ai_chip_watering": "💧 நீர்ப்பாசன தேவைகள்",
+    "ai_chip_safety": "🛡️ நோய் தடுப்பு",
+    "ai_chip_weather": "☀️ வானிலை தாக்கம்",
+    "ai_chip_how": "❓ SoilIQ எவ்வாறு செயல்படுகிறது",
+    "ai_placeholder": "உங்கள் AI வேளாண் நிபுணரிடம் கேளுங்கள்…",
+    "ai_welcome_prefix": "வணக்கம்! நான் உங்கள் SoilIQ AI வேளாண் ஆலோசகர்.",
+    "status_online": "இணைப்பில்",
+    "status_offline": "இணைப்பில்லை",
+    "status_connected": "இணைக்கப்பட்டது",
+    "toast_selected": "தாவரம் தேர்ந்தெடுக்கப்பட்டது:"
+  },
+  "hi": {
+    "nav_live": "लाइव",
+    "nav_plants": "पौधे",
+    "nav_alerts": "अलर्ट",
+    "nav_settings": "सेटिंग्स",
+    "page_dashboard": "लाइव डैशबोर्ड",
+    "page_plants": "वनस्पति गैलरी",
+    "page_alerts": "अलर्ट",
+    "page_alerts_title": "सिस्टम अलर्ट",
+    "page_settings": "डिवाइस कॉन्फ़िगरेशन",
+    "page_settings_sub": "अपने SoilIQ डिवाइस के पैरामीटर प्रबंधित करें",
+    "welcome_back": "स्वागत है! 👋",
+    "monitor_sub": "SoilIQ इंटेलिजेंट सिंचाई प्रणाली",
+    "search_placeholder": "पौधे खोजें…",
+    "search_specimens": "240+ वनस्पति नमूने खोजें…",
+    "active_plant_label": "सक्रिय पौधा",
+    "target_range_lbl": "लक्ष्य सीमा",
+    "no_plant": "कोई पौधा नहीं चुना गया",
+    "soil_moisture_title": "मिट्टी की नमी",
+    "moisture_label": "मिट्टी की नमी",
+    "current_moisture_sub": "वर्तमान नमी",
+    "target_moisture_lbl": "लक्ष्य नमी",
+    "water_needed_lbl": "आवश्यक जल",
+    "soil_optimal": "उचित स्तर",
+    "soil_dry": "सूखा",
+    "soil_wet": "गीला",
+    "soil_overwatered": "अत्यधिक जल",
+    "controls_label": "त्वरित नियंत्रण",
+    "ctrl_mode": "सिंचाई मोड",
+    "ctrl_pump": "जल पंप",
+    "auto_mode": "स्वचालित",
+    "manual_mode": "मैनुअल",
+    "pump_on": "चालू",
+    "pump_off": "बंद",
+    "watering_in_progress": "सिंचाई जारी है…",
+    "weather_label": "लाइव मौसम",
+    "weather_loading": "स्थान का पता लगाया जा रहा है…",
+    "weather_rain": "वर्षा की संभावना",
+    "plant_location": "पौधे का स्थान",
+    "rain_expected": "बारिश की उम्मीद — सिंचाई रोकी गई",
+    "rain_banner_text": "वर्षा की संभावना — स्वचालित सिंचाई रोकी गई।",
+    "environment_label": "पर्यावरण",
+    "temp_lbl": "तापमान",
+    "humidity_lbl": "आर्द्रता",
+    "sensor_stats": "सेंसर आंकड़े",
+    "current_pct": "वर्तमान रीडिंग",
+    "sessions_lbl": "सिंचाई चक्र",
+    "avg_moist_lbl": "औसत स्तर",
+    "smart_reco": "स्मार्ट अनुशंसा",
+    "reco_select_plant": "व्यक्तिगत अनुशंसाएँ देखने के लिए कृपया एक पौधा चुनें।",
+    "reco_dry": "मिट्टी अत्यधिक सूखी है! तुरंत सिंचाई की आवश्यकता है।",
+    "reco_wet": "मिट्टी संतृप्त है। जड़ों की सुरक्षा के लिए अतिरिक्त पानी न दें।",
+    "reco_optimal": "मिट्टी की नमी इष्टतम सीमा में है। पौधा स्वस्थ है।",
+    "pump_should_on": "जड़ प्रणाली को हाइड्रेट करने के लिए पंप सक्रिय होना चाहिए।",
+    "pump_should_off": "पानी बचाने के लिए पंप बंद रहना चाहिए।",
+    "system_monitoring": "सिस्टम लगातार मिट्टी की स्थिति की निगरानी कर रहा है।",
+    "moisture_history": "नमी इतिहास",
+    "tip_of_day": "आज का कृषि विशेषज्ञ सुझाव",
+    "tip_content": "सुबह जल्दी नियमित गहरी सिंचाई से जड़ों का विकास गहरा होता है और वाष्पीकरण का नुकसान कम होता है।",
+    "water_reservoir": "जल भण्डार",
+    "fish_reserve_badge": "मछली रिजर्व सुरक्षित",
+    "ml_remaining_plant": "पौधे के लिए शेष जल",
+    "bottle_size_lbl": "बोतल का आकार",
+    "water_used_lbl": "उपयोग किया गया जल",
+    "plant_avail_lbl": "पौधे के लिए उपलब्ध",
+    "fish_reserve_lbl": "मछली रिजर्व",
+    "fish_fixed": "स्थिर 150ml सुरक्षित स्तर",
+    "refill_and_reset": "रिफिल और रीसेट",
+    "botany_gallery_title": "वनस्पति गैलरी",
+    "botany_gallery_sub": "SoilIQ थ्रेसहोल्ड और देखभाल मार्गदर्शन को कैलिब्रेट करने के लिए एक पौधा चुनें",
+    "confirm_plant_selection": "पौधा चयन की पुष्टि करें",
+    "selected_badge": "सक्रिय",
+    "available_badge": "उपलब्ध",
+    "moisture_range": "लक्ष्य:",
+    "loading_plants": "वनस्पति संग्रह लोड हो रहा है…",
+    "no_specimens": "कोई वनस्पति नमूना नहीं मिला",
+    "no_specimens_sub": "अपनी खोज या श्रेणी फ़िल्टर समायोजित करने का प्रयास करें।",
+    "reset_filter": "फ़िल्टर रीसेट करें",
+    "cat_all": "सभी पौधे",
+    "cat_tropical": "उष्णकटिबंधीय",
+    "cat_bonsai": "बोन्साई",
+    "cat_medicinal": "औषधीय",
+    "cat_vegetables": "सब्जियाँ",
+    "cat_fruits": "फल",
+    "cat_herbs": "जड़ी-बूटियाँ",
+    "cat_houseplants": "हाउसप्लांट",
+    "cat_flowers": "फूल",
+    "cat_succulents": "कैक्टस और रसीले पौधे",
+    "plant_info_section": "पौधे की जानकारी",
+    "drawer_water_need": "जल आवश्यकता",
+    "drawer_sunlight": "धूप की आवश्यकता",
+    "drawer_freq": "सिंचाई आवृत्ति",
+    "drawer_fert": "उर्वरक अनुसूची",
+    "care_notes_section": "वनस्पति देखभाल मार्गदर्शन",
+    "drawer_desc": "विवरण",
+    "drawer_overwater": "अत्यधिक जल के लक्षण",
+    "drawer_solution": "सुधारात्मक उपाय",
+    "drawer_ph": "इष्टतम मिट्टी का pH",
+    "soil_disease_section": "मृदा-जनित रोग एवं जोखिम",
+    "drawer_associated_disease": "संबंधित रोग",
+    "drawer_pathogen": "रोगज़नक़",
+    "drawer_pathogen_type": "रोगज़नक़ का प्रकार",
+    "drawer_soil_cause": "मृदा नमी का कारण",
+    "drawer_symptoms": "रोग के लक्षण",
+    "drawer_prevention": "रोकथाम प्रोटोकॉल",
+    "drawer_risk_level": "जोखिम स्तर",
+    "select_plant": "यह पौधा चुनें",
+    "currently_active": "✓ वर्तमान में सक्रिय",
+    "unread_count": "सक्रिय अलर्ट",
+    "clear_all": "सभी हटाएं",
+    "all_clear": "सभी सिस्टम सामान्य हैं",
+    "all_clear_sub": "वर्तमान में कोई चेतावनी सीमा पार नहीं हुई है",
+    "dry_soil_alert": "कम नमी का पता चला",
+    "overwater_warn": "अत्यधिक जल की पहचान",
+    "offline_alert": "डिवाइस ऑफ़लाइन है",
+    "alert_sys_info": "सिस्टम सूचना",
+    "alert_water_low": "जल जलाशय में पानी कम है (< 100ml शेष)",
+    "alert_is_dry": "मिट्टी अत्यधिक सूखी है! लक्ष्य:",
+    "alert_pump_activate": "सिंचाई के लिए पंप चालू किया गया",
+    "alert_dismissed": "अलर्ट हटा दिया गया",
+    "alerts_cleared": "सभी अलर्ट हटा दिए गए",
+    "device_info": "डिवाइस जानकारी",
+    "hardware_id": "हार्डवेयर ID",
+    "device_name": "डिवाइस का नाम",
+    "firmware": "फ़र्मवेयर",
+    "network_status": "नेटवर्क स्थिति",
+    "sensor_cal": "सेंसर कैलिब्रेशन",
+    "polling_interval": "पोलिंग अंतराल",
+    "polling_sub": "टेलीमेट्री अपलोड आवृत्ति",
+    "dry_threshold": "सूखा थ्रेसहोल्ड",
+    "dry_threshold_sub": "इस स्तर से नीचे सिंचाई चालू करें",
+    "bottle_cap_label": "पानी की बोतल क्षमता",
+    "bottle_cap_sub": "आपके सिंचाई जलाशय की क्षमता",
+    "for_plant_lbl": "पौधे के लिए:",
+    "fish_reserve_sub": "मछली रिजर्व (150ml) स्वचालित रूप से सुरक्षित है",
+    "pump_stops_at": "केवल मछली रिजर्व बचने पर पंप स्वतः बंद हो जाता है",
+    "save_bottle_btn": "बोतल की क्षमता सहेजें",
+    "saving_btn": "सहेजा जा रहा है…",
+    "physical_location": "पौधे का भौतिक स्थान",
+    "location_desc": "स्थानीय वर्षा और मौसम पूर्वानुमान के लिए उपयोग किए जाने वाले निर्देशांक",
+    "detect_save_loc": "वर्तमान स्थान का पता लगाएं और सहेजें",
+    "clear_loc": "स्थान साफ़ करें",
+    "alert_prefs": "अलर्ट प्राथमिकताएं",
+    "overwater_sub": "नमी लक्ष्य सीमा से अधिक होने पर चेतावनी दें",
+    "dry_soil_sub": "मिट्टी सूखी सीमा से नीचे जाने पर सूचित करें",
+    "offline_sub": "डिवाइस टेलीमेट्री डिस्कनेक्ट होने पर सूचित करें",
+    "about_soiliq": "SoilIQ v2.0.0 के बारे में",
+    "profiles_count": "240+ वनस्पति प्रोफ़ाइल",
+    "live_sensor_data": "लाइव सेंसर टेलीमेट्री",
+    "wx_dashboard": "Open-Meteo मौसम एकीकरण",
+    "rain_detect": "स्मार्ट वर्षा का पता लगाना",
+    "smart_alerts": "मृदा रोग रोगज़नक़ बुद्धिमत्ता",
+    "manual_override": "मैनुअल पंप नियंत्रण",
+    "profile_title": "प्रोफ़ाइल और प्राथमिकताएँ",
+    "profile_role": "मुख्य कृषि विशेषज्ञ · SoilIQ",
+    "profile_badge": "प्रो ग्रोअर",
+    "profile_lang_label": "भाषा चुनें",
+    "profile_device_label": "कनेक्टेड हार्डवेयर",
+    "profile_device_id": "डिवाइस ID",
+    "profile_firmware": "फ़र्मवेयर",
+    "profile_platform": "प्लेटफ़ॉर्म",
+    "profile_ai_engine": "AI इंजन",
+    "ai_title": "AI कृषि विशेषज्ञ",
+    "ai_sub": "Gemini 2.5 Flash · वानस्पतिक बुद्धिमत्ता",
+    "ai_quick_label": "त्वरित परामर्श",
+    "ai_chip_plant_care": "🌱 पौधे की देखभाल गाइड",
+    "ai_chip_watering": "💧 सिंचाई की आवश्यकताएं",
+    "ai_chip_safety": "🛡️ रोग की रोकथाम",
+    "ai_chip_weather": "☀️ मौसम का प्रभाव",
+    "ai_chip_how": "❓ SoilIQ कैसे काम करता है",
+    "ai_placeholder": "अपने AI कृषि विशेषज्ञ से पूछें…",
+    "ai_welcome_prefix": "नमस्ते! मैं आपका SoilIQ AI कृषि विशेषज्ञ हूँ।",
+    "status_online": "ऑनलाइन",
+    "status_offline": "ऑफ़लाइन",
+    "status_connected": "कनेक्टेड",
+    "toast_selected": "पौधा चुना गया:"
+  },
+  "ko": {
+    "nav_live": "실시간",
+    "nav_plants": "식물",
+    "nav_alerts": "알림",
+    "nav_settings": "설정",
+    "page_dashboard": "실시간 대시보드",
+    "page_plants": "식물 갤러리",
+    "page_alerts": "알림",
+    "page_alerts_title": "시스템 알림",
+    "page_settings": "기기 구성",
+    "page_settings_sub": "SoilIQ 기기 매개변수 관리",
+    "welcome_back": "다시 오신 것을 환영합니다! 👋",
+    "monitor_sub": "SoilIQ 지능형 관개 시스템",
+    "search_placeholder": "식물 검색…",
+    "search_specimens": "240개 이상의 식물 표본 검색…",
+    "active_plant_label": "활성 식물",
+    "target_range_lbl": "목표 범위",
+    "no_plant": "선택된 식물 없음",
+    "soil_moisture_title": "토양 수분",
+    "moisture_label": "토양 수분",
+    "current_moisture_sub": "현재 수분",
+    "target_moisture_lbl": "목표 수분",
+    "water_needed_lbl": "필요한 물",
+    "soil_optimal": "최적",
+    "soil_dry": "건조",
+    "soil_wet": "과습",
+    "soil_overwatered": "과다 관수",
+    "controls_label": "빠른 제어",
+    "ctrl_mode": "관개 모드",
+    "ctrl_pump": "물 펌프",
+    "auto_mode": "자동",
+    "manual_mode": "수동",
+    "pump_on": "작동 중",
+    "pump_off": "정지",
+    "watering_in_progress": "관개 진행 중…",
+    "weather_label": "실시간 날씨",
+    "weather_loading": "위치 감지 중…",
+    "weather_rain": "강수 확률",
+    "plant_location": "식물 위치",
+    "rain_expected": "비 예보 — 관개 일시 중지됨",
+    "rain_banner_text": "비 예보 — 자동 관개가 일시 중지되었습니다.",
+    "environment_label": "환경",
+    "temp_lbl": "온도",
+    "humidity_lbl": "습도",
+    "sensor_stats": "센서 통계",
+    "current_pct": "현재 측정값",
+    "sessions_lbl": "관개 주기",
+    "avg_moist_lbl": "평균 수분",
+    "smart_reco": "스마트 권장사항",
+    "reco_select_plant": "맞춤형 권장사항을 보려면 식물을 선택하세요.",
+    "reco_dry": "토양이 매우 건조합니다! 즉시 관개가 필요합니다.",
+    "reco_wet": "토양이 과습 상태입니다. 뿌리 보호를 위해 추가 급수를 중단하세요.",
+    "reco_optimal": "토양 수분이 최적 범위에 있습니다. 식물이 건강하게 자라고 있습니다.",
+    "pump_should_on": "뿌리 시스템에 수분을 공급하기 위해 펌프가 가동되어야 합니다.",
+    "pump_should_off": "물 절약을 위해 펌프를 대기 상태로 유지해야 합니다.",
+    "system_monitoring": "시스템이 지속적으로 토양 상태를 모니터링하고 있습니다.",
+    "moisture_history": "수분 이력",
+    "tip_of_day": "오늘의 농업 전문가 팁",
+    "tip_content": "이른 아침에 규칙적으로 깊게 물을 주면 뿌리가 깊게 자라며 증발 손실을 줄일 수 있습니다.",
+    "water_reservoir": "물 저장소",
+    "fish_reserve_badge": "물고기 보호 수량 유지됨",
+    "ml_remaining_plant": "식물용 잔여 수량",
+    "bottle_size_lbl": "물통 크기",
+    "water_used_lbl": "사용된 물",
+    "plant_avail_lbl": "식물 사용 가능",
+    "fish_reserve_lbl": "물고기 예비 수량",
+    "fish_fixed": "고정 150ml 안전 수위",
+    "refill_and_reset": "리필 및 초기화",
+    "botany_gallery_title": "식물 갤러리",
+    "botany_gallery_sub": "SoilIQ 임계값과 관리 지침을 자동 보정하려면 식물을 선택하세요",
+    "confirm_plant_selection": "식물 선택 확인",
+    "selected_badge": "활성",
+    "available_badge": "선택 가능",
+    "moisture_range": "목표:",
+    "loading_plants": "식물 컬렉션 불러오는 중…",
+    "no_specimens": "식물 표본을 찾을 수 없습니다",
+    "no_specimens_sub": "검색어 또는 카테고리 필터를 변경해 보세요.",
+    "reset_filter": "필터 재설정",
+    "cat_all": "모든 식물",
+    "cat_tropical": "열대 식물",
+    "cat_bonsai": "분재",
+    "cat_medicinal": "약용 식물",
+    "cat_vegetables": "채소",
+    "cat_fruits": "과일",
+    "cat_herbs": "허브",
+    "cat_houseplants": "실내 식물",
+    "cat_flowers": "꽃",
+    "cat_succulents": "다육식물 및 선인장",
+    "plant_info_section": "식물 정보",
+    "drawer_water_need": "필요 수분량",
+    "drawer_sunlight": "일조량 요구",
+    "drawer_freq": "관개 빈도",
+    "drawer_fert": "비료 주기",
+    "care_notes_section": "식물 관리 지침",
+    "drawer_desc": "설명",
+    "drawer_overwater": "과습 징후",
+    "drawer_solution": "해결 방안",
+    "drawer_ph": "최적 토양 pH",
+    "soil_disease_section": "토양 매개 질병 및 위험",
+    "drawer_associated_disease": "관련 질병",
+    "drawer_pathogen": "병원균",
+    "drawer_pathogen_type": "병원균 유형",
+    "drawer_soil_cause": "토양 수분 원인",
+    "drawer_symptoms": "임상 증상",
+    "drawer_prevention": "예방 수칙",
+    "drawer_risk_level": "위험도",
+    "select_plant": "이 식물 선택",
+    "currently_active": "✓ 현재 활성화됨",
+    "unread_count": "활성 알림",
+    "clear_all": "모두 지우기",
+    "all_clear": "모든 시스템 정상",
+    "all_clear_sub": "현재 발생한 경고가 없습니다",
+    "dry_soil_alert": "낮은 수분 감지됨",
+    "overwater_warn": "과습 감지됨",
+    "offline_alert": "기기 오프라인",
+    "alert_sys_info": "시스템 공지",
+    "alert_water_low": "물 저장소 부족 (< 100ml 남음)",
+    "alert_is_dry": "토양이 매우 건조합니다! 목표:",
+    "alert_pump_activate": "관개를 위해 펌프 작동됨",
+    "alert_dismissed": "알림 삭제됨",
+    "alerts_cleared": "모든 알림 지워짐",
+    "device_info": "기기 정보",
+    "hardware_id": "하드웨어 ID",
+    "device_name": "기기 이름",
+    "firmware": "펌웨어",
+    "network_status": "네트워크 상태",
+    "sensor_cal": "센서 보정",
+    "polling_interval": "폴링 간격",
+    "polling_sub": "원격 측정 업로드 빈도",
+    "dry_threshold": "건조 임계값",
+    "dry_threshold_sub": "이 수치 이하에서 관개 실행",
+    "bottle_cap_label": "물병 용량",
+    "bottle_cap_sub": "관개 저수조의 용량",
+    "for_plant_lbl": "식물용:",
+    "fish_reserve_sub": "물고기 예비량(150ml)이 자동으로 보호됩니다",
+    "pump_stops_at": "물고기 보호 수량만 남으면 펌프가 자동으로 중단됩니다",
+    "save_bottle_btn": "물병 용량 저장",
+    "saving_btn": "저장 중…",
+    "physical_location": "식물 실제 위치",
+    "location_desc": "현지 강수량 및 날씨 예보에 사용되는 좌표",
+    "detect_save_loc": "현재 위치 감지 및 저장",
+    "clear_loc": "위치 초기화",
+    "alert_prefs": "알림 환경설정",
+    "overwater_sub": "수분이 목표치를 초과할 때 경고",
+    "dry_soil_sub": "토양이 건조 임계값 아래로 떨어질 때 알림",
+    "offline_sub": "기기 연결이 끊어질 때 알림",
+    "about_soiliq": "SoilIQ v2.0.0 정보",
+    "profiles_count": "240개 이상의 식물 프로필",
+    "live_sensor_data": "실시간 센서 원격 측정",
+    "wx_dashboard": "Open-Meteo 날씨 연동",
+    "rain_detect": "스마트 강우 감지",
+    "smart_alerts": "토양 질병 병원체 인텔리전스",
+    "manual_override": "수동 펌프 제어",
+    "profile_title": "프로필 및 환경설정",
+    "profile_role": "수석 농업 전문가 · SoilIQ",
+    "profile_badge": "프로 재배자",
+    "profile_lang_label": "표시 언어",
+    "profile_device_label": "연결된 하드웨어",
+    "profile_device_id": "기기 ID",
+    "profile_firmware": "펌웨어",
+    "profile_platform": "플랫폼",
+    "profile_ai_engine": "AI 엔진",
+    "ai_title": "AI 농업 전문가",
+    "ai_sub": "Gemini 2.5 Flash · 식물 인텔리전스",
+    "ai_quick_label": "빠른 상담",
+    "ai_chip_plant_care": "🌱 식물 관리 가이드",
+    "ai_chip_watering": "💧 관개 필요량",
+    "ai_chip_safety": "🛡️ 질병 예방",
+    "ai_chip_weather": "☀️ 날씨 영향",
+    "ai_chip_how": "❓ SoilIQ 작동 원리",
+    "ai_placeholder": "AI 농업 전문가에게 질문하세요…",
+    "ai_welcome_prefix": "안녕하세요! 저는 SoilIQ AI 농업 전문가입니다.",
+    "status_online": "온라인",
+    "status_offline": "오프라인",
+    "status_connected": "연결됨",
+    "toast_selected": "식물 선택됨:"
+  }
+};
+
+    const LANG_LABELS = { en: 'EN', ta: 'தமிழ்', hi: 'हिंदी', ko: '한국어' };
+    const LANG_BADGES = { en: 'EN', ta: 'TA', hi: 'HI', ko: 'KO' };
+    const LANG_AI_INSTRUCTION = {
+      en: '',
+      ta: 'IMPORTANT: You MUST respond ENTIRELY in Tamil (தமிழ்) language only. Use Tamil script for all output.',
+      hi: 'IMPORTANT: You MUST respond ENTIRELY in Hindi (हिंदी) language only. Use Devanagari script for all output.',
+      ko: 'IMPORTANT: You MUST respond ENTIRELY in Korean (한국어) language only. Use Hangul script for all output.',
+    };
+
+    let currentLang = localStorage.getItem('soiliq_lang') || 'en';
+
+    function t(key) {
+      return (TRANSLATIONS[currentLang] || TRANSLATIONS.en)[key] || (TRANSLATIONS.en[key] || key);
+    }
+
+    function applyLanguage(lang) {
+      const dict = TRANSLATIONS[lang] || TRANSLATIONS.en;
+      currentLang = lang;
+      localStorage.setItem('soiliq_lang', lang);
+
+      // Translate all data-i18n elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+
+      // Update placeholders
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (dict[key] !== undefined) el.placeholder = dict[key];
+      });
+
+      // Topbar search input placeholder
+      const searchInput = document.querySelector('.topbar-search input');
+      if (searchInput) searchInput.placeholder = dict['search_placeholder'] || 'Search plants…';
+
+      // Plant gallery search input placeholder
+      const gallerySearchInput = document.getElementById('plant-search');
+      if (gallerySearchInput) gallerySearchInput.placeholder = dict['search_specimens'] || 'Search 240+ botanical specimens…';
+
+      // Topbar language badge
+      const topbarBadge = document.getElementById('topbar-lang-badge');
+      if (topbarBadge) topbarBadge.textContent = LANG_BADGES[lang] || lang.toUpperCase();
+
+      // Topbar label (Live Dashboard on desktop)
+      const topbarLabel = document.querySelector('.topbar-label');
+      if (topbarLabel) topbarLabel.textContent = dict['page_dashboard'] || 'Live Dashboard';
+
+      // Lang cards inside Profile modal
+      ['en', 'ta', 'hi', 'ko'].forEach(l => {
+        const card = document.getElementById('lang-card-' + l);
+        if (card) card.classList.toggle('active', l === lang);
+      });
+
+      // AI chat input placeholder
+      const aiInput = document.getElementById('ai-user-input');
+      if (aiInput) aiInput.placeholder = dict['ai_placeholder'] || 'Ask your AI Agronomist…';
+
+      // Re-render dynamic components with translated labels & Supabase plant names
+      if (typeof updatePlantUI === 'function') updatePlantUI();
+      if (typeof updateMoistureUI === 'function') updateMoistureUI();
+      if (typeof updateReco === 'function') updateReco();
+      if (typeof updatePumpUI === 'function') updatePumpUI();
+      if (typeof updateOnline === 'function') updateOnline();
+      if (typeof renderCategoryFilter === 'function') renderCategoryFilter();
+      if (typeof applyPlantFilters === 'function') applyPlantFilters();
+      if (typeof renderAlerts === 'function') renderAlerts();
+      if (typeof updateAITelemetryBar === 'function') updateAITelemetryBar();
+
+      // If botanical detail drawer is active, re-render drawer
+      const drawer = document.getElementById('plant-drawer');
+      if (drawer && drawer.classList.contains('open') && state.pendingPlant && typeof openPlantDetail === 'function') {
+        openPlantDetail(state.pendingPlant.id);
+      }
+
+      console.log('[SoilIQ] Language applied:', lang);
+    }
+
+    /* Profile modal controls */
+    function openProfileModal() {
+      const overlay = document.getElementById('profile-overlay');
+      if (overlay) overlay.classList.add('open');
+      ['en', 'ta', 'hi', 'ko'].forEach(l => {
+        const c = document.getElementById('lang-card-' + l);
+        if (c) c.classList.toggle('active', l === currentLang);
+      });
+    }
+
+    function closeProfileModal() {
+      const overlay = document.getElementById('profile-overlay');
+      if (overlay) overlay.classList.remove('open');
+    }
+
+    function closeProfileOnBackdrop(e) {
+      if (e.target === document.getElementById('profile-overlay')) closeProfileModal();
+    }
+
+    function setLanguage(lang) {
+      applyLanguage(lang);
+      setTimeout(closeProfileModal, 350);
+    }
+
+    /* Init on load */
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => applyLanguage(currentLang));
+    } else {
+      applyLanguage(currentLang);
+    }
+  </script>
+</body>
 </html>
